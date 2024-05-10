@@ -1,2 +1,4 @@
 cfgdicts/__pycache__/**
 *.cfg
+log.txt
+teste.py
