@@ -3,3 +3,4 @@ cfgdicts/__pycache__/**
 log.txt
 teste.py
 .idea/**
+config/**
