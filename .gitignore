@@ -1,6 +1,7 @@
 cfgdicts/__pycache__/**
-*.cfg
 log.txt
 teste.py
 .idea/**
-config/**
+config/config.cfg
+config/configlong.cfg
+**/__pycache__/**
