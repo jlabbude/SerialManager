@@ -7,7 +7,6 @@ class Device:
     def reset_dev(serial_port: str, br: int) -> None:
         with serial.Serial(serial_port, br, timeout=1) as ser:
             ser.write(b'123\r')
-
             ser.write(b'system reset\r')
             ser.close()
 
@@ -15,14 +14,14 @@ class Device:
         with serial.Serial(serial_port, br, timeout=1) as ser:
             ser.write(b'123\r')
             ser.write(b'system skip\r')
-            sleep(5)
+            sleep(6)
+            ser.write(b'system log off\r')
             ser.close()
 
     def get_deveui(serial_port: str, br: int) -> int:
         with serial.Serial(serial_port, br, timeout=1) as ser:
             ser.write(b'123\r')
             ser.write(b'123\r')
-            ser.write(b'system log off\r')
             ser.write(b'lora info\r')
             output = ser.read(1000).decode('utf-8')
             p = re.compile(r"DevEUI: (.*)")

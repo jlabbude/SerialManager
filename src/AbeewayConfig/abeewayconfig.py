@@ -44,14 +44,18 @@ def check_config_discrepancy(serial_port, br):
     return True
 
 
-def main():
+def serial_parallel_process(target):
     threads = []
     for serial_port in serial_port_array:
-        thread = threading.Thread(target=Device.start_dev, args=(serial_port, baud_rate))
+        thread = threading.Thread(target=target, args=(serial_port, baud_rate))
         threads.append(thread)
         thread.start()
     for thread in threads:
         thread.join()
+
+
+def main():
+    serial_parallel_process(target=Device.start_dev)
 
     threads = []
     for serial_port in serial_port_array:
@@ -61,13 +65,9 @@ def main():
     for thread in threads:
         thread.join()
 
-    threads = []
-    for serial_port in serial_port_array:
-        thread = threading.Thread(target=check_config_discrepancy, args=(serial_port, baud_rate))
-        threads.append(thread)
-        thread.start()
-    for thread in threads:
-        thread.join()
+    serial_parallel_process(target=check_config_discrepancy)
+
+    serial_parallel_process(target=Device.reset_dev)
 
 
 if __name__ == '__main__':
