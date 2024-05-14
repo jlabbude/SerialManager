@@ -1,12 +1,41 @@
+import os
+import shutil
+import sys
 from glob import glob
 from threading import Thread
-import tkinter
+from tkinter import filedialog, Button, Text
+import tkinter as tk
 
 from Config import Config
 from Device import Device
 
 baud_rate = 9600
 serial_port_array = glob("/dev/ttyACM*")
+
+
+def import_config():
+    initialdir = "~/Desktop"
+
+    # Open file dialog to select a file
+    filename = filedialog.askopenfilename(initialdir=initialdir,
+                                          filetypes=[("Text files", "*.txt"),
+                                                     ("Config files", "*.cfg")])
+
+    if filename:
+        # Destination directory for the config file
+        destination_dir = "config"
+
+        # Construct the destination file path
+        destination_file = os.path.join(destination_dir, "config.cfg")
+
+        try:
+            # Copy the selected file to the destination directory
+            shutil.copy(filename, destination_file)
+            print("Config file imported successfully.")
+        except Exception as e:
+            print("Error:", e)
+    else:
+        print("No file selected.")
 
 
 def serial_parallel_process(target):
@@ -30,26 +59,62 @@ def config_process() -> None:
 
 
 def main():
-    root = tkinter.Tk()
+    root = tk.Tk()
+    root.title("Config window")
+    root.geometry("400x300")
+    root.configure(padx=10, pady=10)
 
-    root.title("Button Example")
+    button1 = Button(root,
+                     text="Configure device",
+                     width=15,
+                     height=2,
+                     bg="lightblue",
+                     fg="black",
+                     font=("Arial", 12),
+                     command=lambda: config_process())
+    button4 = Button(root,
+                     text="Reset device",
+                     width=15,
+                     height=2,
+                     bg="lightcoral",
+                     fg="black",
+                     font=("Arial", 12),
+                     command=lambda: serial_parallel_process(target=Device.reset_dev))
+    button3 = Button(root,
+                     text="Start device",
+                     width=15,
+                     height=2,
+                     bg="lightgreen",
+                     fg="black",
+                     font=("Arial", 12),
+                     command=lambda: serial_parallel_process(target=Device.start_dev))
+    button2 = Button(root,
+                     text="Import config",
+                     width=15,
+                     height=2,
+                     bg="lightblue",
+                     fg="black",
+                     font=("Arial", 12),
+                     command=lambda: import_config())
 
-    # Create buttons
-    button1 = tkinter.Button(root,
-                             text="Config Device",
-                             command=lambda: config_process())
-    button2 = tkinter.Button(root,
-                             text="Reset device",
-                             command=lambda: serial_parallel_process(target=Device.reset_dev))
-    button3 = tkinter.Button(root,
-                             text="Start device",
-                             command=lambda: serial_parallel_process(target=Device.start_dev))
+    root.grid_rowconfigure(0, weight=1)
+    root.grid_rowconfigure(1, weight=1)
+    root.grid_columnconfigure(0, weight=1)
+    root.grid_columnconfigure(1, weight=1)
 
-    button1.pack()
-    button2.pack()
-    button3.pack()
+    root.grid_rowconfigure(0, weight=1)
+    root.grid_rowconfigure(1, weight=1)
+    root.grid_columnconfigure(0, weight=1)
+    root.grid_columnconfigure(1, weight=1)
+
+    button1.grid(row=0, column=0, padx=5, pady=5, sticky="nsew")
+    button2.grid(row=0, column=1, padx=5, pady=5, sticky="nsew")
+    button3.grid(row=1, column=0, padx=5, pady=5, sticky="nsew")
+    button4.grid(row=1, column=1, padx=5, pady=5, sticky="nsew")
 
     root.mainloop()
+
+    sys.stdout = sys.__stdout__
 
 
 if __name__ == '__main__':

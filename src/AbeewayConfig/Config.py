@@ -1,7 +1,9 @@
 import re
 
-from Device import Device, config_file
+from Device import Device
 from smartbadgecfgdict import config_dict
+
+config_file = 'config/config.cfg'
 
 
 class Config:

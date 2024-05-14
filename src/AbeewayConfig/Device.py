@@ -1,8 +1,6 @@
-from serial import Serial
 import re
+from serial import Serial
 from time import sleep
-
-config_file = 'config/configlong.cfg'
 
 
 class Device:
@@ -34,6 +32,7 @@ class Device:
     def set_config_on_device(serial_port: str, br: int) -> None:
         with Serial(serial_port, br, timeout=1) as ser:
             ser.write(b'123\r')
+            from Config import config_file
             with open(config_file, 'rb') as config:
                 for line in config:
                     ser.write(line.strip())
