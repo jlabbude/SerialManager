@@ -1,4 +1,4 @@
-import serial
+from serial import Serial
 import re
 from time import sleep
 
@@ -7,13 +7,13 @@ config_file = 'config/configlong.cfg'
 
 class Device:
     def reset_dev(serial_port: str, br: int) -> None:
-        with serial.Serial(serial_port, br, timeout=1) as ser:
+        with Serial(serial_port, br, timeout=1) as ser:
             ser.write(b'123\r')
             ser.write(b'system reset\r')
             ser.close()
 
     def start_dev(serial_port: str, br: int) -> None:
-        with serial.Serial(serial_port, br, timeout=1) as ser:
+        with Serial(serial_port, br, timeout=1) as ser:
             ser.write(b'123\r')
             ser.write(b'system skip\r')
             sleep(6)
@@ -21,7 +21,7 @@ class Device:
             ser.close()
 
     def get_deveui(serial_port: str, br: int) -> int:
-        with serial.Serial(serial_port, br, timeout=1) as ser:
+        with Serial(serial_port, br, timeout=1) as ser:
             ser.write(b'123\r')
             ser.write(b'123\r')
             ser.write(b'lora info\r')
@@ -32,7 +32,7 @@ class Device:
                 return deveui.group(1)
 
     def set_config_on_device(serial_port: str, br: int) -> None:
-        with serial.Serial(serial_port, br, timeout=1) as ser:
+        with Serial(serial_port, br, timeout=1) as ser:
             ser.write(b'123\r')
             with open(config_file, 'rb') as config:
                 for line in config:
@@ -51,7 +51,7 @@ class Device:
                 return int(match_line.group(1))
 
     def config_show_at_device(serial_port: str, br: int) -> str:
-        with serial.Serial(serial_port, br, timeout=1) as ser:
+        with Serial(serial_port, br, timeout=1) as ser:
             ser.write(b'123\r')
             ser.write(b'config show\r')
             output = ser.read(8000)
