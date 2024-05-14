@@ -2,6 +2,8 @@ import serial
 import re
 from time import sleep
 
+config_file = 'config/configlong.cfg'
+
 
 class Device:
     def reset_dev(serial_port: str, br: int) -> None:
@@ -29,7 +31,7 @@ class Device:
             if deveui is not None:
                 return deveui.group(1)
 
-    def set_config_on_device(serial_port: str, br: int, config_file: str) -> None:
+    def set_config_on_device(serial_port: str, br: int) -> None:
         with serial.Serial(serial_port, br, timeout=1) as ser:
             ser.write(b'123\r')
             with open(config_file, 'rb') as config:
