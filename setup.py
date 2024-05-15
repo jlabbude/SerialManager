@@ -8,7 +8,7 @@ setup(
     version="0.111",
     description="Abeeway configuration tool",
     author="João Lucas",
-    url="github.com/jlabbude/AbeewayConfig",
+    url="https://github.com/jlabbude/AbeewayConfig",
     packages=find_packages(where="src"),
     package_dir={"": "src"},
     install_requires=[
