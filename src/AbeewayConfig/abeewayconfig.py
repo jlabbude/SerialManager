@@ -29,20 +29,13 @@ def define_os_specific_params():
 
 
 def import_config(console_output):
-    # Open file dialog to select a file
     filename = filedialog.askopenfilename(initialdir=initialdir,
                                           filetypes=[("Text files", "*.txt"),
                                                      ("Config files", "*.cfg")])
-
     if filename:
-        # Destination directory for the config file
         destination_dir = "config"
-
-        # Construct the destination file path
         destination_file = os.path.join(destination_dir, "config.cfg")
-
         try:
-            # Copy the selected file to the destination directory
             shutil.copy(filename, destination_file)
             console_output.insert(tk.END, "Config file imported successfully.")
         except Exception as e:
