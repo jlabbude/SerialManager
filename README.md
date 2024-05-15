@@ -1,8 +1,7 @@
 # Abeeway Tracker Configurator
 
 ## About
-This is supposed to be a way to easily change the configuration of multiple of Abeeway's smart trackers at once. At the moment it only works on Linux
-
+Python project useful if you want to configure multiple serial devices at once through their CLI. Right now, it's designed to be used to configure Abeeway's trackers.
 ![](https://i.ibb.co/HptPP0S/Screenshot-2024-05-15-15-25-08.png)
 
 ## Compatibility
