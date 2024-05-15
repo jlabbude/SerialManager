@@ -2,8 +2,10 @@ import os
 import shutil
 import sys
 import time
+import serial.tools.list_ports
 import tkinter as tk
 from glob import glob
+from platform import system
 from threading import Thread
 from tkinter import filedialog, Button, Text
 
@@ -11,12 +13,22 @@ from Config import Config
 from Device import Device
 
 baud_rate = 9600
-serial_port_array = glob("/dev/ttyACM*")
+
+
+def define_os_specific_params():
+    global serial_port_array
+    global initialdir
+    operating_system = system()
+    match operating_system:
+        case "Linux":
+            serial_port_array = glob("/dev/ttyACM*")
+            initialdir = "~/Desktop"
+        case "Windows":
+            serial_port_array = glob(r'\\.\COM*')
+            initialdir = "~\\Desktop"
 
 
 def import_config(console_output):
-    initialdir = "~/Desktop"
-
     # Open file dialog to select a file
     filename = filedialog.askopenfilename(initialdir=initialdir,
                                           filetypes=[("Text files", "*.txt"),
@@ -70,6 +82,7 @@ def config_process(console_output) -> None:
 
 
 def main():
+    define_os_specific_params()
     root = tk.Tk()
     root.title("Config window")
     root.geometry("800x600")
