@@ -24,7 +24,10 @@ def define_os_specific_params():
             serial_port_array = glob("/dev/ttyACM*")
             initialdir = "~/Desktop"
         case "Windows":
-            serial_port_array = glob(r'\\.\COM*')
+            def get_ports():
+                ports = serial.tools.list_ports.comports()
+                return [port.device for port in ports]
+            serial_port_array = get_ports()
             initialdir = "~\\Desktop"
 
 
@@ -39,7 +42,7 @@ def import_config(console_output):
             shutil.copy(filename, destination_file)
             console_output.insert(tk.END, "Config file imported successfully.")
         except Exception as e:
-            console_output.insert(tk.END, "Error:", e)
+            console_output.insert(tk.END, "Error:" + str(e))
     else:
         console_output.insert(tk.END, "No file selected.\n")
 

@@ -4,6 +4,6 @@ setup(
     name="AbeewayConfig",
     packages=find_packages(),
     install_requires=[
-        "serial",
+        "pyserial",
     ],
 )
