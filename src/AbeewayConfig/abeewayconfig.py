@@ -32,11 +32,14 @@ def define_os_specific_params():
 
 
 def import_config(console_output):
+    src_dir = os.path.dirname(os.path.abspath(__file__))
     filename = filedialog.askopenfilename(initialdir=initialdir,
                                           filetypes=[("Text files", "*.txt"),
                                                      ("Config files", "*.cfg")])
     if filename:
-        destination_dir = "config"
+        project_root = os.path.dirname(src_dir)
+        destination_dir = os.path.join(project_root, "config")
+        os.makedirs(destination_dir, exist_ok=True)
         destination_file = os.path.join(destination_dir, "config.cfg")
         try:
             shutil.copy(filename, destination_file)

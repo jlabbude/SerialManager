@@ -3,5 +3,7 @@ log.txt
 teste.py
 .idea/**
 config/config.cfg
-config/configlong.cfg
+src/config/configlong.cfg
 **/__pycache__/**
+/src/config/configlong.cfg
+/AbeewayConfig.egg-info/
