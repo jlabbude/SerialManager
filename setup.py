@@ -1,9 +1,29 @@
 from setuptools import setup, find_packages
 
+with open("README.md", "r") as f:
+    description = f.read()
+
 setup(
     name="AbeewayConfig",
-    packages=find_packages(),
+    version="0.111",
+    description="Abeeway configuration tool",
+    author="João Lucas",
+    url="github.com/jlabbude/AbeewayConfig",
+    packages=find_packages(where="src"),
+    package_dir={"": "src"},
     install_requires=[
         "pyserial",
     ],
+    entry_points={
+        "console_scripts": [
+            "abeewayconfig = AbeewayConfig.abeewayconfig:main",
+        ],
+    },
+    classifiers=[
+        "Development Status :: 3 - Alpha",
+        "Programming Language :: Python :: 3",
+    ],
+
+    long_description=description,
+    long_description_content_type="text/markdown",
 )

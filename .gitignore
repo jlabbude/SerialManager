@@ -2,9 +2,13 @@ cfgdicts/__pycache__/**
 log.txt
 teste.py
 .idea/**
-config/config.cfg
 src/config/configlong.cfg
 **/__pycache__/**
 /src/config/configlong.cfg
 /AbeewayConfig.egg-info/
 src/config/config.cfg
+build/**
+.vscode/**
+dist/**
+src/AbeewayConfig.egg-info**
+src/__pycache__/**

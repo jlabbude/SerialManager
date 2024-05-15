@@ -9,8 +9,8 @@ from platform import system
 from threading import Thread
 from tkinter import filedialog, Button, Text
 
-from Config import Config
-from Device import Device
+from .Config import Config
+from .Device import Device
 
 baud_rate = 9600
 
@@ -32,13 +32,11 @@ def define_os_specific_params():
 
 
 def import_config(console_output):
-    src_dir = os.path.dirname(os.path.abspath(__file__))
     filename = filedialog.askopenfilename(initialdir=initialdir,
                                           filetypes=[("Text files", "*.txt"),
                                                      ("Config files", "*.cfg")])
     if filename:
-        project_root = os.path.dirname(src_dir)
-        destination_dir = os.path.join(project_root, "config")
+        destination_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), "config")
         os.makedirs(destination_dir, exist_ok=True)
         destination_file = os.path.join(destination_dir, "config.cfg")
         try:
@@ -139,7 +137,3 @@ def main():
     root.mainloop()
 
     sys.stdout = sys.__stdout__
-
-
-if __name__ == '__main__':
-    main()

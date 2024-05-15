@@ -1,10 +1,9 @@
 import re
+import os
 from tkinter import Text
 import tkinter as tk
-from Device import Device
-from smartbadgecfgdict import config_dict
-
-config_file = 'config/config.cfg'
+from .Device import Device
+from .smartbadgecfgdict import config_dict
 
 
 class Config:
@@ -25,7 +24,7 @@ class Config:
     def check_config_discrepancy(serial_port: str, br: int, console_output: Text) -> bool:
         device_config = Device.config_show_at_device(serial_port=serial_port, br=br)
         deveui = str(Device.get_deveui(serial_port=serial_port, br=br))
-
+        config_file = os.path.join(os.path.join(os.path.dirname(os.path.abspath(__file__)), "config"), "config.cfg")
         with open(config_file, 'r') as config:
             for line in config:
                 config_parameter_cfg = Config.get_config_parameter_from_cfg(line)
