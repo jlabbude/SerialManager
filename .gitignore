@@ -7,3 +7,4 @@ src/config/configlong.cfg
 **/__pycache__/**
 /src/config/configlong.cfg
 /AbeewayConfig.egg-info/
+src/config/config.cfg
