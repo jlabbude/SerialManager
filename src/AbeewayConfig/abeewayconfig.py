@@ -43,9 +43,9 @@ def import_config(console_output):
         destination_file = os.path.join(destination_dir, "config.cfg")
         try:
             shutil.copy(filename, destination_file)
-            console_output.insert(tk.END, "Config file imported successfully.")
+            console_output.insert(tk.END, "Config file imported successfully.\n")
         except Exception as e:
-            console_output.insert(tk.END, "Error:" + str(e))
+            console_output.insert(tk.END, "Error:" + str(e) + "\n")
     else:
         console_output.insert(tk.END, "No file selected.\n")
 

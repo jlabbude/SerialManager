@@ -3,6 +3,8 @@
 ## About
 This is supposed to be a way to easily change the configuration of multiple of Abeeway's smart trackers at once. At the moment it only works on Linux
 
+![](https://i.ibb.co/HptPP0S/Screenshot-2024-05-15-15-25-08.png)
+
 ## Compatibility
 
 ### Operating Systems
