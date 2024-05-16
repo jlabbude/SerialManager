@@ -68,6 +68,9 @@ def discrepancy_parallel_process(target, console_output):
 
 
 def config_process(console_output) -> None:
+    # Hacky way of detecting new badges after the program has already started
+    define_os_specific_params()
+
     serial_parallel_process(target=Device.start_dev)
 
     serial_parallel_process(target=Device.set_config_on_device)
