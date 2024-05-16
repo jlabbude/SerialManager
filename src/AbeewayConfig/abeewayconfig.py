@@ -36,7 +36,7 @@ def import_config(console_output):
                                           filetypes=[("Text files", "*.txt"),
                                                      ("Config files", "*.cfg")])
     if filename:
-        destination_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), "config")
+        destination_dir = os.path.join(os.path.dirname(__file__), "config")
         os.makedirs(destination_dir, exist_ok=True)
         destination_file = os.path.join(destination_dir, "config.cfg")
         try:
