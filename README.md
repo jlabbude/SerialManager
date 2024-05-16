@@ -4,6 +4,20 @@
 Python project useful if you want to configure multiple serial devices at once through their CLI. Right now, it's designed to be used to configure Abeeway's trackers.
 ![](https://i.ibb.co/HptPP0S/Screenshot-2024-05-15-15-25-08.png)
 
+## Installation
+
+To install I recommend you use the package installer for Python - **pip**
+
+```bash
+  pip install abeewayconfig
+```
+
+Run the package using
+
+```bash
+  abeewayconfig
+```
+
 ## Compatibility
 
 ### Operating Systems
