@@ -37,8 +37,6 @@ Run the package using
 ## Known issues
 - GUI doesn't stall user action when talking to devices properly, making it able to break communication with serial ports by forcing multiple calls to same serial port
   - (as far as I've looked, this doesn't kill the already established communication)
-- Line break (\n) characters are not being rendered properly at integrated terminal
-- For some 
 
 ## Future goals
 - [ ] Support for multiple firmware versions
