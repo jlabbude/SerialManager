@@ -13,6 +13,7 @@ setup(
     package_dir={"": "src"},
     install_requires=[
         "pyserial",
+        "tk",
     ],
     entry_points={
         "console_scripts": [
