@@ -46,7 +46,7 @@ class Device:
     # Might move it back to the main module
     def get_config_value_from_dev(config_name: str, parameter: int) -> int:
         if parameter is not None:
-            match_line = re.search(r".*%s\s*=\s*(-?\d+)" % parameter, config_name)
+            match_line = re.search(r".* %s\s*=\s*(-?\d+)" % parameter, config_name)
             if match_line is not None:
                 return int(match_line.group(1))
 
@@ -54,6 +54,6 @@ class Device:
         with Serial(serial_port, br, timeout=1) as ser:
             ser.write(b'123\r')
             ser.write(b'config show\r')
-            output = ser.read(8000)
+            output = ser.read(16000)
             ser.close()
             return output.decode('utf-8')

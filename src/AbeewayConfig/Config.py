@@ -32,11 +32,16 @@ class Config:
                 config_name = config_dict.get(config_parameter_cfg)
                 if config_parameter_cfg is not None or config_value_cfg is not None:
                     config_value_dev = Device.get_config_value_from_dev(device_config, config_name)
+
+                    if config_parameter_cfg is 249 and config_value_dev is 5:
+                        console_output.insert(tk.END, f"Config error: {deveui} \n")
+                        console_output.insert(tk.END, f"An error occurred. Please try starting the device, then configuring again. \n")
+                        return False
+
                     if config_value_cfg != config_value_dev:
                         console_output.insert(tk.END, f"Config error: {deveui} \n")
-                        console_output.insert(tk.END, f"[{config_name} : {config_value_cfg}] -> [{config_value_dev}] \n")
+                        console_output.insert(tk.END, f"[Parameter : {config_name}] - Current: [{config_value_dev}] | Correct: [{config_value_cfg}] \n")
                         return False
 
         console_output.insert(tk.END, f"Done: {deveui} \n")
         return True
-

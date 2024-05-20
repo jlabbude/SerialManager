@@ -1,7 +1,7 @@
 import os
 import shutil
 import sys
-import time
+from time import sleep
 import serial.tools.list_ports
 import tkinter as tk
 from glob import glob
@@ -72,11 +72,12 @@ def config_process(console_output) -> None:
     define_os_specific_params()
 
     serial_parallel_process(target=Device.start_dev)
+    sleep(5)
 
     serial_parallel_process(target=Device.set_config_on_device)
 
     discrepancy_parallel_process(target=Config.check_config_discrepancy, console_output=console_output)
-    time.sleep(5)
+    sleep(5)
 
     serial_parallel_process(target=Device.reset_dev)
 
