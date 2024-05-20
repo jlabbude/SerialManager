@@ -46,7 +46,7 @@ class Device:
     # Might move it back to the main module
     def get_config_value_from_dev(config_name: str, parameter: int) -> int:
         if parameter is not None:
-            match_line = re.search(r".* %s\s*=\s*(-?\d+)" % parameter, config_name)
+            match_line = re.search(r".*\s+%s\s*=\s*(-?\d+)" % parameter, config_name)
             if match_line is not None:
                 return int(match_line.group(1))
 
