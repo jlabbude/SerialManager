@@ -11,6 +11,7 @@ import serial.tools.list_ports
 
 from .Config import Config
 from .Device import Device
+from .NetworkServer import NetworkServer
 
 baud_rate = 9600
 operating_system = system()
@@ -88,7 +89,7 @@ def config_process(console_output) -> None:
     serial_parallel_process(target=Device.reset_dev)
 
 
-def gui_builder() -> None:
+def config_gui_builder() -> None:
     root = tk.Tk()
     root.title("Config window")
     root.geometry("800x600")
@@ -146,5 +147,63 @@ def gui_builder() -> None:
     root.mainloop()
 
 
+def nw_sv_gui():
+    root = tk.Tk()
+    root.title("Upload window")
+    root.geometry("800x600")
+    root.configure(padx=10, pady=10)
+
+    console = Text(root, wrap="word")
+    console.grid(row=4, column=0, columnspan=2, padx=5, pady=5, sticky="nsew")
+    button1 = Button(root,
+                     text="Make csv",
+                     bg="lightblue",
+                     fg="black",
+                     width=15,
+                     height=2,
+                     font=("Arial", 12),
+                     command=lambda: print('TODO'))
+    button2 = Button(root,
+                     text="Upload CSV",
+                     bg="lightblue",
+                     fg="black",
+                     width=15,
+                     height=2,
+                     font=("Arial", 12),
+                     command=lambda: print('TODO'))
+    button3 = Button(root,
+                     text="Renew API key",
+                     bg="lightgreen",
+                     fg="black",
+                     width=15,
+                     height=2,
+                     font=("Arial", 12),
+                     command=lambda: print('TODO'))
+    button4 = Button(root,
+                     text="Import device info",
+                     bg="lightcoral",
+                     fg="black",
+                     width=15,
+                     height=2,
+                     font=("Arial", 12),
+                     command=lambda: print('TODO'))
+
+    root.grid_rowconfigure(0, weight=1)
+    root.grid_rowconfigure(1, weight=1)
+    root.grid_rowconfigure(2, weight=1)
+    root.grid_rowconfigure(3, weight=1)
+    root.grid_rowconfigure(4, weight=4)
+
+    root.grid_columnconfigure(0, weight=2)
+    root.grid_columnconfigure(1, weight=2)
+
+    button1.grid(row=0, column=0, padx=5, pady=5, sticky="nsew")
+    button2.grid(row=0, column=1, padx=5, pady=5, sticky="nsew")
+    button3.grid(row=1, column=0, padx=5, pady=5, sticky="nsew")
+    button4.grid(row=1, column=1, padx=5, pady=5, sticky="nsew")
+
+    root.mainloop()
+
+
 def main():
-    gui_builder()
+    config_gui_builder()

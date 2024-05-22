@@ -5,7 +5,7 @@ with open("README.md", "r") as f:
 
 setup(
     name="AbeewayConfig",
-    version="0.2.2.2",
+    version="0.2.2.7",
     description="Abeeway configuration tool",
     author="João Lucas",
     url="https://github.com/jlabbude/AbeewayConfig",
@@ -18,6 +18,7 @@ setup(
     entry_points={
         "console_scripts": [
             "abeewayconfig = AbeewayConfig.abeewayconfig:main",
+            "abeewayupload = AbeewayConfig.abeewayconfig:nw_sv_gui"
         ],
     },
     classifiers=[
