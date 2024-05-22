@@ -42,9 +42,11 @@ class Device:
                         ser.write(b'\r')
             except FileNotFoundError:
                 ser.write(b'system buzzer 12\r')
-            ser.write(b'config save\r')
-            ser.write(b'system buzzer 6\r')
-            ser.close()
+            else:
+                ser.write(b'config save\r')
+                ser.write(b'system buzzer 6\r')
+            finally:
+                ser.close()
 
     # This doesn't actually talk to the device directly, rather it just grabs the value from a string
     # Might move it back to the main module
