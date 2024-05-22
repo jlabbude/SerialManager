@@ -16,7 +16,7 @@ baud_rate = 9600
 operating_system = system()
 
 
-def define_os_specific_serial_ports():
+def define_os_specific_serial_ports() -> None:
     global serial_port_array
     match operating_system:
         case "Linux":
@@ -28,7 +28,7 @@ def define_os_specific_serial_ports():
             serial_port_array = get_ports()
 
 
-def define_os_specific_startingdir():
+def define_os_specific_startingdir() -> str:
     match operating_system:
         case "Linux":
             return "~/Desktop"
@@ -36,7 +36,7 @@ def define_os_specific_startingdir():
             return "~\\Desktop"
 
 
-def import_config(console_output):
+def import_config(console_output) -> None:
     filename = filedialog.askopenfilename(initialdir=define_os_specific_startingdir(),
                                           filetypes=[("Text files", "*.txt"),
                                                      ("Config files", "*.cfg")])
@@ -53,7 +53,7 @@ def import_config(console_output):
         console_output.insert(tk.END, "No file selected.\n")
 
 
-def serial_parallel_process(target):
+def serial_parallel_process(target) -> None:
     threads = []
     for serial_port in serial_port_array:
         thread = Thread(target=target, args=(serial_port, baud_rate))
@@ -88,8 +88,7 @@ def config_process(console_output) -> None:
     serial_parallel_process(target=Device.reset_dev)
 
 
-def main():
-    define_os_specific_startingdir()
+def gui_builder() -> None:
     root = tk.Tk()
     root.title("Config window")
     root.geometry("800x600")
@@ -145,3 +144,7 @@ def main():
     button4.grid(row=1, column=1, padx=5, pady=5, sticky="nsew")
 
     root.mainloop()
+
+
+def main():
+    gui_builder()
