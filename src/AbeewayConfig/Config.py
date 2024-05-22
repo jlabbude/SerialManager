@@ -1,6 +1,7 @@
 import re
 import os
-from tkinter import Text
+import shutil
+from tkinter import Text, filedialog
 import tkinter as tk
 from .Device import Device
 from .smartbadgecfgdict import config_dict
@@ -49,3 +50,20 @@ class Config:
 
         console_output.insert(tk.END, f"Done: {deveui} \n")
         return True
+
+    def import_config(console_output: Text) -> None:
+        from .abeewayconfig import define_os_specific_startingdir
+        filename = filedialog.askopenfilename(initialdir=define_os_specific_startingdir(),
+                                              filetypes=[("Text files", "*.txt"),
+                                                         ("Config files", "*.cfg")])
+        if filename:
+            destination_dir = os.path.join(os.path.dirname(__file__), "utils")
+            os.makedirs(destination_dir, exist_ok=True)
+            destination_file = os.path.join(destination_dir, "config.cfg")
+            try:
+                shutil.copy(filename, destination_file)
+                console_output.insert(tk.END, "Config file imported successfully.\n")
+            except Exception as e:
+                console_output.insert(tk.END, "Error:" + str(e) + "\n")
+        else:
+            console_output.insert(tk.END, "No file selected.\n")

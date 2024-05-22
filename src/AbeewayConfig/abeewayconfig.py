@@ -1,17 +1,14 @@
-import os
-import shutil
 import tkinter as tk
 from glob import glob
 from platform import system
 from threading import Thread
 from time import sleep
-from tkinter import filedialog, Button, Text
+from tkinter import Button, Text
 
 import serial.tools.list_ports
 
 from .Config import Config
 from .Device import Device
-from .NetworkServer import NetworkServer
 
 baud_rate = 9600
 operating_system = system()
@@ -35,23 +32,6 @@ def define_os_specific_startingdir() -> str:
             return "~/Desktop"
         case "Windows":
             return "~\\Desktop"
-
-
-def import_config(console_output) -> None:
-    filename = filedialog.askopenfilename(initialdir=define_os_specific_startingdir(),
-                                          filetypes=[("Text files", "*.txt"),
-                                                     ("Config files", "*.cfg")])
-    if filename:
-        destination_dir = os.path.join(os.path.dirname(__file__), "utils")
-        os.makedirs(destination_dir, exist_ok=True)
-        destination_file = os.path.join(destination_dir, "config.cfg")
-        try:
-            shutil.copy(filename, destination_file)
-            console_output.insert(tk.END, "Config file imported successfully.\n")
-        except Exception as e:
-            console_output.insert(tk.END, "Error:" + str(e) + "\n")
-    else:
-        console_output.insert(tk.END, "No file selected.\n")
 
 
 def serial_parallel_process(target) -> None:
@@ -128,7 +108,7 @@ def config_gui_builder() -> None:
                      width=15,
                      height=2,
                      font=("Arial", 12),
-                     command=lambda: import_config(console))
+                     command=lambda: Config.import_config(console))
 
     root.grid_rowconfigure(0, weight=1)
     root.grid_rowconfigure(1, weight=1)
