@@ -1,7 +1,8 @@
-import re
 import os
-from serial import Serial
+import re
 from time import sleep
+
+from serial import Serial
 
 
 class Device:
@@ -34,10 +35,13 @@ class Device:
         with Serial(serial_port, br, timeout=1) as ser:
             ser.write(b'123\r')
             config_file = os.path.join(os.path.join(os.path.dirname(os.path.abspath(__file__)), "config"), "config.cfg")
-            with open(config_file, 'rb') as config:
-                for line in config:
-                    ser.write(line.strip())
-                    ser.write(b'\r')
+            try:
+                with open(config_file, 'rb') as config:
+                    for line in config:
+                        ser.write(line.strip())
+                        ser.write(b'\r')
+            except FileNotFoundError:
+                ser.write(b'system buzzer 12\r')
             ser.write(b'config save\r')
             ser.write(b'system buzzer 6\r')
             ser.close()

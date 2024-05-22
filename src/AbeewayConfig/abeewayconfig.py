@@ -58,7 +58,7 @@ def serial_parallel_process(target):
         thread.join()
 
 
-def discrepancy_parallel_process(target, console_output):
+def with_console_parallel_process(target, console_output):
     threads = []
     for serial_port in serial_port_array:
         thread = Thread(target=target, args=(serial_port, baud_rate, console_output))
@@ -76,7 +76,7 @@ def config_process(console_output) -> None:
 
     serial_parallel_process(target=Device.set_config_on_device)
 
-    discrepancy_parallel_process(target=Config.check_config_discrepancy, console_output=console_output)
+    with_console_parallel_process(target=Config.check_config_discrepancy, console_output=console_output)
     sleep(5)
 
     serial_parallel_process(target=Device.reset_dev)
