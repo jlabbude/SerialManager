@@ -62,6 +62,7 @@ class Device:
     def config_show_at_device(serial_port: str, br: int) -> str:
         with Serial(serial_port, br, timeout=1) as ser:
             ser.write(b'123\r')
+            ser.write(b'system log off\r')
             ser.write(b'config show\r')
             output = ser.read(16000)
             ser.close()
