@@ -1,8 +1,10 @@
 import csv
+import os
 import re
+import shutil
 import tkinter as tk
 
-from tkinter import Text
+from tkinter import Text, filedialog
 from dataclasses import dataclass
 
 
@@ -94,3 +96,19 @@ class NetworkServer:
             console_output.insert(tk.END, f".csv file created.\n"
                                           f"There are {len(deveui_array) - 1}, is this correct?")
             # todo popup here
+
+    def import_values(console_output: Text) -> None:
+        from .abeewayconfig import define_os_specific_startingdir
+        filename = filedialog.askopenfilename(initialdir=define_os_specific_startingdir(),
+                                              filetypes=[("CSV", "*.csv")])
+        if filename:
+            destination_dir = os.path.join(os.path.dirname(__file__), "utils")
+            os.makedirs(destination_dir, exist_ok=True)
+            destination_file = os.path.join(destination_dir, "values.cfg")
+            try:
+                shutil.copy(filename, destination_file)
+                console_output.insert(tk.END, "CSV file imported successfully.\n")
+            except Exception as e:
+                console_output.insert(tk.END, "Error:" + str(e) + "\n")
+        else:
+            console_output.insert(tk.END, "No file selected.\n")

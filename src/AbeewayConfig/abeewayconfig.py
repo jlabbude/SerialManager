@@ -9,6 +9,7 @@ import serial.tools.list_ports
 
 from .Config import Config
 from .Device import Device
+from .NetworkServer import NetworkServer
 
 baud_rate = 9600
 operating_system = system()
@@ -142,7 +143,7 @@ def nw_sv_gui():
                      width=15,
                      height=2,
                      font=("Arial", 12),
-                     command=lambda: print('TODO'))
+                     command=lambda: NetworkServer.csv_builder(console_output=console))
     button2 = Button(root,
                      text="Upload CSV",
                      bg="lightblue",
@@ -166,7 +167,7 @@ def nw_sv_gui():
                      width=15,
                      height=2,
                      font=("Arial", 12),
-                     command=lambda: print('TODO'))
+                     command=lambda: NetworkServer.import_values(console_output=console))
 
     root.grid_rowconfigure(0, weight=1)
     root.grid_rowconfigure(1, weight=1)
