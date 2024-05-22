@@ -36,7 +36,7 @@ def import_config(console_output):
                                           filetypes=[("Text files", "*.txt"),
                                                      ("Config files", "*.cfg")])
     if filename:
-        destination_dir = os.path.join(os.path.dirname(__file__), "config")
+        destination_dir = os.path.join(os.path.dirname(__file__), "utils")
         os.makedirs(destination_dir, exist_ok=True)
         destination_file = os.path.join(destination_dir, "config.cfg")
         try:
@@ -71,10 +71,12 @@ def config_process(console_output) -> None:
     # Hacky way of detecting new badges after the program has already started
     define_os_specific_params()
 
+    # TODO: investigate instability here
     serial_parallel_process(target=Device.start_dev)
     sleep(5)
 
     serial_parallel_process(target=Device.set_config_on_device)
+    sleep(5)
 
     with_console_parallel_process(target=Config.check_config_discrepancy, console_output=console_output)
     sleep(5)

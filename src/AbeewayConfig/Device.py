@@ -20,7 +20,7 @@ class Device:
             ser.write(b'system log off\r')
             ser.close()
 
-    def get_deveui(serial_port: str, br: int) -> int:
+    def get_deveui(serial_port: str, br: int) -> str:
         with Serial(serial_port, br, timeout=1) as ser:
             ser.write(b'123\r')
             ser.write(b'123\r')
@@ -28,25 +28,28 @@ class Device:
             output = ser.read(1000).decode('utf-8')
             p = re.compile(r"DevEUI: (.*)")
             deveui = p.search(output)
+            # TODO: make creator for deveui.txt
             if deveui is not None:
-                return deveui.group(1)
+                deveui_file = os.path.join(os.path.dirname(os.path.abspath(__file__)), "utils", "deveui.txt")
+                deveui = deveui.group(1).strip()
+                with open(deveui_file, 'r') as deveui_log:
+                    deveui_log_content = deveui_log.read().splitlines()
+                if deveui not in deveui_log_content:
+                    with open(deveui_file, 'a') as deveui_log:
+                        deveui_log.write(deveui + "\n")
+                return deveui
 
     def set_config_on_device(serial_port: str, br: int) -> None:
         with Serial(serial_port, br, timeout=1) as ser:
             ser.write(b'123\r')
-            config_file = os.path.join(os.path.join(os.path.dirname(os.path.abspath(__file__)), "config"), "config.cfg")
-            try:
-                with open(config_file, 'rb') as config:
-                    for line in config:
-                        ser.write(line.strip())
-                        ser.write(b'\r')
-            except FileNotFoundError:
-                ser.write(b'system buzzer 12\r')
-            else:
-                ser.write(b'config save\r')
-                ser.write(b'system buzzer 6\r')
-            finally:
-                ser.close()
+            config_file = os.path.join(os.path.join(os.path.dirname(os.path.abspath(__file__)), "utils"), "config.cfg")
+            with open(config_file, 'rb') as config:
+                for line in config:
+                    ser.write(line.strip())
+                    ser.write(b'\r')
+            ser.write(b'config save\r')
+            ser.write(b'system buzzer 6\r')
+            ser.close()
 
     # This doesn't actually talk to the device directly, rather it just grabs the value from a string
     # Might move it back to the main module
