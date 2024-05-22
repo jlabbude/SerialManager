@@ -1,13 +1,13 @@
 import os
 import shutil
-import sys
-from time import sleep
-import serial.tools.list_ports
 import tkinter as tk
 from glob import glob
 from platform import system
 from threading import Thread
+from time import sleep
 from tkinter import filedialog, Button, Text
+
+import serial.tools.list_ports
 
 from .Config import Config
 from .Device import Device
@@ -145,5 +145,3 @@ def main():
     button4.grid(row=1, column=1, padx=5, pady=5, sticky="nsew")
 
     root.mainloop()
-
-    sys.stdout = sys.__stdout__
