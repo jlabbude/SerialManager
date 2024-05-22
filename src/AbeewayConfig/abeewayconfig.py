@@ -13,26 +13,31 @@ from .Config import Config
 from .Device import Device
 
 baud_rate = 9600
+operating_system = system()
 
 
-def define_os_specific_params():
+def define_os_specific_serial_ports():
     global serial_port_array
-    global initialdir
-    operating_system = system()
     match operating_system:
         case "Linux":
             serial_port_array = glob("/dev/ttyACM*")
-            initialdir = "~/Desktop"
         case "Windows":
             def get_ports():
                 ports = serial.tools.list_ports.comports()
                 return [port.device for port in ports]
             serial_port_array = get_ports()
-            initialdir = "~\\Desktop"
+
+
+def define_os_specific_startingdir():
+    match operating_system:
+        case "Linux":
+            return "~/Desktop"
+        case "Windows":
+            return "~\\Desktop"
 
 
 def import_config(console_output):
-    filename = filedialog.askopenfilename(initialdir=initialdir,
+    filename = filedialog.askopenfilename(initialdir=define_os_specific_startingdir(),
                                           filetypes=[("Text files", "*.txt"),
                                                      ("Config files", "*.cfg")])
     if filename:
@@ -68,8 +73,7 @@ def with_console_parallel_process(target, console_output):
 
 
 def config_process(console_output) -> None:
-    # Hacky way of detecting new badges after the program has already started
-    define_os_specific_params()
+    define_os_specific_serial_ports()
 
     # TODO: investigate instability here
     serial_parallel_process(target=Device.start_dev)
@@ -85,7 +89,7 @@ def config_process(console_output) -> None:
 
 
 def main():
-    define_os_specific_params()
+    define_os_specific_startingdir()
     root = tk.Tk()
     root.title("Config window")
     root.geometry("800x600")

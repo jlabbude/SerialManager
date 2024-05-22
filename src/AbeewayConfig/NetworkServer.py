@@ -16,7 +16,7 @@ class DevStruct:
 class NetworkServer:
 
     # Fields with default value are supposed to be the most common values
-    # However I've decided to make them mutable to allow for example the deletion of devices,
+    # However I've decided to make them mutable to allow, for example, the deletion of devices,
     # or creation of other devices that aren't the same model of dev_model_id
     @staticmethod
     def csv_builder(deveui: str,
@@ -78,6 +78,7 @@ class NetworkServer:
                     return devstruct
 
         return devstruct
+
 
 
 struct = NetworkServer.grab_dev_info_struct()
