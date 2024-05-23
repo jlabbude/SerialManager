@@ -33,6 +33,8 @@ def define_os_specific_startingdir() -> str:
             return "~/Desktop"
         case "Windows":
             return "~\\Desktop"
+        case _:
+            return "~/Desktop"
 
 
 def serial_parallel_process(target) -> None:
