@@ -35,7 +35,7 @@ class Config:
                     if config_parameter_cfg is not None or config_value_cfg is not None:
                         config_value_dev = Device.get_config_value_from_dev(device_config, config_name)
 
-                        if config_parameter_cfg is 249 and config_value_dev is 5:
+                        if config_parameter_cfg == 249 and config_value_dev == 5:
                             console_output.insert(tk.END, f"Config error: {deveui} \n")
                             console_output.insert(tk.END, f"An error occurred. Please try starting the device, "
                                                           f"then configuring again. \n")
