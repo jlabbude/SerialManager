@@ -16,3 +16,4 @@ src/__pycache__/**
 /deveui.txt
 /values.csv
 **/*.csv
+template.txt

@@ -37,7 +37,8 @@ class Config:
 
                         if config_parameter_cfg is 249 and config_value_dev is 5:
                             console_output.insert(tk.END, f"Config error: {deveui} \n")
-                            console_output.insert(tk.END, f"An error occurred. Please try starting the device, then configuring again. \n")
+                            console_output.insert(tk.END, f"An error occurred. Please try starting the device, "
+                                                          f"then configuring again. \n")
                             return False
 
                         if config_value_cfg != config_value_dev:

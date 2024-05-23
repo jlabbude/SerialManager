@@ -3,6 +3,7 @@ import os
 import re
 import shutil
 import tkinter as tk
+import requests
 
 from dataclasses import dataclass
 from tkinter import Text, filedialog
@@ -19,6 +20,7 @@ class DevStruct:
 
 
 class CSVFile:
+    csv_file = os.path.join(os.path.dirname(__file__), "utils", "output.csv")
 
     # Fields with default value are supposed to be the most common values
     # However I've decided to make them mutable to allow, for example, the deletion of devices,
@@ -49,13 +51,11 @@ class CSVFile:
 
         return data
 
+    @staticmethod
     def write_to_csv(data: list[str]) -> None:
-        global csv_file
-        csv_file = os.path.join(os.path.dirname(__file__), "utils", "output.csv")
-
         pattern = re.compile(data[0][1], re.IGNORECASE)
 
-        with open(csv_file, mode='a+', newline='') as file:
+        with open(CSVFile.csv_file, mode='a+', newline='') as file:
             lines = file.readlines()
             for line in lines:
                 if pattern.search(line.strip()):
@@ -63,6 +63,23 @@ class CSVFile:
             writer = csv.writer(file)
             writer.writerows(data)
 
+    @staticmethod
+    def retrieve_app_id(token: str, console_output: Text):
+        response = requests.post(url='https://community.thingpark.io/thingpark/wireless/'
+                                     'rest/subscriptions/mine/appServers',
+                                 headers={
+                                     'Authorization': f'Bearer {token}',
+                                     'accept': 'application/json',
+                                 })
+
+        matches = re.findall("\"ID:\" \"(.*)\"", response.text)
+
+        with open(os.path.join(os.path.dirname(__file__), "utils", "appids.txt"), 'a') as output:
+            for match in matches:
+                output.write(match)
+
+    # Name might be a little misleading since it doesn't grab the app_id,
+    # but it's the only field where it has to be retrieved from the already set up network server
     @staticmethod
     def grab_dev_info(deveui: str, console_output: Text) -> DevStruct:
         devstruct = DevStruct()
@@ -89,6 +106,25 @@ class CSVFile:
                 if deveui is not None:
                     deveui_array.append(deveui)
         return deveui_array
+
+    @staticmethod
+    def export_devices_from_csv(token: str, console_output: Text):
+        response = requests.post(url='https://community.thingpark.io/thingpark/wireless/rest/subscriptions/mine'
+                                     '/devices/import?async=true&forceDevAddrs=false&networkSubscriptionsHandlingMode'
+                                     '=ADVANCED',
+                                 headers={
+                                     'Authorization': f'Bearer {token}',
+                                     'accept': 'application/json',
+                                     'Content-Type': 'multipart/form-data',
+                                 },
+                                 files=CSVFile.csv_file)
+        match response.status_code:
+            case 200:
+                console_output.insert(tk.END, f"Success.\n")
+            case 403:
+                console_output.insert(tk.END, f"Token error.\n")
+
+        console_output.insert(tk.END, f"{response.text}")
 
     @staticmethod
     def csv_builder(console_output: Text) -> None:

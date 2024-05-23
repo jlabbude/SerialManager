@@ -14,6 +14,7 @@ setup(
     install_requires=[
         "pyserial",
         "tk",
+        "requests",
     ],
     entry_points={
         "console_scripts": [

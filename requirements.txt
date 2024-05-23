@@ -1,2 +1,4 @@
 pyserial==3.5
 setuptools==69.5.1
+requests~=2.32.2
+AbeewayConfig~=0.2.2.9
