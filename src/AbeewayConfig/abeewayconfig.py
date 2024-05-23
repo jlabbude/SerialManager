@@ -145,29 +145,29 @@ def nw_sv_gui():
                      font=("Arial", 12),
                      command=lambda: CSVFile.csv_builder(console_output=console))
     button2 = Button(root,
-                     text="Export devices",
+                     text="Import device info",
                      bg="lightblue",
                      fg="black",
                      width=15,
                      height=2,
                      font=("Arial", 12),
-                     command=lambda: print('TODO'))
+                     command=lambda: CSVFile.import_values(console_output=console))
     button3 = Button(root,
                      text="Renew API key",
-                     bg="lightgreen",
+                     bg="lightcoral",
                      fg="black",
                      width=15,
                      height=2,
                      font=("Arial", 12),
                      command=lambda: print('TODO'))
     button4 = Button(root,
-                     text="Import device info",
-                     bg="lightcoral",
+                     text="Export devices",
+                     bg="lightgreen",
                      fg="black",
                      width=15,
                      height=2,
                      font=("Arial", 12),
-                     command=lambda: CSVFile.import_values(console_output=console))
+                     command=lambda: print('TODO'))
 
     root.grid_rowconfigure(0, weight=1)
     root.grid_rowconfigure(1, weight=1)

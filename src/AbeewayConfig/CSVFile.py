@@ -33,7 +33,7 @@ class CSVFile:
                       _na: str = "",
                       dev_model_id: str = "ABEE/Badge-1.0.2b-AS",
                       motion_indicator: str = "RANDOM"
-                      ) -> list[list[str | Any]]:
+                      ) -> list[str | Any]:
         data = [
             [
                 directive, deveui, _na, dev_model_id, join_eui, app_key,
@@ -49,10 +49,17 @@ class CSVFile:
 
         return data
 
-    def write_to_csv(data: list[list[str]]) -> None:
+    def write_to_csv(data: list[str]) -> None:
         global csv_file
         csv_file = os.path.join(os.path.dirname(__file__), "utils", "output.csv")
 
+        pattern = re.compile(data[0][1], re.IGNORECASE)
+
+        with open(csv_file, mode='r', newline='') as file:
+            lines = file.readlines()
+            for line in lines:
+                if pattern.search(line.strip()):
+                    return
         with open(csv_file, mode='a', newline='') as file:
             writer = csv.writer(file)
             writer.writerows(data)
