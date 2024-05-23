@@ -55,12 +55,11 @@ class CSVFile:
 
         pattern = re.compile(data[0][1], re.IGNORECASE)
 
-        with open(csv_file, mode='r', newline='') as file:
+        with open(csv_file, mode='a+', newline='') as file:
             lines = file.readlines()
             for line in lines:
                 if pattern.search(line.strip()):
                     return
-        with open(csv_file, mode='a', newline='') as file:
             writer = csv.writer(file)
             writer.writerows(data)
 

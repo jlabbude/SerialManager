@@ -28,14 +28,16 @@ class Device:
             output = ser.read(1000).decode('utf-8')
             p = re.compile(r"DevEUI: (.*)")
             deveui = p.search(output)
-            # TODO: make creator for deveui.txt
             if deveui is not None:
                 deveui_file = os.path.join(os.path.dirname(os.path.abspath(__file__)), "utils", "deveui.txt")
                 deveui = deveui.group(1).strip()
-                with open(deveui_file, 'r') as deveui_log:
-                    deveui_log_content = deveui_log.read().splitlines()
-                if deveui not in deveui_log_content:
-                    with open(deveui_file, 'a') as deveui_log:
+                if os.path.isfile(deveui_file):
+                    with open(deveui_file, 'r+') as deveui_log:
+                        deveui_log_content = deveui_log.read().splitlines()
+                        if deveui not in deveui_log_content:
+                            deveui_log.write(deveui + "\n")
+                else:
+                    with open(deveui_file, 'w') as deveui_log:
                         deveui_log.write(deveui + "\n")
                 return deveui
 
