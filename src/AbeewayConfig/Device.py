@@ -9,11 +9,13 @@ class Device:
     def reset_dev(serial_port: str, br: int) -> None:
         with Serial(serial_port, br, timeout=1) as ser:
             ser.write(b'123\r')
+            ser.write(b'123\r')
             ser.write(b'system reset\r')
             ser.close()
 
     def start_dev(serial_port: str, br: int) -> None:
         with Serial(serial_port, br, timeout=1) as ser:
+            ser.write(b'123\r')
             ser.write(b'123\r')
             ser.write(b'system skip\r')
             sleep(6)
@@ -44,6 +46,7 @@ class Device:
     def set_config_on_device(serial_port: str, br: int) -> None:
         with Serial(serial_port, br, timeout=1) as ser:
             ser.write(b'123\r')
+            ser.write(b'123\r')
             config_file = os.path.join(os.path.join(os.path.dirname(os.path.abspath(__file__)), "utils"), "config.cfg")
             with open(config_file, 'rb') as config:
                 for line in config:
@@ -63,6 +66,7 @@ class Device:
 
     def config_show_at_device(serial_port: str, br: int) -> str:
         with Serial(serial_port, br, timeout=1) as ser:
+            ser.write(b'123\r')
             ser.write(b'123\r')
             ser.write(b'system log off\r')
             ser.write(b'config show\r')

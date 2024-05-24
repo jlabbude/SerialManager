@@ -5,6 +5,8 @@ import shutil
 import tkinter as tk
 import requests
 
+from kapak.aes import decrypt
+from tkinter import simpledialog
 from dataclasses import dataclass
 from tkinter import Text, filedialog
 from typing import Any
@@ -105,7 +107,7 @@ class CSVFile:
     @staticmethod
     def build_deveui_array_from_log() -> list[str]:
         deveui_array = []
-        with open('deveui.txt', 'r') as deveui_file:
+        with open(os.path.join(os.path.dirname(os.path.abspath(__file__)), "utils", "deveui.txt"), 'r') as deveui_file:
             for line in deveui_file:
                 deveui = re.search('(.*)\n', line).group(1).strip().lower()
                 if deveui is not None:
@@ -169,14 +171,16 @@ class CSVFile:
 
     @staticmethod
     def retrieve_token() -> str:
+        api = open(os.path.join(os.path.dirname(__file__), "utils", "secret.txt"), "r").read().splitlines()
+        password = simpledialog.askstring(title='Password', prompt='Insert password: ')
+        print(password)
         response = requests.post(url='https://community.thingpark.io/users-auth/protocol/openid-connect/token',
                                  data={
-                                     'client_id': f'{open(os.path.join(os.path.dirname(__file__),
-                                                                       "utils", "client.txt"), "r").read()}',
-                                     'client_secret': f'{open(os.path.join(os.path.dirname(__file__),
-                                                                           "utils", "secret.txt"), "r").read()}',
+                                     'client_id': f'{api[0].strip()}',
+                                     'client_secret': f'{api[1].strip()}',
                                      'grant_type': 'client_credentials'
                                  },
                                  headers={"content-type": "application/x-www-form-urlencoded"}
                                  ).json()
+        print(response)
         return response['access_token']
