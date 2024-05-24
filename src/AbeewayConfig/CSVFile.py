@@ -148,10 +148,11 @@ class CSVFile:
                                                app_id=dev_info.app_id)
             CSVFile.write_to_csv(data=dev_struct)
 
-            console_output.insert(tk.END, f"CSV file created.\n"
-                                          f"There are {len(deveui_array)} devices. \n")
-            # todo popup here
+        console_output.insert(tk.END, f"CSV file created.\n"
+                                      f"There are {len(deveui_array)} devices. \n")
+        # todo popup here
 
+    @staticmethod
     def import_values(console_output: Text) -> None:
         from .abeewayconfig import define_os_specific_startingdir
         filename = filedialog.askopenfilename(initialdir=define_os_specific_startingdir(),
