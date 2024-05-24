@@ -37,7 +37,7 @@ class Device:
                         if deveui not in deveui_log_content:
                             deveui_log.write(deveui + "\n")
                 else:
-                    with open(deveui_file, 'w') as deveui_log:
+                    with open(deveui_file, 'a') as deveui_log:
                         deveui_log.write(deveui + "\n")
                 return deveui
 

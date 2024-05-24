@@ -53,15 +53,21 @@ class CSVFile:
 
     @staticmethod
     def write_to_csv(data: list[str]) -> None:
-        pattern = re.compile(data[0][1], re.IGNORECASE)
+        deveui = (data[0][1]).lower()
+        csv_file = CSVFile.csv_file
 
-        with open(CSVFile.csv_file, mode='a+', newline='') as file:
-            lines = file.readlines()
-            for line in lines:
-                if pattern.search(line.strip()):
-                    return
-            writer = csv.writer(file)
-            writer.writerows(data)
+        try:
+            with open(csv_file, mode='r+', newline='') as file:
+                file_content = file.read()
+                print(deveui)
+                print(file_content)
+                if deveui not in file_content:
+                    writer = csv.writer(file)
+                    writer.writerows(data)
+        except FileNotFoundError:
+            with open(csv_file, mode='w', newline='') as file:
+                writer = csv.writer(file)
+                writer.writerows(data)
 
     @staticmethod
     def retrieve_app_id(token: str, console_output: Text):
@@ -109,15 +115,18 @@ class CSVFile:
 
     @staticmethod
     def export_devices_from_csv(token: str, console_output: Text):
-        response = requests.post(url='https://community.thingpark.io/thingpark/wireless/rest/subscriptions/mine'
-                                     '/devices/import?async=true&forceDevAddrs=false&networkSubscriptionsHandlingMode'
-                                     '=ADVANCED',
-                                 headers={
-                                     'Authorization': f'Bearer {token}',
-                                     'accept': 'application/json',
-                                     'Content-Type': 'multipart/form-data',
-                                 },
-                                 files=CSVFile.csv_file)
+        with open(CSVFile.csv_file, 'rb') as csvfile:
+            response = requests.post(url='https://community.thingpark.io/thingpark/wireless/rest/subscriptions/mine'
+                                         '/devices/import?async=true&forceDevAddrs=false'
+                                         '&networkSubscriptionsHandlingMode'
+                                         '=ADVANCED',
+                                     headers={
+                                         'Authorization': f'Bearer {token}',
+                                         'accept': 'application/json',
+                                         'Content-Type': 'multipart/form-data',
+                                     },
+                                     files={'csv': ('output.csv', csvfile, 'text/csv')}
+                                     )
         match response.status_code:
             case 200:
                 console_output.insert(tk.END, f"Success.\n")
