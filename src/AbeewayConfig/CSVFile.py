@@ -168,3 +168,19 @@ class CSVFile:
                 console_output.insert(tk.END, "Error:" + str(e) + "\n")
         else:
             console_output.insert(tk.END, "No file selected.\n")
+
+    @staticmethod
+    def retrieve_token():
+        # todo API key handling
+        response = requests.post(url='https://community.thingpark.io/users-auth/protocol/openid-connect/token',
+                                 data={
+                                     'client_id': f'{open(os.path.join(os.path.dirname(__file__),
+                                                                       "utils", "client.txt"), "r").read()}',
+                                     'client_secret': f'{open(os.path.join(os.path.dirname(__file__),
+                                                                           "utils", "secret.txt"), "r").read()}',
+                                     'grant_type': 'client_credentials'
+                                 },
+                                 headers={"content-type": "application/x-www-form-urlencoded"}
+                                 ).json()
+        print(response)
+        return response['access_token']

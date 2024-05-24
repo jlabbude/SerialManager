@@ -161,7 +161,7 @@ def nw_sv_gui():
                      width=15,
                      height=2,
                      font=("Arial", 12),
-                     command=lambda: print('TODO'))
+                     command=lambda: CSVFile.retrieve_token())
     button4 = Button(root,
                      text="Export devices",
                      bg="lightgreen",
@@ -169,7 +169,7 @@ def nw_sv_gui():
                      width=15,
                      height=2,
                      font=("Arial", 12),
-                     command=lambda: print('TODO'))
+                     command=lambda: CSVFile.export_devices_from_csv(console_output=console))
 
     root.grid_rowconfigure(0, weight=1)
     root.grid_rowconfigure(1, weight=1)

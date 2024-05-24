@@ -17,3 +17,5 @@ src/__pycache__/**
 /values.csv
 **/*.csv
 template.txt
+**/secret.txt
+**/client.txt
