@@ -155,13 +155,13 @@ def nw_sv_gui():
                      font=("Arial", 12),
                      command=lambda: CSVFile.import_values(console_output=console))
     button3 = Button(root,
-                     text="Renew API key",
+                     text="Clear device log",
                      bg="lightcoral",
                      fg="black",
                      width=15,
                      height=2,
                      font=("Arial", 12),
-                     command=lambda: CSVFile.retrieve_token())
+                     command=lambda: print("TODO"))
     button4 = Button(root,
                      text="Export devices",
                      bg="lightgreen",
