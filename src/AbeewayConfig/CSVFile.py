@@ -59,8 +59,6 @@ class CSVFile:
         try:
             with open(csv_file, mode='r+', newline='') as file:
                 file_content = file.read()
-                print(deveui)
-                print(file_content)
                 if deveui not in file_content:
                     writer = csv.writer(file)
                     writer.writerows(data)
@@ -70,11 +68,12 @@ class CSVFile:
                 writer.writerows(data)
 
     @staticmethod
-    def retrieve_app_id(token: str, console_output: Text):
+    def retrieve_app_id(console_output: Text):
+        # todo choose app id for csv_templater
         response = requests.post(url='https://community.thingpark.io/thingpark/wireless/'
                                      'rest/subscriptions/mine/appServers',
                                  headers={
-                                     'Authorization': f'Bearer {token}',
+                                     'Authorization': f'Bearer {CSVFile.retrieve_token()}',
                                      'accept': 'application/json',
                                  })
 
@@ -114,16 +113,15 @@ class CSVFile:
         return deveui_array
 
     @staticmethod
-    def export_devices_from_csv(token: str, console_output: Text):
+    def export_devices_from_csv(console_output: Text):
         with open(CSVFile.csv_file, 'rb') as csvfile:
             response = requests.post(url='https://community.thingpark.io/thingpark/wireless/rest/subscriptions/mine'
                                          '/devices/import?async=true&forceDevAddrs=false'
                                          '&networkSubscriptionsHandlingMode'
                                          '=ADVANCED',
                                      headers={
-                                         'Authorization': f'Bearer {token}',
+                                         'Authorization': f'Bearer {CSVFile.retrieve_token()}',
                                          'accept': 'application/json',
-                                         'Content-Type': 'multipart/form-data',
                                      },
                                      files={'csv': ('output.csv', csvfile, 'text/csv')}
                                      )
@@ -170,8 +168,7 @@ class CSVFile:
             console_output.insert(tk.END, "No file selected.\n")
 
     @staticmethod
-    def retrieve_token():
-        # todo API key handling
+    def retrieve_token() -> str:
         response = requests.post(url='https://community.thingpark.io/users-auth/protocol/openid-connect/token',
                                  data={
                                      'client_id': f'{open(os.path.join(os.path.dirname(__file__),
@@ -182,5 +179,4 @@ class CSVFile:
                                  },
                                  headers={"content-type": "application/x-www-form-urlencoded"}
                                  ).json()
-        print(response)
         return response['access_token']
