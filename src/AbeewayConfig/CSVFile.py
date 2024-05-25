@@ -4,7 +4,9 @@ import re
 import shutil
 import tkinter as tk
 import requests
+import kapak.error
 
+from io import BytesIO
 from kapak.aes import decrypt
 from tkinter import simpledialog
 from dataclasses import dataclass
@@ -170,14 +172,22 @@ class CSVFile:
             console_output.insert(tk.END, "No file selected.\n")
 
     @staticmethod
-    def retrieve_token() -> str:
-        api = open(os.path.join(os.path.dirname(__file__), "utils", "secret.txt"), "r").read().splitlines()
+    def retrieve_token(console_output: Text) -> str | None:
+        api = open(os.path.join(os.path.dirname(__file__), "utils", "secret.txt.bin"), "rb")
+        out = BytesIO()
         password = simpledialog.askstring(title='Password', prompt='Insert password: ')
-        print(password)
+        try:
+            for progress in decrypt(src=api, dst=out, password=password):
+                print(progress)
+        except kapak.error.KapakError as e:
+            console_output.insert(tk.END, f"Error: {e}\n")
+            return
+        out.seek(0)
+        decrypted_content = out.read().decode().splitlines()
         response = requests.post(url='https://community.thingpark.io/users-auth/protocol/openid-connect/token',
                                  data={
-                                     'client_id': f'{api[0].strip()}',
-                                     'client_secret': f'{api[1].strip()}',
+                                     'client_id': f'{decrypted_content[0]}',
+                                     'client_secret': f'{decrypted_content[1]}',
                                      'grant_type': 'client_credentials'
                                  },
                                  headers={"content-type": "application/x-www-form-urlencoded"}

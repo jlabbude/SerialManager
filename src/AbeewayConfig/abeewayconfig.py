@@ -161,7 +161,7 @@ def nw_sv_gui():
                      width=15,
                      height=2,
                      font=("Arial", 12),
-                     command=lambda: CSVFile.retrieve_token())
+                     command=lambda: CSVFile.retrieve_token(console_output=console))
     button4 = Button(root,
                      text="Export devices",
                      bg="lightgreen",
