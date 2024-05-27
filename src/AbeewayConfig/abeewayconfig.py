@@ -1,5 +1,6 @@
 import tkinter as tk
 import serial.tools.list_ports
+import importlib
 
 from argparse import ArgumentParser
 from glob import glob
@@ -8,10 +9,10 @@ from threading import Thread
 from time import sleep
 from tkinter import Button, Text
 
-
 from .Config import Config
 from .Device import Device
 from .CSVFile import CSVFile
+from .GUI_setup import root, console
 
 baud_rate = 9600
 operating_system = system()
@@ -26,6 +27,7 @@ def define_os_specific_serial_ports() -> None:
             def get_ports():
                 ports = serial.tools.list_ports.comports()
                 return [port.device for port in ports]
+
             serial_port_array = get_ports()
 
 
@@ -76,16 +78,13 @@ def config_process(console_output) -> None:
 
 def main() -> None:
     parser = ArgumentParser()
-    # parser.add_argument('arg', choices=['config', 'upload'])
     parser.add_argument('arg', choices=['config', 'upload'])
     args = parser.parse_args()
-    root = tk.Tk()
 
     root.title("Config window")
     root.geometry("800x600")
     root.configure(padx=10, pady=10)
 
-    console = Text(root, wrap="word")
     console.grid(row=4, column=0, columnspan=2, padx=5, pady=5, sticky="nsew")
     match args.arg:
         case 'config':
@@ -120,7 +119,7 @@ def main() -> None:
                              width=15,
                              height=2,
                              font=("Arial", 12),
-                             command=lambda: Config.import_config(console))
+                             command=lambda: Config.import_config())
 
         case 'upload':
             button1 = Button(root,
@@ -130,7 +129,7 @@ def main() -> None:
                              width=15,
                              height=2,
                              font=("Arial", 12),
-                             command=lambda: CSVFile.csv_builder(console_output=console))
+                             command=lambda: CSVFile.csv_builder())
             button2 = Button(root,
                              text="Import device info",
                              bg="lightblue",
@@ -138,7 +137,7 @@ def main() -> None:
                              width=15,
                              height=2,
                              font=("Arial", 12),
-                             command=lambda: CSVFile.import_values(console_output=console))
+                             command=lambda: CSVFile.import_values())
             button3 = Button(root,
                              text="Clear device log",
                              bg="lightcoral",
@@ -146,7 +145,7 @@ def main() -> None:
                              width=15,
                              height=2,
                              font=("Arial", 12),
-                             command=lambda: CSVFile.retrieve_token(console_output=console))
+                             command=lambda: CSVFile.retrieve_token())
             button4 = Button(root,
                              text="Export devices",
                              bg="lightgreen",
@@ -154,7 +153,7 @@ def main() -> None:
                              width=15,
                              height=2,
                              font=("Arial", 12),
-                             command=lambda: CSVFile.export_devices_from_csv(console_output=console))
+                             command=lambda: CSVFile.export_devices_from_csv())
 
         case _:
             print("Incorrect args.")

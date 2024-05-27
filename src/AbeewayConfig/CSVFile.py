@@ -3,15 +3,17 @@ import os
 import re
 import shutil
 import tkinter as tk
-import requests
 import kapak.error
+import requests
 
-from io import BytesIO
-from kapak.aes import decrypt
-from tkinter import simpledialog
 from dataclasses import dataclass
-from tkinter import Text, filedialog
+from io import BytesIO
+from tkinter import filedialog
+from tkinter import simpledialog
 from typing import Any
+from kapak.aes import decrypt
+
+from .GUI_setup import root, console
 
 
 @dataclass
@@ -72,7 +74,7 @@ class CSVFile:
                 writer.writerows(data)
 
     @staticmethod
-    def retrieve_app_id(console_output: Text):
+    def retrieve_app_id():
         # todo choose app id for csv_templater
         response = requests.post(url='https://community.thingpark.io/thingpark/wireless/'
                                      'rest/subscriptions/mine/appServers',
@@ -90,7 +92,7 @@ class CSVFile:
     # Name might be a little misleading since it doesn't grab the app_id,
     # but it's the only field where it has to be retrieved from the already set up network server
     @staticmethod
-    def grab_dev_info(deveui: str, console_output: Text) -> DevStruct:
+    def grab_dev_info(deveui: str) -> DevStruct:
         devstruct = DevStruct()
 
         with open('values.csv', 'r', newline='') as values:
@@ -101,7 +103,7 @@ class CSVFile:
                     devstruct.join_eui = row[1]
                     devstruct.app_key = row[2]
                 elif row == csv_reader.line_num - 1:
-                    console_output.insert(tk.END, f"{deveui} not found in values.csv.\n")
+                    console.insert(tk.END, f"{deveui} not found in values.csv.\n")
                     return devstruct
 
         return devstruct
@@ -117,7 +119,7 @@ class CSVFile:
         return deveui_array
 
     @staticmethod
-    def export_devices_from_csv(console_output: Text):
+    def export_devices_from_csv():
         with open(CSVFile.csv_file, 'rb') as csvfile:
             response = requests.post(url='https://community.thingpark.io/thingpark/wireless/rest/subscriptions/mine'
                                          '/devices/import?async=true&forceDevAddrs=false'
@@ -131,18 +133,17 @@ class CSVFile:
                                      )
         match response.status_code:
             case 200:
-                console_output.insert(tk.END, f"Success.\n")
+                console.insert(tk.END, f"Success.\n")
             case 403:
-                console_output.insert(tk.END, f"Token error.\n")
+                console.insert(tk.END, f"Token error.\n")
 
-        console_output.insert(tk.END, f"{response.text}")
+        console.insert(tk.END, f"{response.text}")
 
     @staticmethod
-    def csv_builder(console_output: Text) -> None:
+    def csv_builder() -> None:
         deveui_array = CSVFile.build_deveui_array_from_log()
         for deveui in deveui_array:
-            dev_info = CSVFile.grab_dev_info(deveui=deveui,
-                                             console_output=console_output)
+            dev_info = CSVFile.grab_dev_info(deveui=deveui)
             dev_struct = CSVFile.csv_templater(deveui=dev_info.deveui,
                                                join_eui=dev_info.join_eui,
                                                app_key=dev_info.app_key,
@@ -150,12 +151,12 @@ class CSVFile:
                                                app_id=dev_info.app_id)
             CSVFile.write_to_csv(data=dev_struct)
 
-        console_output.insert(tk.END, f"CSV file created.\n"
+        console.insert(tk.END, f"CSV file created.\n"
                                       f"There are {len(deveui_array)} devices. \n")
         # todo popup here
 
     @staticmethod
-    def import_values(console_output: Text) -> None:
+    def import_values() -> None:
         from .abeewayconfig import define_os_specific_startingdir
         filename = filedialog.askopenfilename(initialdir=define_os_specific_startingdir(),
                                               filetypes=[("CSV", "*.csv")])
@@ -165,14 +166,14 @@ class CSVFile:
             destination_file = os.path.join(destination_dir, "values.csv")
             try:
                 shutil.copy(filename, destination_file)
-                console_output.insert(tk.END, "CSV file imported successfully.\n")
+                console.insert(tk.END, "CSV file imported successfully.\n")
             except Exception as e:
-                console_output.insert(tk.END, "Error:" + str(e) + "\n")
+                console.insert(tk.END, "Error:" + str(e) + "\n")
         else:
-            console_output.insert(tk.END, "No file selected.\n")
+            console.insert(tk.END, "No file selected.\n")
 
     @staticmethod
-    def retrieve_token(console_output: Text) -> str | None:
+    def retrieve_token() -> str | None:
         api = open(os.path.join(os.path.dirname(__file__), "utils", "secret.txt.bin"), "rb")
         out = BytesIO()
         password = simpledialog.askstring(title='Password', prompt='Insert password: ')
@@ -180,7 +181,7 @@ class CSVFile:
             for progress in decrypt(src=api, dst=out, password=password):
                 print(progress)
         except kapak.error.KapakError as e:
-            console_output.insert(tk.END, f"Error: {e}\n")
+            console.insert(tk.END, f"Error: {e}\n")
             return
         out.seek(0)
         decrypted_content = out.read().decode().splitlines()
