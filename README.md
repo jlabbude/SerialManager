@@ -16,13 +16,13 @@ To install I recommend you use the package installer for Python - **pip**
 ## Usage
 
 ```bash
-  abeewayconfig
+  abeewayconfig config
 ```
 
 Run this command to open the GUI related to device configuring.
 
 ```bash
- abeewayupload
+ abeewayconfig upload
 ```
 
 Run this command to open the GUI related to building a CSV to upload info about the configured devices to a cloud service, in this case, ThingPark.
