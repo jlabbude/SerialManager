@@ -3,17 +3,17 @@ import os
 import re
 import shutil
 import tkinter as tk
-import kapak.error
-import requests
-
 from dataclasses import dataclass
 from io import BytesIO
 from tkinter import filedialog
-from tkinter import simpledialog
 from typing import Any
+
+import kapak.error
+import requests
 from kapak.aes import decrypt
 
 from .GUI_setup import root, console
+from .HidePassword import HidePassword
 
 
 @dataclass
@@ -152,7 +152,7 @@ class CSVFile:
             CSVFile.write_to_csv(data=dev_struct)
 
         console.insert(tk.END, f"CSV file created.\n"
-                                      f"There are {len(deveui_array)} devices. \n")
+                               f"There are {len(deveui_array)} devices. \n")
         # todo popup here
 
     @staticmethod
@@ -176,12 +176,16 @@ class CSVFile:
     def retrieve_token() -> str | None:
         api = open(os.path.join(os.path.dirname(__file__), "utils", "secret.txt.bin"), "rb")
         out = BytesIO()
-        password = simpledialog.askstring(title='Password', prompt='Insert password: ')
+        dialog = HidePassword(root, title="Password")
+        password = dialog.result
         try:
-            for progress in decrypt(src=api, dst=out, password=password):
-                print(progress)
+            for _ in decrypt(src=api, dst=out, password=password):
+                pass
         except kapak.error.KapakError as e:
             console.insert(tk.END, f"Error: {e}\n")
+            return
+        except TypeError:
+            console.insert(tk.END, "Empty password.")
             return
         out.seek(0)
         decrypted_content = out.read().decode().splitlines()
@@ -193,5 +197,4 @@ class CSVFile:
                                  },
                                  headers={"content-type": "application/x-www-form-urlencoded"}
                                  ).json()
-        print(response)
         return response['access_token']

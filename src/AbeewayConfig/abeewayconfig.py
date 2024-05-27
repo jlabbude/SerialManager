@@ -1,17 +1,15 @@
-import tkinter as tk
-import serial.tools.list_ports
-import importlib
-
 from argparse import ArgumentParser
 from glob import glob
 from platform import system
 from threading import Thread
 from time import sleep
-from tkinter import Button, Text
+from tkinter import Button
 
+import serial.tools.list_ports
+
+from .CSVFile import CSVFile
 from .Config import Config
 from .Device import Device
-from .CSVFile import CSVFile
 from .GUI_setup import root, console
 
 baud_rate = 9600
