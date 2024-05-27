@@ -1,11 +1,13 @@
 import tkinter as tk
+import serial.tools.list_ports
+
+from argparse import ArgumentParser
 from glob import glob
 from platform import system
 from threading import Thread
 from time import sleep
 from tkinter import Button, Text
 
-import serial.tools.list_ports
 
 from .Config import Config
 from .Device import Device
@@ -72,46 +74,91 @@ def config_process(console_output) -> None:
     serial_parallel_process(target=Device.reset_dev)
 
 
-def config_gui_builder() -> None:
+def main() -> None:
+    parser = ArgumentParser()
+    # parser.add_argument('arg', choices=['config', 'upload'])
+    parser.add_argument('arg', choices=['config', 'upload'])
+    args = parser.parse_args()
     root = tk.Tk()
+
     root.title("Config window")
     root.geometry("800x600")
     root.configure(padx=10, pady=10)
 
     console = Text(root, wrap="word")
     console.grid(row=4, column=0, columnspan=2, padx=5, pady=5, sticky="nsew")
-    button1 = Button(root,
-                     text="Configure device",
-                     bg="lightblue",
-                     fg="black",
-                     width=15,
-                     height=2,
-                     font=("Arial", 12),
-                     command=lambda: config_process(console_output=console))
-    button4 = Button(root,
-                     text="Reset device",
-                     bg="lightcoral",
-                     fg="black",
-                     width=15,
-                     height=2,
-                     font=("Arial", 12),
-                     command=lambda: serial_parallel_process(target=Device.reset_dev))
-    button3 = Button(root,
-                     text="Start device",
-                     bg="lightgreen",
-                     fg="black",
-                     width=15,
-                     height=2,
-                     font=("Arial", 12),
-                     command=lambda: serial_parallel_process(target=Device.start_dev))
-    button2 = Button(root,
-                     text="Import config",
-                     bg="lightblue",
-                     fg="black",
-                     width=15,
-                     height=2,
-                     font=("Arial", 12),
-                     command=lambda: Config.import_config(console))
+    match args.arg:
+        case 'config':
+            button1 = Button(root,
+                             text="Configure device",
+                             bg="lightblue",
+                             fg="black",
+                             width=15,
+                             height=2,
+                             font=("Arial", 12),
+                             command=lambda: config_process(console_output=console))
+            button4 = Button(root,
+                             text="Reset device",
+                             bg="lightcoral",
+                             fg="black",
+                             width=15,
+                             height=2,
+                             font=("Arial", 12),
+                             command=lambda: serial_parallel_process(target=Device.reset_dev))
+            button3 = Button(root,
+                             text="Start device",
+                             bg="lightgreen",
+                             fg="black",
+                             width=15,
+                             height=2,
+                             font=("Arial", 12),
+                             command=lambda: serial_parallel_process(target=Device.start_dev))
+            button2 = Button(root,
+                             text="Import config",
+                             bg="lightblue",
+                             fg="black",
+                             width=15,
+                             height=2,
+                             font=("Arial", 12),
+                             command=lambda: Config.import_config(console))
+
+        case 'upload':
+            button1 = Button(root,
+                             text="Make CSV",
+                             bg="lightblue",
+                             fg="black",
+                             width=15,
+                             height=2,
+                             font=("Arial", 12),
+                             command=lambda: CSVFile.csv_builder(console_output=console))
+            button2 = Button(root,
+                             text="Import device info",
+                             bg="lightblue",
+                             fg="black",
+                             width=15,
+                             height=2,
+                             font=("Arial", 12),
+                             command=lambda: CSVFile.import_values(console_output=console))
+            button3 = Button(root,
+                             text="Clear device log",
+                             bg="lightcoral",
+                             fg="black",
+                             width=15,
+                             height=2,
+                             font=("Arial", 12),
+                             command=lambda: CSVFile.retrieve_token(console_output=console))
+            button4 = Button(root,
+                             text="Export devices",
+                             bg="lightgreen",
+                             fg="black",
+                             width=15,
+                             height=2,
+                             font=("Arial", 12),
+                             command=lambda: CSVFile.export_devices_from_csv(console_output=console))
+
+        case _:
+            print("Incorrect args.")
+            exit()
 
     root.grid_rowconfigure(0, weight=1)
     root.grid_rowconfigure(1, weight=1)
@@ -128,65 +175,3 @@ def config_gui_builder() -> None:
     button4.grid(row=1, column=1, padx=5, pady=5, sticky="nsew")
 
     root.mainloop()
-
-
-def nw_sv_gui():
-    root = tk.Tk()
-    root.title("Upload window")
-    root.geometry("800x600")
-    root.configure(padx=10, pady=10)
-
-    console = Text(root, wrap="word")
-    console.grid(row=4, column=0, columnspan=2, padx=5, pady=5, sticky="nsew")
-    button1 = Button(root,
-                     text="Make CSV",
-                     bg="lightblue",
-                     fg="black",
-                     width=15,
-                     height=2,
-                     font=("Arial", 12),
-                     command=lambda: CSVFile.csv_builder(console_output=console))
-    button2 = Button(root,
-                     text="Import device info",
-                     bg="lightblue",
-                     fg="black",
-                     width=15,
-                     height=2,
-                     font=("Arial", 12),
-                     command=lambda: CSVFile.import_values(console_output=console))
-    button3 = Button(root,
-                     text="Clear device log",
-                     bg="lightcoral",
-                     fg="black",
-                     width=15,
-                     height=2,
-                     font=("Arial", 12),
-                     command=lambda: CSVFile.retrieve_token(console_output=console))
-    button4 = Button(root,
-                     text="Export devices",
-                     bg="lightgreen",
-                     fg="black",
-                     width=15,
-                     height=2,
-                     font=("Arial", 12),
-                     command=lambda: CSVFile.export_devices_from_csv(console_output=console))
-
-    root.grid_rowconfigure(0, weight=1)
-    root.grid_rowconfigure(1, weight=1)
-    root.grid_rowconfigure(2, weight=1)
-    root.grid_rowconfigure(3, weight=1)
-    root.grid_rowconfigure(4, weight=4)
-
-    root.grid_columnconfigure(0, weight=2)
-    root.grid_columnconfigure(1, weight=2)
-
-    button1.grid(row=0, column=0, padx=5, pady=5, sticky="nsew")
-    button2.grid(row=0, column=1, padx=5, pady=5, sticky="nsew")
-    button3.grid(row=1, column=0, padx=5, pady=5, sticky="nsew")
-    button4.grid(row=1, column=1, padx=5, pady=5, sticky="nsew")
-
-    root.mainloop()
-
-
-def main():
-    config_gui_builder()

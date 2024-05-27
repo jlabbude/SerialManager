@@ -19,7 +19,7 @@ setup(
     entry_points={
         "console_scripts": [
             "abeewayconfig = AbeewayConfig.abeewayconfig:main",
-            "abeewayupload = AbeewayConfig.abeewayconfig:nw_sv_gui"
+            #"abeewayupload = AbeewayConfig.abeewayconfig:nw_sv_gui"
         ],
     },
     classifiers=[
