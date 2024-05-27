@@ -5,7 +5,7 @@ import shutil
 import tkinter as tk
 from dataclasses import dataclass
 from io import BytesIO
-from tkinter import filedialog
+from tkinter import filedialog, messagebox
 from typing import Any
 
 import kapak.error
@@ -153,7 +153,7 @@ class CSVFile:
 
         console.insert(tk.END, f"CSV file created.\n"
                                f"There are {len(deveui_array)} devices. \n")
-        # todo popup here
+        response = messagebox.askyesno("Device amount", f"Are there {len(deveui_array)} devices?")
 
     @staticmethod
     def import_values() -> None:

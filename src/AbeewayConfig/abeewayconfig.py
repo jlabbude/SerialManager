@@ -49,16 +49,16 @@ def serial_parallel_process(target) -> None:
         thread.join()
 
 
-def with_console_parallel_process(target, console_output):
+def no_join_parallel_process(target):
     threads = []
     for serial_port in serial_port_array:
-        thread = Thread(target=target, args=(serial_port, baud_rate, console_output))
+        thread = Thread(target=target, args=(serial_port, baud_rate))
         threads.append(thread)
         thread.start()
     return threads
 
 
-def config_process(console_output) -> None:
+def config_process() -> None:
     define_os_specific_serial_ports()
 
     # TODO: investigate instability here
@@ -68,7 +68,7 @@ def config_process(console_output) -> None:
     serial_parallel_process(target=Device.set_config_on_device)
     sleep(5)
 
-    with_console_parallel_process(target=Config.check_config_discrepancy, console_output=console_output)
+    no_join_parallel_process(target=Config.check_config_discrepancy)
     sleep(5)
 
     serial_parallel_process(target=Device.reset_dev)
@@ -93,7 +93,7 @@ def main() -> None:
                              width=15,
                              height=2,
                              font=("Arial", 12),
-                             command=lambda: config_process(console_output=console))
+                             command=lambda: config_process())
             button4 = Button(root,
                              text="Reset device",
                              bg="lightcoral",
