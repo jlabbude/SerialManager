@@ -1,4 +1,5 @@
 import csv
+import json
 import os
 import re
 import shutil
@@ -75,19 +76,24 @@ class CSVFile:
 
     @staticmethod
     def retrieve_app_id():
-        # todo choose app id for csv_templater
-        response = requests.post(url='https://community.thingpark.io/thingpark/wireless/'
-                                     'rest/subscriptions/mine/appServers',
-                                 headers={
-                                     'Authorization': f'Bearer {CSVFile.retrieve_token()}',
-                                     'accept': 'application/json',
-                                 })
+        response = requests.get(url='https://community.thingpark.io/thingpark/wireless/'
+                                    'rest/subscriptions/mine/appServers',
+                                headers={
+                                    'Authorization': f'Bearer {CSVFile.retrieve_token()}',
+                                    'accept': 'application/json',
+                                })
 
-        matches = re.findall("\"ID:\" \"(.*)\"", response.text)
+        with open(os.path.join(os.path.dirname(__file__), "utils", "appids.json"), 'a') as output:
+            output.write(response.text)
 
-        with open(os.path.join(os.path.dirname(__file__), "utils", "appids.txt"), 'a') as output:
-            for match in matches:
-                output.write(match)
+    @staticmethod
+    def choose_app_id():
+        with open('/home/lucas/Codigo/AbeewayConfig/venv/lib/python3.12/site-packages/AbeewayConfig/utils/appids.json',
+                  'r') as file:
+            data = json.load(file)['briefs']
+            for name in data:
+                print(name['name'])
+                # todo popup to chose which app ids
 
     # Name might be a little misleading since it doesn't grab the app_id,
     # but it's the only field where it has to be retrieved from the already set up network server
@@ -154,6 +160,7 @@ class CSVFile:
         console.insert(tk.END, f"CSV file created.\n"
                                f"There are {len(deveui_array)} devices. \n")
         response = messagebox.askyesno("Device amount", f"Are there {len(deveui_array)} devices?")
+        # todo handle response
 
     @staticmethod
     def import_values() -> None:
