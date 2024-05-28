@@ -143,7 +143,7 @@ def main() -> None:
                              width=15,
                              height=2,
                              font=("Arial", 12),
-                             command=lambda: CSVFile.retrieve_app_id())
+                             command=lambda: CSVFile.fetch_and_choose_app_id())
             button4 = Button(root,
                              text="Export devices",
                              bg="lightgreen",

@@ -1,5 +1,4 @@
 import csv
-import json
 import os
 import re
 import shutil
@@ -75,25 +74,34 @@ class CSVFile:
                 writer.writerows(data)
 
     @staticmethod
-    def retrieve_app_id():
+    def fetch_and_choose_app_id():
         response = requests.get(url='https://community.thingpark.io/thingpark/wireless/'
                                     'rest/subscriptions/mine/appServers',
                                 headers={
                                     'Authorization': f'Bearer {CSVFile.retrieve_token()}',
                                     'accept': 'application/json',
                                 })
+        json_appids = response.json()['briefs']  # list of app ids
 
-        with open(os.path.join(os.path.dirname(__file__), "utils", "appids.json"), 'w') as output:
-            output.write(response.text)
+        popup = tk.Toplevel(root)
+        popup.title("Select Items")
+        popup.geometry("300x300")
 
-    @staticmethod
-    def choose_app_id():
-        with open('/home/lucas/Codigo/AbeewayConfig/venv/lib/python3.12/site-packages/AbeewayConfig/utils/appids.json',
-                  'r') as file:
-            data = json.load(file)['briefs']
-            for name in data:
-                print(name['name'])
-                # todo popup to chose which app ids
+        listbox = tk.Listbox(popup, selectmode=tk.MULTIPLE)
+        listbox.pack(padx=10, pady=10, expand=True, fill=tk.BOTH)
+
+        [listbox.insert(tk.END, name['name']) for name in json_appids]
+
+        def get_selected_items():
+            selected_indices = listbox.curselection()
+            selected_items = [listbox.get(i) for i in selected_indices]
+            print(selected_items)
+            popup.destroy()
+
+        btn_select = tk.Button(popup, text="Select", command=get_selected_items)
+        btn_select.pack(pady=10)
+        btn_cancel = tk.Button(popup, text="Cancel", command=popup.destroy)
+        btn_cancel.pack(pady=10)
 
     # Name might be a little misleading since it doesn't grab the app_id,
     # but it's the only field where it has to be retrieved from the already set up network server
