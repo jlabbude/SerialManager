@@ -127,7 +127,7 @@ def main() -> None:
                              width=15,
                              height=2,
                              font=("Arial", 12),
-                             command=lambda: CSVFile.csv_builder())
+                             command=lambda: CSVFile.csv_builder_and_writer())
             button2 = Button(root,
                              text="Import device info",
                              bg="lightblue",

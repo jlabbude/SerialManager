@@ -58,22 +58,6 @@ class CSVFile:
         return data
 
     @staticmethod
-    def write_to_csv(data: list[str]) -> None:
-        deveui = (data[0][1]).lower()
-        csv_file = CSVFile.csv_file
-
-        try:
-            with open(csv_file, mode='r+', newline='') as file:
-                file_content = file.read()
-                if deveui not in file_content:
-                    writer = csv.writer(file)
-                    writer.writerows(data)
-        except FileNotFoundError:
-            with open(csv_file, mode='w', newline='') as file:
-                writer = csv.writer(file)
-                writer.writerows(data)
-
-    @staticmethod
     def fetch_and_choose_app_id():
         response = requests.get(url='https://community.thingpark.io/thingpark/wireless/'
                                     'rest/subscriptions/mine/appServers',
@@ -154,16 +138,19 @@ class CSVFile:
         console.insert(tk.END, f"{response.text}")
 
     @staticmethod
-    def csv_builder() -> None:
+    def csv_builder_and_writer() -> None:
         deveui_array = CSVFile.build_deveui_array_from_log()
-        for deveui in deveui_array:
-            dev_info = CSVFile.grab_dev_info(deveui=deveui)
-            dev_struct = CSVFile.csv_templater(deveui=dev_info.deveui,
-                                               join_eui=dev_info.join_eui,
-                                               app_key=dev_info.app_key,
-                                               name=dev_info.name,
-                                               app_id=dev_info.app_id)
-            CSVFile.write_to_csv(data=dev_struct)
+        csv_file = CSVFile.csv_file
+        with open(csv_file, mode='w', newline='') as file:
+            for deveui in deveui_array:
+                dev_info = CSVFile.grab_dev_info(deveui=deveui)
+                dev_struct = CSVFile.csv_templater(deveui=dev_info.deveui,
+                                                   join_eui=dev_info.join_eui,
+                                                   app_key=dev_info.app_key,
+                                                   name=dev_info.name,
+                                                   app_id=dev_info.app_id)
+                writer = csv.writer(file)
+                writer.writerows(dev_struct)
 
         console.insert(tk.END, f"CSV file created.\n"
                                f"There are {len(deveui_array)} devices. \n")
