@@ -58,7 +58,7 @@ class CSVFile:
         return data
 
     @staticmethod
-    def fetch_and_choose_app_id():
+    def fetch_and_choose_app_id() -> str | None:
         response = requests.get(url='https://community.thingpark.io/thingpark/wireless/'
                                     'rest/subscriptions/mine/appServers',
                                 headers={
@@ -74,18 +74,33 @@ class CSVFile:
         listbox = tk.Listbox(popup, selectmode=tk.MULTIPLE)
         listbox.pack(padx=10, pady=10, expand=True, fill=tk.BOTH)
 
-        [listbox.insert(tk.END, name['name']) for name in json_appids]
+        name_id_dict: dict[str, str] = {}
 
         def get_selected_items():
             selected_indices = listbox.curselection()
+            # TODO improve this
+            global selected_items
             selected_items = [listbox.get(i) for i in selected_indices]
             print(selected_items)
             popup.destroy()
 
+        for application in json_appids:
+            name_id_dict.update({application['name']: application['ID']})
+            listbox.insert(tk.END, application['name'])
+
         btn_select = tk.Button(popup, text="Select", command=get_selected_items)
         btn_select.pack(pady=10)
-        btn_cancel = tk.Button(popup, text="Cancel", command=popup.destroy)
-        btn_cancel.pack(pady=10)
+        btn_select.wait_window()
+
+        if len(selected_items) == 0:
+            messagebox.showwarning("No Selection",
+                                   "Please select at least 1 application.")
+            return
+        else:
+            final_list = [name_id_dict.get(element) for element in selected_items]
+            finalstr = ",".join(final_list)
+            print(finalstr)
+            return finalstr
 
     # Name might be a little misleading since it doesn't grab the app_id,
     # but it's the only field where it has to be retrieved from the already set up network server
