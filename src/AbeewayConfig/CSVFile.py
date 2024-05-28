@@ -81,7 +81,6 @@ class CSVFile:
             # TODO improve this
             global selected_items
             selected_items = [listbox.get(i) for i in selected_indices]
-            print(selected_items)
             popup.destroy()
 
         for application in json_appids:
@@ -98,9 +97,7 @@ class CSVFile:
             return
         else:
             final_list = [name_id_dict.get(element) for element in selected_items]
-            finalstr = ",".join(final_list)
-            print(finalstr)
-            return finalstr
+            return ",".join(final_list)
 
     # Name might be a little misleading since it doesn't grab the app_id,
     # but it's the only field where it has to be retrieved from the already set up network server
@@ -156,6 +153,7 @@ class CSVFile:
     def csv_builder_and_writer() -> None:
         deveui_array = CSVFile.build_deveui_array_from_log()
         csv_file = CSVFile.csv_file
+        app_id = CSVFile.fetch_and_choose_app_id().strip()
         with open(csv_file, mode='w', newline='') as file:
             for deveui in deveui_array:
                 dev_info = CSVFile.grab_dev_info(deveui=deveui)
@@ -163,7 +161,7 @@ class CSVFile:
                                                    join_eui=dev_info.join_eui,
                                                    app_key=dev_info.app_key,
                                                    name=dev_info.name,
-                                                   app_id=dev_info.app_id)
+                                                   app_id=app_id)
                 writer = csv.writer(file)
                 writer.writerows(dev_struct)
 
