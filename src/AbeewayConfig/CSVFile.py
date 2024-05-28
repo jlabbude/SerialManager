@@ -28,8 +28,8 @@ class DevStruct:
 class CSVFile:
     csv_file = os.path.join(os.path.dirname(__file__), "utils", "output.csv")
 
-    # Fields with default value are supposed to be the most common values
-    # However I've decided to make them mutable to allow, for example, the deletion of devices,
+    # Fields with a default value already set are supposed to be the most common choices.
+    # However, I've decided to make them mutable to allow, for example, the deletion of devices,
     # or creation of other devices that aren't the same model of dev_model_id
     @staticmethod
     def csv_templater(deveui: str,
