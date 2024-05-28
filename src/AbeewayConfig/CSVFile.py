@@ -83,7 +83,7 @@ class CSVFile:
                                     'accept': 'application/json',
                                 })
 
-        with open(os.path.join(os.path.dirname(__file__), "utils", "appids.json"), 'a') as output:
+        with open(os.path.join(os.path.dirname(__file__), "utils", "appids.json"), 'w') as output:
             output.write(response.text)
 
     @staticmethod
