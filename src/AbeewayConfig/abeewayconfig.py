@@ -154,7 +154,6 @@ def main() -> None:
                              command=lambda: CSVFile.export_devices_from_csv())
 
         case _:
-            print("Incorrect args.")
             exit()
 
     root.grid_rowconfigure(0, weight=1)
