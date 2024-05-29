@@ -5,7 +5,7 @@ import shutil
 import tkinter as tk
 from dataclasses import dataclass
 from io import BytesIO
-from tkinter import filedialog, messagebox
+from tkinter import filedialog, messagebox, simpledialog
 from typing import Any
 
 import kapak.error
@@ -157,15 +157,19 @@ class CSVFile:
         deveui_array = CSVFile.build_deveui_array_from_log()
         csv_file = CSVFile.csv_file
         app_id = CSVFile.fetch_and_choose_app_id().strip()
+
+        name = simpledialog.askstring(title="What operation is this?", prompt="Name:")
+        starting_num = simpledialog.askinteger(title="What number to begin at?", prompt="Number:")
+
         with open(csv_file, mode='w', newline='') as file:
-            for deveui in deveui_array:
+            writer = csv.writer(file)
+            for name_num, deveui in enumerate(deveui_array, start=starting_num):
                 dev_info = CSVFile.grab_dev_info(deveui=deveui)
                 dev_struct = CSVFile.csv_templater(deveui=dev_info.deveui,
                                                    join_eui=dev_info.join_eui,
                                                    app_key=dev_info.app_key,
-                                                   name=dev_info.name,
+                                                   name=f"{name.upper()} {name_num}",
                                                    app_id=app_id)
-                writer = csv.writer(file)
                 writer.writerows(dev_struct)
 
         console.insert(tk.END, f"CSV file created.\n"
