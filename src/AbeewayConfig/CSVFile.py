@@ -105,7 +105,8 @@ class CSVFile:
     def grab_dev_info(deveui: str) -> DevStruct:
         devstruct = DevStruct()
 
-        with open('values.csv', 'r', newline='') as values:
+        with open(os.path.join(os.path.dirname(os.path.abspath(__file__)), "utils", "values.csv"),
+                  'r', newline='') as values:
             csv_reader = csv.reader(values, dialect='excel', delimiter=',')
             for row in csv_reader:
                 if row[0].strip().lower() == deveui:
@@ -171,17 +172,50 @@ class CSVFile:
         # todo handle response
 
     @staticmethod
-    def import_values() -> None:
+    def importer() -> None:
         from .abeewayconfig import define_os_specific_startingdir
-        filename = filedialog.askopenfilename(initialdir=define_os_specific_startingdir(),
-                                              filetypes=[("CSV", "*.csv")])
+
+        def choose_file_type():
+            def on_csv():
+                file_type.set("csv")
+                file_dialog.destroy()
+
+            def on_bin():
+                file_type.set("bin")
+                file_dialog.destroy()
+
+            file_dialog = tk.Toplevel(root)
+            file_dialog.title("Select File Type")
+            tk.Label(file_dialog, text="Choose what file to import:").pack(pady=10)
+            tk.Button(file_dialog, text="Device info (csv)", command=on_csv).pack(side="left", padx=20, pady=20)
+            tk.Button(file_dialog, text="API key (bin)", command=on_bin).pack(side="right", padx=20, pady=20)
+            file_dialog.transient(root)
+            file_dialog.grab_set()
+            root.wait_window(file_dialog)
+
+        file_type = tk.StringVar()
+        choose_file_type()
+
+        match file_type.get():
+            case "csv":
+                filetypes = [("CSV", "*.csv")]
+                dest_filename = "values.csv"
+            case "bin":
+                filetypes = [("BIN", "*.bin")]
+                dest_filename = "keys.bin"
+            case _:
+                console.insert(tk.END, "No file type selected.\n")
+                return
+
+        filename = filedialog.askopenfilename(initialdir=define_os_specific_startingdir(), filetypes=filetypes)
+
         if filename:
             destination_dir = os.path.join(os.path.dirname(__file__), "utils")
             os.makedirs(destination_dir, exist_ok=True)
-            destination_file = os.path.join(destination_dir, "values.csv")
+            destination_file = os.path.join(destination_dir, dest_filename)
             try:
                 shutil.copy(filename, destination_file)
-                console.insert(tk.END, "CSV file imported successfully.\n")
+                console.insert(tk.END, f"{file_type.get().upper()} file imported successfully as {dest_filename}.\n")
             except Exception as e:
                 console.insert(tk.END, "Error:" + str(e) + "\n")
         else:
@@ -189,7 +223,7 @@ class CSVFile:
 
     @staticmethod
     def retrieve_token() -> str | None:
-        api = open(os.path.join(os.path.dirname(__file__), "utils", "secret.txt.bin"), "rb")
+        api = open(os.path.join(os.path.dirname(__file__), "utils", "keys.bin"), "rb")
         out = BytesIO()
         dialog = HidePassword(root, title="Password")
         password = dialog.result

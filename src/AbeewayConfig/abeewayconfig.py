@@ -129,13 +129,13 @@ def main() -> None:
                              font=("Arial", 12),
                              command=lambda: CSVFile.csv_builder_and_writer())
             button2 = Button(root,
-                             text="Import device info",
+                             text="Import",
                              bg="lightblue",
                              fg="black",
                              width=15,
                              height=2,
                              font=("Arial", 12),
-                             command=lambda: CSVFile.import_values())
+                             command=lambda: CSVFile.importer())
             button3 = Button(root,
                              text="Clear device log",
                              bg="lightcoral",
@@ -143,7 +143,7 @@ def main() -> None:
                              width=15,
                              height=2,
                              font=("Arial", 12),
-                             command=lambda: CSVFile.fetch_and_choose_app_id())
+                             command=lambda: Config.clear_dev_log())
             button4 = Button(root,
                              text="Export devices",
                              bg="lightgreen",

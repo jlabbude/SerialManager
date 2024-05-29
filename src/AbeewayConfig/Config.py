@@ -10,6 +10,14 @@ from .smartbadgecfgdict import config_dict
 
 
 class Config:
+
+    @staticmethod
+    def clear_dev_log():
+        with open(os.path.join(os.path.dirname(os.path.abspath(__file__)), "utils", "deveui.txt"), 'w') as file:
+            file.truncate()
+            file.close()
+        console.insert(tk.END, 'DevEUI log cleared.\n')
+
     def get_config_value_from_cfg(parameter: int, line: str) -> int:
         if parameter is not None:
             pattern = r"config set %d (.*)" % parameter
