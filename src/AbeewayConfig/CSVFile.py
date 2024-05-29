@@ -5,7 +5,7 @@ import shutil
 import tkinter as tk
 from dataclasses import dataclass
 from io import BytesIO
-from tkinter import filedialog, messagebox, simpledialog
+from tkinter import filedialog, messagebox
 from typing import Any
 
 import kapak.error
@@ -13,7 +13,7 @@ import requests
 from kapak.aes import decrypt
 
 from .GUI_setup import root, console
-from .HidePassword import HidePassword
+from .CustomGUI import HidePassword, CustomDialog
 
 
 @dataclass
@@ -153,13 +153,19 @@ class CSVFile:
         console.insert(tk.END, f"{response.text}")
 
     @staticmethod
+    def set_name() -> tuple[str, int]:
+        popup = tk.Tk()
+        popup.withdraw()  # hide the root window
+        dialog = CustomDialog(popup, title="Enter Details")
+        return dialog.name, dialog.starting_num
+
+    @staticmethod
     def csv_builder_and_writer() -> None:
         deveui_array = CSVFile.build_deveui_array_from_log()
         csv_file = CSVFile.csv_file
         app_id = CSVFile.fetch_and_choose_app_id().strip()
 
-        name = simpledialog.askstring(title="What operation is this?", prompt="Name:")
-        starting_num = simpledialog.askinteger(title="What number to begin at?", prompt="Number:")
+        name, starting_num = CSVFile.set_name()
 
         with open(csv_file, mode='w', newline='') as file:
             writer = csv.writer(file)
