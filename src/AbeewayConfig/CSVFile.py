@@ -76,10 +76,12 @@ class CSVFile:
 
         name_id_dict: dict[str, str] = {}
 
+        selected_items = []
+
         def get_selected_items():
             selected_indices = listbox.curselection()
             # TODO improve this
-            global selected_items
+            nonlocal selected_items
             selected_items = [listbox.get(i) for i in selected_indices]
             popup.destroy()
 
