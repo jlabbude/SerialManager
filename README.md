@@ -49,6 +49,7 @@ Run this command to open the GUI related to building a CSV to upload info about 
   - (as far as I've looked, this doesn't kill the already established communication)
 
 ## Future goals
+- [ ] Change config file to yaml from cfg and add GUI to manipule it
 - [ ] Support for multiple firmware versions
 - [ ] Support for different types of devices
 - [ ] Support for flashing the firmware of these devices
