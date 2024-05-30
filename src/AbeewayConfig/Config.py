@@ -3,8 +3,8 @@ import re
 import shutil
 import tkinter as tk
 from tkinter import filedialog
+from typing_extensions import Buffer
 
-from .Device import Device
 from .GUI_setup import console
 from .smartbadgecfgdict import config_dict
 
@@ -17,6 +17,14 @@ class Config:
             file.truncate()
             file.close()
         console.insert(tk.END, 'DevEUI log cleared.\n')
+
+    @staticmethod
+    def get_new_pswd() -> Buffer:
+        with open(os.path.join(os.path.join(os.path.dirname(__file__), "utils"), "config.cfg"), 'r') as cfg:
+            match = re.search("config set 102 (.*)", cfg.read())
+            if match:
+                # todo investigate if this works later
+                return match.group().encode() + b'\r'
 
     def get_config_value_from_cfg(parameter: int, line: str) -> int:
         if parameter is not None:
@@ -33,6 +41,7 @@ class Config:
             return int(match.group(1))
 
     def check_config_discrepancy(serial_port: str, br: int) -> bool:
+        from .Device import Device
         device_config = Device.config_show_at_device(serial_port=serial_port, br=br)
         deveui = str(Device.get_deveui(serial_port=serial_port, br=br))
         config_file = os.path.join(os.path.join(os.path.dirname(__file__), "utils"), "config.cfg")

@@ -4,33 +4,36 @@ from time import sleep
 
 from serial import Serial
 
+from .Config import Config
+
 
 class Device:
+
     def reset_dev(serial_port: str, br: int) -> None:
         with Serial(serial_port, br, timeout=1) as ser:
-            ser.write(b'123\r')
-            ser.write(b'123\r')
+            ser.write(Config.get_new_pswd())
+            ser.write(Config.get_new_pswd())
             ser.write(b'system reset\r')
             ser.close()
 
     def start_dev(serial_port: str, br: int) -> None:
         with Serial(serial_port, br, timeout=1) as ser:
-            ser.write(b'123\r')
-            ser.write(b'123\r')
+            ser.write(Config.get_new_pswd())
+            ser.write(Config.get_new_pswd())
             ser.write(b'system skip\r')
             # experimental approach with recursiveness to deal with instability
             sleep(6)
             ser.write(b'system log off\r')
-            output =  ser.read(1000).decode('utf-8')
-            match = re.match(r"user >")
+            output = ser.read(1000).decode('utf-8')
+            match = re.match(r"user >", output)
             if not match:
                 ser.close()
-                Device.start_dev()
+                Device.start_dev(serial_port=serial_port, br=br)
 
     def get_deveui(serial_port: str, br: int) -> str:
         with Serial(serial_port, br, timeout=1) as ser:
-            ser.write(b'123\r')
-            ser.write(b'123\r')
+            ser.write(Config.get_new_pswd())
+            ser.write(Config.get_new_pswd())
             ser.write(b'lora info\r')
             output = ser.read(1000).decode('utf-8')
             p = re.compile(r"DevEUI: (.*)")
@@ -50,8 +53,8 @@ class Device:
 
     def set_config_on_device(serial_port: str, br: int) -> None:
         with Serial(serial_port, br, timeout=1) as ser:
-            ser.write(b'123\r')
-            ser.write(b'123\r')
+            ser.write(Config.get_new_pswd())
+            ser.write(Config.get_new_pswd())
             config_file = os.path.join(os.path.join(os.path.dirname(os.path.abspath(__file__)), "utils"), "config.cfg")
             with open(config_file, 'rb') as config:
                 for line in config:
@@ -71,8 +74,8 @@ class Device:
 
     def config_show_at_device(serial_port: str, br: int) -> str:
         with Serial(serial_port, br, timeout=1) as ser:
-            ser.write(b'123\r')
-            ser.write(b'123\r')
+            ser.write(Config.get_new_pswd())
+            ser.write(Config.get_new_pswd())
             ser.write(b'system log off\r')
             ser.write(b'config show\r')
             output = ser.read(16000)
