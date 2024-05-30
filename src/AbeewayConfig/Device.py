@@ -53,6 +53,8 @@ class Device:
 
     def set_config_on_device(serial_port: str, br: int) -> None:
         with Serial(serial_port, br, timeout=1) as ser:
+            ser.write(b'123\r')
+            ser.write(b'123\r')
             ser.write(Config.get_new_pswd())
             ser.write(Config.get_new_pswd())
             config_file = os.path.join(os.path.join(os.path.dirname(os.path.abspath(__file__)), "utils"), "config.cfg")
