@@ -18,9 +18,14 @@ class Device:
             ser.write(b'123\r')
             ser.write(b'123\r')
             ser.write(b'system skip\r')
+            # experimental approach with recursiveness to deal with instability
             sleep(6)
             ser.write(b'system log off\r')
-            ser.close()
+            output =  ser.read(1000).decode('utf-8')
+            match = re.match(r"user >")
+            if not match:
+                ser.close()
+                Device.start_dev()
 
     def get_deveui(serial_port: str, br: int) -> str:
         with Serial(serial_port, br, timeout=1) as ser:
