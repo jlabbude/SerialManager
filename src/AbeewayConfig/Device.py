@@ -11,6 +11,8 @@ class Device:
 
     def reset_dev(serial_port: str, br: int) -> None:
         with Serial(serial_port, br, timeout=1) as ser:
+            ser.write(b'123\r')
+            ser.write(b'123\r')
             ser.write(Config.get_new_pswd())
             ser.write(Config.get_new_pswd())
             ser.write(b'system reset\r')
@@ -18,6 +20,8 @@ class Device:
 
     def start_dev(serial_port: str, br: int) -> None:
         with Serial(serial_port, br, timeout=1) as ser:
+            ser.write(b'123\r')
+            ser.write(b'123\r')
             ser.write(Config.get_new_pswd())
             ser.write(Config.get_new_pswd())
             ser.write(b'system skip\r')
@@ -32,6 +36,8 @@ class Device:
 
     def get_deveui(serial_port: str, br: int) -> str:
         with Serial(serial_port, br, timeout=1) as ser:
+            ser.write(b'123\r')
+            ser.write(b'123\r')
             ser.write(Config.get_new_pswd())
             ser.write(Config.get_new_pswd())
             ser.write(b'lora info\r')
@@ -50,6 +56,8 @@ class Device:
                     with open(deveui_file, 'a') as deveui_log:
                         deveui_log.write(deveui + "\n")
                 return deveui
+            else:
+                Device.get_deveui(serial_port=serial_port, br=br)
 
     def set_config_on_device(serial_port: str, br: int) -> None:
         with Serial(serial_port, br, timeout=1) as ser:
@@ -76,6 +84,8 @@ class Device:
 
     def config_show_at_device(serial_port: str, br: int) -> str:
         with Serial(serial_port, br, timeout=1) as ser:
+            ser.write(b'123\r')
+            ser.write(b'123\r')
             ser.write(Config.get_new_pswd())
             ser.write(Config.get_new_pswd())
             ser.write(b'system log off\r')
