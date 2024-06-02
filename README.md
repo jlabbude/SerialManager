@@ -47,6 +47,8 @@ Run this command to open the GUI related to building a CSV to upload info about 
 ## Known issues
 - GUI doesn't stall user action when talking to devices properly, making it able to break communication with serial ports by forcing multiple calls to same serial port
   - (as far as I've looked, this doesn't kill the already established communication)
+- Start device command is fairly unstable for reasons unknown at the moment
+- Devices with firmware versions above or below 2.4-1 will report config error due to not having that config parameter 
 
 ## Future goals
 - [ ] Change config file to yaml from cfg and add GUI to manipule it
