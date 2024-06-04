@@ -4,11 +4,11 @@ with open("README.md", "r") as f:
     description = f.read()
 
 setup(
-    name="AbeewayConfig",
+    name="SerialCFG",
     version="1.1.0",
     description="Abeeway configuration tool",
     author="João Lucas",
-    url="https://github.com/jlabbude/AbeewayConfig",
+    url="https://github.com/jlabbude/SerialCFG",
     packages=find_packages(where="src"),
     package_dir={"": "src"},
     install_requires=[
@@ -19,7 +19,7 @@ setup(
     ],
     entry_points={
         "console_scripts": [
-            "abeewayconfig = AbeewayConfig.abeewayconfig:main",
+            "abeewayconfig = SerialCFG.serialcfg:main",
         ],
     },
     classifiers=[

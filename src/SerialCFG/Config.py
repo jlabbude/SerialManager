@@ -72,7 +72,7 @@ class Config:
 
     @staticmethod
     def import_config() -> None:
-        from .abeewayconfig import define_os_specific_startingdir
+        from .serialcfg import define_os_specific_startingdir
         filename = filedialog.askopenfilename(initialdir=define_os_specific_startingdir(),
                                               filetypes=[("Text files", "*.txt"),
                                                          ("Config files", "*.cfg")])

@@ -1,1 +1,0 @@
-from .abeewayconfig import main
