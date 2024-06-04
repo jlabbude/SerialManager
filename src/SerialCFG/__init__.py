@@ -1,1 +1,0 @@
-from .serialcfg import main
