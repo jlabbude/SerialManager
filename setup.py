@@ -15,6 +15,7 @@ setup(
         "pyserial",
         "tk",
         "requests",
+        "typing_extensions",
     ],
     entry_points={
         "console_scripts": [
