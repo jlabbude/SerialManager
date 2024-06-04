@@ -21,3 +21,4 @@ template.txt
 **/client.txt
 /trash/**
 /src/config/config2.cfg
+/src/SerialManager.egg-info/
