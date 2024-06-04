@@ -1,4 +1,4 @@
-from argparse import ArgumentParser
+import argparse
 from glob import glob
 from platform import system
 from threading import Thread
@@ -75,8 +75,10 @@ def config_process() -> None:
 
 
 def main() -> None:
-    parser = ArgumentParser()
-    parser.add_argument('arg', choices=['config', 'upload'])
+    parser = argparse.ArgumentParser(description='Serial Device Configuration/Upload tool')
+    subparsers = parser.add_subparsers(dest='arg')
+    parser_arg = subparsers.add_parser('abeeway', help='Configure/Upload Abeeway trackers')
+    parser_arg.add_argument('abeeway', choices=['config', 'upload'])
     args = parser.parse_args()
 
     root.title("Config window")
@@ -84,77 +86,78 @@ def main() -> None:
     root.configure(padx=10, pady=10)
 
     console.grid(row=4, column=0, columnspan=2, padx=5, pady=5, sticky="nsew")
-    match args.arg:
-        case 'config':
-            button1 = Button(root,
-                             text="Configure device",
-                             bg="lightblue",
-                             fg="black",
-                             width=15,
-                             height=2,
-                             font=("Arial", 12),
-                             command=lambda: config_process())
-            button4 = Button(root,
-                             text="Reset device",
-                             bg="lightcoral",
-                             fg="black",
-                             width=15,
-                             height=2,
-                             font=("Arial", 12),
-                             command=lambda: serial_parallel_process(target=Device.reset_dev))
-            button3 = Button(root,
-                             text="Start device",
-                             bg="lightgreen",
-                             fg="black",
-                             width=15,
-                             height=2,
-                             font=("Arial", 12),
-                             command=lambda: serial_parallel_process(target=Device.start_dev))
-            button2 = Button(root,
-                             text="Import config",
-                             bg="lightblue",
-                             fg="black",
-                             width=15,
-                             height=2,
-                             font=("Arial", 12),
-                             command=lambda: Config.import_config())
+    if args.arg == 'abeeway':
+        match args.abeeway:
+            case 'config':
+                button1 = Button(root,
+                                 text="Configure device",
+                                 bg="lightblue",
+                                 fg="black",
+                                 width=15,
+                                 height=2,
+                                 font=("Arial", 12),
+                                 command=lambda: config_process())
+                button4 = Button(root,
+                                 text="Reset device",
+                                 bg="lightcoral",
+                                 fg="black",
+                                 width=15,
+                                 height=2,
+                                 font=("Arial", 12),
+                                 command=lambda: serial_parallel_process(target=Device.reset_dev))
+                button3 = Button(root,
+                                 text="Start device",
+                                 bg="lightgreen",
+                                 fg="black",
+                                 width=15,
+                                 height=2,
+                                 font=("Arial", 12),
+                                 command=lambda: serial_parallel_process(target=Device.start_dev))
+                button2 = Button(root,
+                                 text="Import config",
+                                 bg="lightblue",
+                                 fg="black",
+                                 width=15,
+                                 height=2,
+                                 font=("Arial", 12),
+                                 command=lambda: Config.import_config())
 
-        case 'upload':
-            button1 = Button(root,
-                             text="Make CSV",
-                             bg="lightblue",
-                             fg="black",
-                             width=15,
-                             height=2,
-                             font=("Arial", 12),
-                             command=lambda: CSVFile.csv_builder_and_writer())
-            button2 = Button(root,
-                             text="Import",
-                             bg="lightblue",
-                             fg="black",
-                             width=15,
-                             height=2,
-                             font=("Arial", 12),
-                             command=lambda: CSVFile.importer())
-            button3 = Button(root,
-                             text="Clear device log",
-                             bg="lightcoral",
-                             fg="black",
-                             width=15,
-                             height=2,
-                             font=("Arial", 12),
-                             command=lambda: Config.clear_dev_log())
-            button4 = Button(root,
-                             text="Export devices",
-                             bg="lightgreen",
-                             fg="black",
-                             width=15,
-                             height=2,
-                             font=("Arial", 12),
-                             command=lambda: CSVFile.export_devices_from_csv())
+            case 'upload':
+                button1 = Button(root,
+                                 text="Make CSV",
+                                 bg="lightblue",
+                                 fg="black",
+                                 width=15,
+                                 height=2,
+                                 font=("Arial", 12),
+                                 command=lambda: CSVFile.csv_builder_and_writer())
+                button2 = Button(root,
+                                 text="Import",
+                                 bg="lightblue",
+                                 fg="black",
+                                 width=15,
+                                 height=2,
+                                 font=("Arial", 12),
+                                 command=lambda: CSVFile.importer())
+                button3 = Button(root,
+                                 text="Clear device log",
+                                 bg="lightcoral",
+                                 fg="black",
+                                 width=15,
+                                 height=2,
+                                 font=("Arial", 12),
+                                 command=lambda: Config.clear_dev_log())
+                button4 = Button(root,
+                                 text="Export devices",
+                                 bg="lightgreen",
+                                 fg="black",
+                                 width=15,
+                                 height=2,
+                                 font=("Arial", 12),
+                                 command=lambda: CSVFile.export_devices_from_csv())
 
-        case _:
-            exit()
+            case _:
+                exit()
 
     root.grid_rowconfigure(0, weight=1)
     root.grid_rowconfigure(1, weight=1)

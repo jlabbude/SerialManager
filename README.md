@@ -1,4 +1,4 @@
-# Abeeway Tracker Configurator
+# Serial Device Manager
 
 ## About
 Python project useful if you want to configure multiple serial devices at once through their CLI. Right now, it's designed to be used to configure Abeeway's trackers.
@@ -10,19 +10,19 @@ Python project useful if you want to configure multiple serial devices at once t
 To install I recommend you use the package installer for Python - **pip**
 
 ```bash
-  pip install abeewayconfig
+  pip install serialmanager
 ```
 
 ## Usage
 
 ```bash
-  abeewayconfig config
+  serialmgr abeeway config
 ```
 
 Run this command to open the GUI related to device configuring.
 
 ```bash
- abeewayconfig upload
+ serialmgr abeeway upload
 ```
 
 Run this command to open the GUI related to building a CSV to upload info about the configured devices to a cloud service, in this case, ThingPark.
