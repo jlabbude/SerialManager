@@ -22,9 +22,7 @@ class Config:
     def get_new_pswd() -> Buffer:
         with open(os.path.join(os.path.join(os.path.dirname(__file__), "utils"), "config.cfg"), 'r') as cfg:
             match = re.search("config set 102 (.*)", cfg.read())
-            if match:
-                # todo investigate if this works later
-                return match.group().encode() + b'\r'
+            return (match.group().encode() if match else b'123') + b'\r'
 
     def get_config_value_from_cfg(parameter: int, line: str) -> int:
         if parameter is not None:

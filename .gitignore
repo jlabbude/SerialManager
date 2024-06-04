@@ -20,3 +20,4 @@ template.txt
 **/secret.txt
 **/client.txt
 /trash/**
+/src/config/config2.cfg
