@@ -5,7 +5,7 @@ with open("README.md", "r") as f:
 
 setup(
     name="AbeewayConfig",
-    version="1.0.0",
+    version="1.1.0",
     description="Abeeway configuration tool",
     author="João Lucas",
     url="https://github.com/jlabbude/AbeewayConfig",
