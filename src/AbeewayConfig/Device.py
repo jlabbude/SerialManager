@@ -25,11 +25,10 @@ class Device:
             ser.write(Config.get_new_pswd())
             ser.write(Config.get_new_pswd())
             ser.write(b'system skip\r')
-            # experimental approach with recursiveness to deal with instability
             sleep(6)
             ser.write(b'system log off\r')
             output = ser.read(1000).decode('utf-8')
-            match = re.match(r"user >", output)
+            match = re.search(r"user>", output)
             if not match:
                 ser.close()
                 Device.start_dev(serial_port=serial_port, br=br)
