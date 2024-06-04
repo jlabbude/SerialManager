@@ -16,7 +16,6 @@ setup(
         "tk",
         "requests",
         "typing_extensions",
-        "abeewayconfig",
     ],
     entry_points={
         "console_scripts": [
