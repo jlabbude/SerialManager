@@ -9,21 +9,27 @@ from .Config import Config
 
 class Device:
 
+    # TODO find a way to choose which password to use.
+    # Right now the current dilemma stands:
+    # -> can't know if device has been configured (and thus, had its password altered) without knowing its DevEUI;
+    # -> can't know DevEUI without inputting password first;
+    # -> can't input password without knowing which one to use.
+    @staticmethod
+    def input_password(ser: Serial) -> None:
+        ser.write(b'123\r')
+        ser.write(b'123\r')
+        ser.write(Config.get_new_pswd())
+        ser.write(Config.get_new_pswd())
+
     def reset_dev(serial_port: str, br: int) -> None:
         with Serial(serial_port, br, timeout=1) as ser:
-            ser.write(b'123\r')
-            ser.write(b'123\r')
-            ser.write(Config.get_new_pswd())
-            ser.write(Config.get_new_pswd())
+            Device.input_password(ser)
             ser.write(b'system reset\r')
             ser.close()
 
     def start_dev(serial_port: str, br: int) -> None:
         with Serial(serial_port, br, timeout=1) as ser:
-            ser.write(b'123\r')
-            ser.write(b'123\r')
-            ser.write(Config.get_new_pswd())
-            ser.write(Config.get_new_pswd())
+            Device.input_password(ser)
             ser.write(b'system skip\r')
             sleep(6)
             ser.write(b'system log off\r')
@@ -35,10 +41,7 @@ class Device:
 
     def get_deveui(serial_port: str, br: int) -> str:
         with Serial(serial_port, br, timeout=1) as ser:
-            ser.write(b'123\r')
-            ser.write(b'123\r')
-            ser.write(Config.get_new_pswd())
-            ser.write(Config.get_new_pswd())
+            Device.input_password(ser)
             ser.write(b'lora info\r')
             output = ser.read(1000).decode('utf-8')
             p = re.compile(r"DevEUI: (.*)")
@@ -60,10 +63,7 @@ class Device:
 
     def set_config_on_device(serial_port: str, br: int) -> None:
         with Serial(serial_port, br, timeout=1) as ser:
-            ser.write(b'123\r')
-            ser.write(b'123\r')
-            ser.write(Config.get_new_pswd())
-            ser.write(Config.get_new_pswd())
+            Device.input_password(ser)
             config_file = os.path.join(os.path.join(os.path.dirname(os.path.abspath(__file__)), "utils"), "config.cfg")
             with open(config_file, 'rb') as config:
                 for line in config:
@@ -83,10 +83,7 @@ class Device:
 
     def config_show_at_device(serial_port: str, br: int) -> str:
         with Serial(serial_port, br, timeout=1) as ser:
-            ser.write(b'123\r')
-            ser.write(b'123\r')
-            ser.write(Config.get_new_pswd())
-            ser.write(Config.get_new_pswd())
+            Device.input_password(ser)
             ser.write(b'system log off\r')
             ser.write(b'config show\r')
             output = ser.read(16000)

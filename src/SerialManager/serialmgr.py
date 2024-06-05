@@ -74,6 +74,7 @@ def config_process() -> None:
     serial_parallel_process(target=Device.reset_dev)
 
 
+# noinspection PyUnboundLocalVariable
 def main() -> None:
     parser = argparse.ArgumentParser(description='Serial Device Configuration/Upload tool')
     subparsers = parser.add_subparsers(dest='arg')
@@ -156,8 +157,8 @@ def main() -> None:
                                  font=("Arial", 12),
                                  command=lambda: CSVFile.export_devices_from_csv())
 
-            case _:
-                exit()
+    else:
+        exit()
 
     root.grid_rowconfigure(0, weight=1)
     root.grid_rowconfigure(1, weight=1)
