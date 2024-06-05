@@ -16,10 +16,11 @@ class Device:
     # -> can't input password without knowing which one to use.
     @staticmethod
     def input_password(ser: Serial) -> None:
+        new_pass = Config.get_new_pass()
         ser.write(b'123\r')
         ser.write(b'123\r')
-        ser.write(Config.get_new_pswd())
-        ser.write(Config.get_new_pswd())
+        ser.write(new_pass)
+        ser.write(new_pass)
 
     def reset_dev(serial_port: str, br: int) -> None:
         with Serial(serial_port, br, timeout=1) as ser:

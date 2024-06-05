@@ -19,7 +19,7 @@ class Config:
         console.insert(tk.END, 'DevEUI log cleared.\n')
 
     @staticmethod
-    def get_new_pswd() -> Buffer:
+    def get_new_pass() -> Buffer:
         with open(os.path.join(os.path.join(os.path.dirname(__file__), "utils"), "config.cfg"), 'r') as cfg:
             match = re.search("config set 102 (.*)", cfg.read())
             return (match.group().encode() if match else b'123') + b'\r'
@@ -75,7 +75,8 @@ class Config:
         from .serialmgr import define_os_specific_startingdir
         filename = filedialog.askopenfilename(initialdir=define_os_specific_startingdir(),
                                               filetypes=[("Text files", "*.txt"),
-                                                         ("Config files", "*.cfg")])
+                                                         ("Config files", "*.cfg"),
+                                                         ("YaML files", "*.yaml")])
         if filename:
             destination_dir = os.path.join(os.path.dirname(__file__), "utils")
             os.makedirs(destination_dir, exist_ok=True)
