@@ -22,12 +22,14 @@ class Device:
         ser.write(new_pass)
         ser.write(new_pass)
 
+    @staticmethod
     def reset_dev(serial_port: str, br: int) -> None:
         with Serial(serial_port, br, timeout=1) as ser:
             Device.input_password(ser)
             ser.write(b'system reset\r')
             ser.close()
 
+    @staticmethod
     def start_dev(serial_port: str, br: int) -> None:
         with Serial(serial_port, br, timeout=1) as ser:
             Device.input_password(ser)
@@ -40,6 +42,7 @@ class Device:
                 ser.close()
                 Device.start_dev(serial_port=serial_port, br=br)
 
+    @staticmethod
     def get_deveui(serial_port: str, br: int) -> str:
         with Serial(serial_port, br, timeout=1) as ser:
             Device.input_password(ser)
@@ -62,6 +65,7 @@ class Device:
             else:
                 Device.get_deveui(serial_port=serial_port, br=br)
 
+    @staticmethod
     def set_config_on_device(serial_port: str, br: int) -> None:
         with Serial(serial_port, br, timeout=1) as ser:
             Device.input_password(ser)
@@ -76,12 +80,14 @@ class Device:
 
     # This doesn't actually talk to the device directly, rather it just grabs the value from a string
     # Might move it back to the main module
+    @staticmethod
     def get_config_value_from_dev(config_name: str, parameter: int) -> int:
         if parameter is not None:
             match_line = re.search(r".*\s+%s\s*=\s*(-?\d+)" % parameter, config_name)
             if match_line is not None:
                 return int(match_line.group(1))
 
+    @staticmethod
     def config_show_at_device(serial_port: str, br: int) -> str:
         with Serial(serial_port, br, timeout=1) as ser:
             Device.input_password(ser)

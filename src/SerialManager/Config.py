@@ -24,6 +24,7 @@ class Config:
             match = re.search("config set 102 (.*)", cfg.read())
             return (match.group().encode() if match else b'123') + b'\r'
 
+    @staticmethod
     def get_config_value_from_cfg(parameter: int, line: str) -> int:
         if parameter is not None:
             pattern = r"config set %d (.*)" % parameter
@@ -32,12 +33,14 @@ class Config:
             if match:
                 return int(match.group(1))
 
+    @staticmethod
     def get_config_parameter_from_cfg(line: str) -> int:
         p = re.compile("config set (.*) ")
         match = p.search(line)
         if match:
             return int(match.group(1))
 
+    @staticmethod
     def check_config_discrepancy(serial_port: str, br: int) -> bool:
         from .Device import Device
         device_config = Device.config_show_at_device(serial_port=serial_port, br=br)

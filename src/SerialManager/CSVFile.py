@@ -181,7 +181,10 @@ class CSVFile:
         console.insert(tk.END, f"CSV file created.\n"
                                f"There are {len(deveui_array)} devices. \n")
         response = messagebox.askyesno("Device amount", f"Are there {len(deveui_array)} devices?")
-        # todo handle response
+        match response:
+            case False:
+                os.remove(csv_file)
+                console.insert(tk.END, "CSV file deleted.\n")
 
     @staticmethod
     def importer() -> None:
