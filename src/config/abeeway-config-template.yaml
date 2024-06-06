@@ -1,274 +1,184 @@
-# firmware version 2.6-1
+# firmware version 2.6- ...1
 # TODO
 
 config:
   ul_period:
-    param_dec: 0
-    value_dec : 0
+    { param_dec: 0, value_dec : 0 }
   lora_period:
-    param_dec: 0
-    param_val: 0
+    { param_dec: 0, value_dec: 0 }
   pw_stat_period:
-    param_dec: 0
-    param_val: 0
+    { param_dec: 0, value_dec: 0 }
   periodic_pos_period:
-    param_dec: 0
-    param_val: 0
+    { param_dec: 0, value_dec: 0 }
   geoloc_sensor:
-    param_dec: 0
-    param_val: 0
+    { param_dec: 0, value_dec: 0 }
   geoloc_method:
-    param_dec: 0
-    param_val: 0
+    { param_dec: 0, value_dec: 0 }
   antenna:
-    param_dec: 0
-    param_val: 0
+    { param_dec: 0, value_dec: 0 }
   motion_nb_pos:
-    param_dec: 0
-    param_val: 0
+    { param_dec: 0, value_dec: 0 }
   gps_timeout:
-    param_dec: 0
-    param_val: 0
+    { param_dec: 0, value_dec: 0 }
   agps_timeout:
-    param_dec: 0
-    param_val: 0
+    { param_dec: 0, value_dec: 0 }
   gps_ehpe:
-    param_dec: 0
-    param_val: 0
+    { param_dec: 0, value_dec: 0 }
   gps_convergence:
-    param_dec: 0
-    param_val: 0
+    { param_dec: 0, value_dec: 0 }
   config_flags:
-    param_dec: 0
-    param_val: 0
+    { param_dec: 0, value_dec: 0 }
   transmit_strat:
-    param_dec: 0
-    param_val: 0
+    { param_dec: 0, value_dec: 0 }
   ble_beacon_cnt:
-    param_dec: 0
-    param_val: 0
+    { param_dec: 0, value_dec: 0 }
   ble_beacon_timeout:
-    param_dec: 0
-    param_val: 0
+    { param_dec: 0, value_dec: 0 }
   gps_standby_timeout:
-    param_dec: 0
-    param_val: 0
+    { param_dec: 0, value_dec: 0 }
   confirmed_ul_bitmap:
-    param_dec: 0
-    param_val: 0
+    { param_dec: 0, value_dec: 0 }
   confirmed_ul_retry:
-    param_dec: 0
-    param_val: 0
+    { param_dec: 0, value_dec: 0 }
   motion_sensitivity:
-    param_dec: 0
-    param_val: 0
+    { param_dec: 0, value_dec: 0 }
   shock_detection:
-    param_dec: 0
-    param_val: 0
+    { param_dec: 0, value_dec: 0 }
   periodic_activity_period:
-    param_dec: 0
-    param_val: 0
+    { param_dec: 0, value_dec: 0 }
   motion_duration:
-    param_dec: 0
-    param_val: 0
+    { param_dec: 0, value_dec: 0 }
   geofencing_scan_period:
-    param_dec: 0
-    param_val: 0
+    { param_dec: 0, value_dec: 0 }
   geofencing_collect_period:
-    param_dec: 0
-    param_val: 0
+    { param_dec: 0, value_dec: 0 }
   ble_rssi_filter:
-    param_dec: 0
-    param_val: 0
+    { param_dec: 0, value_dec: 0 }
   temperature_high:
-    param_dec: 0
-    param_val: 0
+    { param_dec: 0, value_dec: 0 }
   temperature_low:
-    param_dec: 0
-    param_val: 0
+    { param_dec: 0, value_dec: 0 }
   temperature_action:
-    param_dec: 0
-    param_val: 0
+    { param_dec: 0, value_dec: 0 }
   transmit_strat_custom:
-    param_dec: 0
-    param_val: 0
+    { param_dec: 0, value_dec: 0 }
   network_timeout_check:
-    param_dec: 0
-    param_val: 0
+    { param_dec: 0, value_dec: 0 }
   network_timeout_reset:
-    param_dec: 0
-    param_val: 0
+    { param_dec: 0, value_dec: 0 }
   collection_scan_type:
-    param_dec: 0
-    param_val: 0
+    { param_dec: 0, value_dec: 0 }
   collection_nb_entry:
-    param_dec: 0
-    param_val: 0
+    { param_dec: 0, value_dec: 0 }
   collection_ble_filter_type:
-    param_dec: 0
-    param_val: 0
+    { param_dec: 0, value_dec: 0 }
   collection_ble_filter_main_1:
-    param_dec: 0
-    param_val: 0
+    { param_dec: 0, value_dec: 0 }
   collection_ble_filter_main_2:
-    param_dec: 0
-    param_val: 0
+    { param_dec: 0, value_dec: 0 }
   collection_ble_filter_sec_value:
-    param_dec: 0
-    param_val: 0
+    { param_dec: 0, value_dec: 0 }
   collection_ble_filter_sec_mask:
-    param_dec: 0
-    param_val: 0
+    { param_dec: 0, value_dec: 0 }
   battery_capacity:
-    param_dec: 0
-    param_val: 0
+    { param_dec: 0, value_dec: 0 }
   reed_switch_configuration:
-    param_dec: 0
-    param_val: 0
+    { param_dec: 0, value_dec: 0 }
   gnss_constellation:
-    param_dec: 0
-    param_val: 0
+    { param_dec: 0, value_dec: 0 }
   position_ble_filter_type:
-    param_dec: 0
-    param_val: 0
+    { param_dec: 0, value_dec: 0 }
   position_ble_filter_main_1:
-    param_dec: 0
-    param_val: 0
+    { param_dec: 0, value_dec: 0 }
   position_ble_filter_main_2:
-    param_dec: 0
-    param_val: 0
+    { param_dec: 0, value_dec: 0 }
   position_ble_filter_sec_value:
-    param_dec: 0
-    param_val: 0
+    { param_dec: 0, value_dec: 0 }
   position_ble_filter_sec_mask:
-    param_dec: 0
-    param_val: 0
+    { param_dec: 0, value_dec: 0 }
   position_ble_report_type:
-    param_dec: 0
-    param_val: 0
+    { param_dec: 0, value_dec: 0 }
   buzzer_volume:
-    param_dec: 0
-    param_val: 0
+    { param_dec: 0, value_dec: 0 }
   angle_detect_mode:
-    param_dec: 0
-    param_val: 0
+    { param_dec: 0, value_dec: 0 }
   angle_ref_acq:
-    param_dec: 0
-    param_val: 0
+    { param_dec: 0, value_dec: 0 }
   angle_ref_acc_x:
-    param_dec: 0
-    param_val: 0
+    { param_dec: 0, value_dec: 0 }
   angle_ref_acc_y:
-    param_dec: 0
-    param_val: 0
+    { param_dec: 0, value_dec: 0 }
   angle_ref_acc_z:
-    param_dec: 0
-    param_val: 0
+    { param_dec: 0, value_dec: 0 }
   angle_critical:
-    param_dec: 0
-    param_val: 0
+    { param_dec: 0, value_dec: 0 }
   angle_critical_hyst:
-    param_dec: 0
-    param_val: 0
+    { param_dec: 0, value_dec: 0 }
   angle_report_mode:
-    param_dec: 0
-    param_val: 0
+    { param_dec: 0, value_dec: 0 }
   angle_report_period:
-    param_dec: 0
-    param_val: 0
+    { param_dec: 0, value_dec: 0 }
   angle_report_repeat:
-    param_dec: 0
-    param_val: 0
+    { param_dec: 0, value_dec: 0 }
   angle_rising_time:
-    param_dec: 0
-    param_val: 0
+    { param_dec: 0, value_dec: 0 }
   angle_falling_time:
-    param_dec: 0
-    param_val: 0
+    { param_dec: 0, value_dec: 0 }
   angle_learning_time:
-    param_dec: 0
-    param_val: 0
+    { param_dec: 0, value_dec: 0 }
   angle_acc_accuracy:
-    param_dec: 0
-    param_val: 0
+    { param_dec: 0, value_dec: 0 }
   angle_deviation_delta:
-    param_dec: 0
-    param_val: 0
+    { param_dec: 0, value_dec: 0 }
   angle_deviation_min_interval:
-    param_dec: 0
-    param_val: 0
+    { param_dec: 0, value_dec: 0 }
   angle_deviation_max_interval:
-    param_dec: 0
-    param_val: 0
+    { param_dec: 0, value_dec: 0 }
   default_profile:
-    param_dec: 0
-    param_val: 0
+    { param_dec: 0, value_dec: 0 }
   password:
-    param_dec: 0
-    param_val: 0
+    { param_dec: 0, value_dec: 0 }
   gps_t0_timeout:
-    param_dec: 0
-    param_val: 0
+    { param_dec: 0, value_dec: 0 }
   gps_fix_timeout:
-    param_dec: 0
-    param_val: 0
+    { param_dec: 0, value_dec: 0 }
   geofencing_scan_duration:
-    param_dec: 0
-    param_val: 0
+    { param_dec: 0, value_dec: 0 }
   beaconing_type:
-    param_dec: 0
-    param_val: 0
+    { param_dec: 0, value_dec: 0 }
   beaconing_tx_power:
-    param_dec: 0
-    param_val: 0
+    { param_dec: 0, value_dec: 0 }
   beaconing_static_interval:
-    param_dec: 0
-    param_val: 0
+    { param_dec: 0, value_dec: 0 }
   beaconing_motion_interval:
-    param_dec: 0
-    param_val: 0
+    { param_dec: 0, value_dec: 0 }
   beaconing_motion_duration:
-    param_dec: 0
-    param_val: 0
+    { param_dec: 0, value_dec: 0 }
   ble_cnx_adv_duration:
-    param_dec: 0
-    param_val: 0
+    { param_dec: 0, value_dec: 0 }
   beacon_id_0:
-    param_dec: 0
-    param_val: 0
+    { param_dec: 0, value_dec: 0 }
   beacon_id_1:
-    param_dec: 0
-    param_val: 0
+    { param_dec: 0, value_dec: 0 }
   beacon_id_2:
-    param_dec: 0
-    param_val: 0
+    { param_dec: 0, value_dec: 0 }
   beacon_id_3:
-    param_dec: 0
-    param_val: 0
+    { param_dec: 0, value_dec: 0 }
   beacon_id_4:
-    param_dec: 0
-    param_val: 0
+    { param_dec: 0, value_dec: 0 }
   sos_period:
-    param_dec: 0
-    param_val: 0
+    { param_dec: 0, value_dec: 0 }
   motion_debounce:
-    param_dec: 0
-    param_val: 0
+    { param_dec: 0, value_dec: 0 }
   button_mapping:
-    param_dec: 0
-    param_val: 0
+    { param_dec: 0, value_dec: 0 }
   default_datarate:
-    param_dec: 0
-    param_val: 0
+    { param_dec: 0, value_dec: 0 }
   gps_ehpe_motion:
-    param_dec: 0
-    param_val: 0
+    { param_dec: 0, value_dec: 0 }
   gps_convergence_motion:
-    param_dec: 0
-    param_val: 0
+    { param_dec: 0, value_dec: 0 }
   gps_t0_timeout_motion:
-    param_dec: 0
-    param_val: 0
+    { param_dec: 0, value_dec: 0 }
   mode:
-    param_dec: 0
-    param_val: 0
+    { param_dec: 0, value_dec: 0 }
