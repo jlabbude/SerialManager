@@ -39,7 +39,7 @@ def define_os_specific_startingdir() -> str:
             return "~/Desktop"
 
 
-def serial_parallel_process(target) -> None:
+def serial_parallel_process(target: object | None) -> None:
     threads = []
     for serial_port in serial_port_array:
         thread = Thread(target=target, args=(serial_port, baud_rate))
@@ -49,7 +49,7 @@ def serial_parallel_process(target) -> None:
         thread.join()
 
 
-def no_join_parallel_process(target):
+def no_join_parallel_process(target: object | None) -> list[Thread]:
     threads = []
     for serial_port in serial_port_array:
         thread = Thread(target=target, args=(serial_port, baud_rate))
@@ -74,7 +74,6 @@ def config_process() -> None:
     serial_parallel_process(target=Device.reset_dev)
 
 
-# noinspection PyUnboundLocalVariable
 def main() -> None:
     parser = argparse.ArgumentParser(description='Serial Device Configuration/Upload tool')
     subparsers = parser.add_subparsers(dest='arg')

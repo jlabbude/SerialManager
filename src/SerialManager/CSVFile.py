@@ -132,7 +132,7 @@ class CSVFile:
         return deveui_array
 
     @staticmethod
-    def export_devices_from_csv():
+    def export_devices_from_csv() -> None:
         with open(CSVFile.csv_file, 'rb') as csvfile:
             response = requests.post(url='https://community.thingpark.io/thingpark/wireless/rest/subscriptions/mine'
                                          '/devices/import?async=true&forceDevAddrs=false'

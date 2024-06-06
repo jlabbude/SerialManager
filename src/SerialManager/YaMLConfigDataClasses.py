@@ -3,7 +3,8 @@ from dataclasses import dataclass
 
 # TODO add default values
 @dataclass
-class AbeewaySmartBadgeConfig:  # <- Firmware version 2.4-1
+class AbeewaySmartBadgeConfig:  # <- Firmware version 2.4-1 only
+                                # TODO add a way to choose which version on the class constructor
     ul_period: int = 0
     lora_period: int = 0
     pw_stat_period: int = 0
