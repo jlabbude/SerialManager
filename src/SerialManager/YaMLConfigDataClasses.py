@@ -134,8 +134,11 @@ class AbeewaySmartBadgeConfig:  # <- Firmware version 2.4-1 only
     consumption: int = 0
     ble_bond_info: int = 0
     mode: int = 0
-    acc_x_axis: int = 0
-    acc_y_axis: int = 0
-    acc_z_axis: int = 0
-    ble_version: int = 0
-    firmware_version: int = 0
+
+
+# wip
+class AbeewaySmartBadgeConfig2:
+    def __init__(self, param, name, value):
+        self.param = param
+        self.name = name
+        self.value = value
