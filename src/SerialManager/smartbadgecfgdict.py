@@ -128,9 +128,5 @@ config_dict = {
     247: 'consumption',
     248: 'ble_bond_info',
     249: 'mode',
-    250: 'acc_x_axis',
-    251: 'acc_y_axis',
-    252: 'acc_z_axis',
-    253: 'ble_version',
     254: 'firmware_version',
 }
