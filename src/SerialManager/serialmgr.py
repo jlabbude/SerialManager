@@ -74,7 +74,6 @@ def config_process() -> None:
     serial_parallel_process(target=Device.reset_dev)
 
 
-# noinspection PyUnboundLocalVariable
 def main() -> None:
     parser = argparse.ArgumentParser(description='Serial Device Configuration/Upload tool')
     subparsers = parser.add_subparsers(dest='arg')
