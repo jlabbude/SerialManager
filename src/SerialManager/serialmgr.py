@@ -157,6 +157,7 @@ def main() -> None:
                                  command=lambda: CSVFile.export_devices_from_csv())
 
     else:
+        print('Incorrect usage. Try "serialmg abeeway".')
         exit()
 
     root.grid_rowconfigure(0, weight=1)
