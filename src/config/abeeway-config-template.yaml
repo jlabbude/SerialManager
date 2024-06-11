@@ -1,184 +1,479 @@
-# firmware version 2.6- ...1
+# firmware version 2.4-1
 # TODO
 
 config:
   ul_period:
-    { param_dec: 0, value_dec : 0 }
+    parameter: 0
+    value: 300
+    description: Periodicity of position or activity messages in motion, start/end, activity or permanent operating mode.
+    unit: Second 
   lora_period:
-    { param_dec: 0, value_dec: 0 }
+    parameter: 1
+    value: 600
+    description: Periodicity of LoRa heartbeat messages.
+    unit: Second 
   pw_stat_period:
-    { param_dec: 0, value_dec: 0 }
+    parameter: 2
+    value: 0
+    description:
+    unit: Second 
   periodic_pos_period:
-    { param_dec: 0, value_dec: 0 }
+    parameter: 3
+    value: 0
+    description: The device sends additional positions at the periodic_pos_period frequency. This feature is disabled when itsassociated configuration parameter is set to 0.This periodic position reporting uses the geoloc_method geolocation strategy.
+    unit: Second 
+  unknown:
+    parameter: 4
+    value: 0
+    description:
+    unit: 
   geoloc_sensor:
-    { param_dec: 0, value_dec: 0 }
+    parameter: 5
+    value: 1
+    description: Geolocation sensor profile used in main operatingmode and SOS
+    unit: 
   geoloc_method:
-    { param_dec: 0, value_dec: 0 }
+    parameter: 6
+    value: 1
+    description: Geolocation policy used for the side operatingmodes
+    unit: 
   antenna:
-    { param_dec: 0, value_dec: 0 }
+    parameter: 7
+    value: 0
+    description:
+    unit: 
   motion_nb_pos:
-    { param_dec: 0, value_dec: 0 }
+    parameter: 8
+    value: 1
+    description: This parameter has been updated in FW2.3In motion tracking mode additional positions are donewhen the device goes to static (after motion_durationperiod). If set to 0, no positions are addedIn motion start/end mode Number of positions toreport during motion events
+    unit: 
   gps_timeout:
-    { param_dec: 0, value_dec: 0 }
+    parameter: 9
+    value: 240
+    description: Timeout used for GPS geolocation mode before sending a message. (GPS position or timeout)
+    unit: Second 
   agps_timeout:
-    { param_dec: 0, value_dec: 0 }
+    parameter: 10
+    value: 45
+    description: Timeout used for LPGPS geolocation mode beforesending the geolocation message.
+    unit: Second 
   gps_ehpe:
-    { param_dec: 0, value_dec: 0 }
+    parameter: 11
+    value: 20
+    description: Acceptable GPS horizontal error for GPS geolocation
+    unit: meter 
   gps_convergence:
-    { param_dec: 0, value_dec: 0 }
+    parameter: 12
+    value: 30
+    description: Time let to the GPS module to refine the calculated GPS position
+    unit: Second 
   config_flags:
-    { param_dec: 0, value_dec: 0 }
+    parameter: 13
+    value: 213055
+    description: Configuration flags
+    unit: 
   transmit_strat:
-    { param_dec: 0, value_dec: 0 }
+    parameter: 14
+    value: 2
+    description: Transmit strategy in motion
+    unit: 
   ble_beacon_cnt:
-    { param_dec: 0, value_dec: 0 }
+    parameter: 15
+    value: 4
+    description: This parameter provides the maximum number of BLE beacons to provide in payload (1)
+    unit: 
   ble_beacon_timeout:
-    { param_dec: 0, value_dec: 0 }
+    parameter: 16
+    value: 2
+    description: BLE scan duration
+    unit: Second 
   gps_standby_timeout:
-    { param_dec: 0, value_dec: 0 }
+    parameter: 17
+    value: 0
+    description: Duration of the GPS standby mode before going OFF.When 0, no standby timeout is applied
+    unit: Second 
   confirmed_ul_bitmap:
-    { param_dec: 0, value_dec: 0 }
+    parameter: 18
+    value: 0
+    description: Bitmap enabling the LoRaWAN TM confirmation of specific type of uplink message
+    unit: 
   confirmed_ul_retry:
-    { param_dec: 0, value_dec: 0 }
+    parameter: 19
+    value: 3
+    description: The number of retries for each confirmed uplink when the confirmation is not received
+    unit: 
   motion_sensitivity:
-    { param_dec: 0, value_dec: 0 }
+    parameter: 20
+    value: 131073
+    description: Accelerometer configuration.
+    unit: 
   shock_detection:
-    { param_dec: 0, value_dec: 0 }
+    parameter: 21
+    value: 0
+    description: This parameter provides the configuration of the sensitivity of the shock detection.A value of 0 disables shock detection.shock_detection value = (shock intensity (in g) - 1)/0.063.Note When enabled shock_detection sensitivity should be strictly lessthan motion_sensitivity parameter sensitivity
+    unit: 
   periodic_activity_period:
-    { param_dec: 0, value_dec: 0 }
+    parameter: 22
+    value: 0
+    description: Period of the periodic position report. When set to 0, the reporting is disabled.
+    unit: Second 
   motion_duration:
-    { param_dec: 0, value_dec: 0 }
+    parameter: 23
+    value: 180
+    description: Period of time required to detect the end of a motion
+    unit: Second 
   geofencing_scan_period:
-    { param_dec: 0, value_dec: 0 }
+    parameter: 24
+    value: 0
+    description: scan period (in seconds).0 means the BLE geozoning scan is disabled
+    unit: Second 
   geofencing_collect_period:
-    { param_dec: 0, value_dec: 0 }
+    parameter: 25
+    value: 60
+    description: Period in second at which the last beacon seen is inserted in the collection.0, means there is no geozoning collection reported.
+    unit: Second 
   ble_rssi_filter:
-    { param_dec: 0, value_dec: 0 }
+    parameter: 26
+    value: -85
+    description: RSSI value to filter BLE beacons with BLE-GPSgeolocation mode. (negative value, refer to thesection Two’s complement Encoding forinformation for the encoding).
+    unit: dBm 
   temperature_high:
-    { param_dec: 0, value_dec: 0 }
+    parameter: 27
+    value: 255
+    description: Configure the high threshold temperature255 = disabled
+    unit: ºC 
   temperature_low:
-    { param_dec: 0, value_dec: 0 }
+    parameter: 28
+    value: 255
+    description: Configure the low threshold temperature255 = disabled
+    unit: °C 
   temperature_action:
-    { param_dec: 0, value_dec: 0 }
+    parameter: 29
+    value: 0
+    description: Configure the action to be done when entering a critical state
+    unit: 
   transmit_strat_custom:
-    { param_dec: 0, value_dec: 0 }
+    parameter: 30
+    value: 0
+    description:
+    unit: 
   network_timeout_check:
-    { param_dec: 0, value_dec: 0 }
+    parameter: 31
+    value: 432000
+    description: Time without received downlink, before asking a link check request0 No timeout check is done
+    unit: Second 
   network_timeout_reset:
-    { param_dec: 0, value_dec: 0 }
+    parameter: 32
+    value: 172800
+    description: Time after network_timeout_check without received downlink before the tracker resets.0 feature deactivated
+    unit: Second 
   collection_scan_type:
-    { param_dec: 0, value_dec: 0 }
+    parameter: 33
+    value: 0
+    description: Collection scan type used
+    unit: 
   collection_nb_entry:
-    { param_dec: 0, value_dec: 0 }
+    parameter: 34
+    value: 20
+    description: Maximum number of elements to report in collection payloads after a scan.
+    unit: 
   collection_ble_filter_type:
-    { param_dec: 0, value_dec: 0 }
+    parameter: 35
+    value: 0
+    description: Beacon type to scan and report when CollectionScan Type is BLE
+    unit: 
   collection_ble_filter_main_1:
-    { param_dec: 0, value_dec: 0 }
+    parameter: 36
+    value: 0
+    description: First part of the main BLE filter.
+    unit: 
   collection_ble_filter_main_2:
-    { param_dec: 0, value_dec: 0 }
+    parameter: 37
+    value: 0
+    description: Second part of the main BLE filter.
+    unit: 
   collection_ble_filter_sec_value:
-    { param_dec: 0, value_dec: 0 }
+    parameter: 38
+    value: 0
+    description: BLE secondary value.
+    unit: 
   collection_ble_filter_sec_mask:
-    { param_dec: 0, value_dec: 0 }
+    parameter: 39
+    value: 0
+    description: BLE secondary mask
+    unit: 
   battery_capacity:
-    { param_dec: 0, value_dec: 0 }
+    parameter: 40
+    value: -1
+    description: Battery setting
+    unit: mAh 
   reed_switch_configuration:
-    { param_dec: 0, value_dec: 0 }
+    parameter: 41
+    value: 0
+    description:
+    unit: 
   gnss_constellation:
-    { param_dec: 0, value_dec: 0 }
+    parameter: 42
+    value: 4
+    description: Configure the GNSS constellations used by the GPS chip to compute a position
+    unit: 
   position_ble_filter_type:
-    { param_dec: 0, value_dec: 0 }
+    parameter: 77
+    value: 0
+    description: Beacon type to scan and report when position ScanType is BLE
+    unit: 
   position_ble_filter_main_1:
-    { param_dec: 0, value_dec: 0 }
+    parameter: 78
+    value: 0
+    description: First part of the main BLE filter. (UUID BEACON)
+    unit: 
   position_ble_filter_main_2:
-    { param_dec: 0, value_dec: 0 }
+    parameter: 79
+    value: 0
+    description: Second part of the main BLE filter. (UUID BEACON)
+    unit: 
   position_ble_filter_sec_value:
-    { param_dec: 0, value_dec: 0 }
+    parameter: 80
+    value: 0
+    description: BLE secondary value.
+    unit: 
   position_ble_filter_sec_mask:
-    { param_dec: 0, value_dec: 0 }
+    parameter: 81
+    value: 0
+    description: BLE secondary mask
+    unit: 
   position_ble_report_type:
-    { param_dec: 0, value_dec: 0 }
+    parameter: 82
+    value: 0
+    description: Configure the BLE data to report in payloads.
+    unit: 
   buzzer_volume:
-    { param_dec: 0, value_dec: 0 }
+    parameter: 83
+    value: 10
+    description: Configuration of the buzzer volume
+    unit: Percent 
   angle_detect_mode:
-    { param_dec: 0, value_dec: 0 }
+    parameter: 84
+    value: 0
+    description: Angle Detection method.
+    unit: 
   angle_ref_acq:
-    { param_dec: 0, value_dec: 0 }
+    parameter: 85
+    value: 2
+    description: Reference acquisition mode for Angle detection feature.
+    unit: 
   angle_ref_acc_x:
-    { param_dec: 0, value_dec: 0 }
+    parameter: 86
+    value: 0
+    description: X axis for reference orientation vector. 0xFFFF means this axis is ignored.
+    unit: mg 
   angle_ref_acc_y:
-    { param_dec: 0, value_dec: 0 }
+    parameter: 87
+    value: 0
+    description: Y axis for reference orientation vector. 0xFFFF means this axis is ignored.
+    unit: mg 
   angle_ref_acc_z:
-    { param_dec: 0, value_dec: 0 }
+    parameter: 88
+    value: 0
+    description: Z axis for reference orientation vector. 0xFFFF means this axis is ignored.
+    unit: mg 
   angle_critical:
-    { param_dec: 0, value_dec: 0 }
+    parameter: 89
+    value: 30
+    description: Critical Angle.
+    unit: Degrees 
   angle_critical_hyst:
-    { param_dec: 0, value_dec: 0 }
+    parameter: 90
+    value: 5
+    description: Critical angle hysteresis.
+    unit: Degrees 
   angle_report_mode:
-    { param_dec: 0, value_dec: 0 }
+    parameter: 91
+    value: 1
+    description: Angle Detection events to report in LoRaWAN TMmessages
+    unit: 
   angle_report_period:
-    { param_dec: 0, value_dec: 0 }
+    parameter: 92
+    value: 300
+    description: Reporting period between repeated event messages. 0 means reports and repetitions will be transmitted after positions.
+    unit: Second 
   angle_report_repeat:
-    { param_dec: 0, value_dec: 0 }
+    parameter: 93
+    value: 0
+    description: number of event message repetitions.0 indicates only one event message is sent (no repetition).
+    unit:  
   angle_rising_time:
-    { param_dec: 0, value_dec: 0 }
+    parameter: 94
+    value: 5
+    description: Rising time phase duration, in seconds.
+    unit: Second 
   angle_falling_time:
-    { param_dec: 0, value_dec: 0 }
+    parameter: 95
+    value: 5
+    description: Falling time phase duration, in seconds.
+    unit: Second 
   angle_learning_time:
-    { param_dec: 0, value_dec: 0 }
+    parameter: 96
+    value: 5
+    description: Learning time phase duration, in seconds. In automatic reference acquisition this is also the period between 2 learning steps
+    unit: Second 
   angle_acc_accuracy:
-    { param_dec: 0, value_dec: 0 }
+    parameter: 97
+    value: 100
+    description: Accuracy of the measured acceleration.
+    unit: mg 
   angle_deviation_delta:
-    { param_dec: 0, value_dec: 0 }
+    parameter: 98
+    value: 0
+    description: A deviation of angle_deviation_delta from the previous reported orientation triggers an event message. Applicable only with angle deviation methods.
+    unit: Degrees 
   angle_deviation_min_interval:
-    { param_dec: 0, value_dec: 0 }
+    parameter: 99
+    value: 10
+    description: No event message is sent before the delay angle_deviation_min_interval from previous angle deviation event is elapsed. Any deviation before this delay is ignored. Applicable only with angle deviation methods.
+    unit: Degrees 
   angle_deviation_max_interval:
-    { param_dec: 0, value_dec: 0 }
+    parameter: 100
+    value: 0
+    description: No event message is sent after this duration from first event message is elapsed. Applicable only with angle deviation methods.
+    unit: Degrees 
   default_profile:
-    { param_dec: 0, value_dec: 0 }
+    parameter: 101
+    value: 0
+    description: Profile applicable to configure several parameters at once, used when application starts, after a reset or when the tracker is turned on
+    unit: 
   password:
-    { param_dec: 0, value_dec: 0 }
+    parameter: 102
+    value: 123
+    description: password used to access user command
+    unit: 
   gps_t0_timeout:
-    { param_dec: 0, value_dec: 0 }
+    parameter: 103
+    value: 30
+    description: Time in seconds to abort the GPS or LPGPS geolocation when not enough satellites are in view.The condition is at least one satellite with a C/N greater than 15 at the end of the configured period.When 0, the timeout doesn’t apply
+    unit: Second 
   gps_fix_timeout:
-    { param_dec: 0, value_dec: 0 }
+    parameter: 104
+    value: 0
+    description: GPS Abort the current GPS geolocation if there is no GPS fix at the end of this durationLPGPS get back to LPGPS geolocation if there is no GPS fix at the end of this durationWhen 0, the timeout doesn’t apply
+    unit: Second 
   geofencing_scan_duration:
-    { param_dec: 0, value_dec: 0 }
+    parameter: 105
+    value: 370
+    description: BLE geozoning scan duration expressed in milliseconds
+    unit: milliSecond 
   beaconing_type:
-    { param_dec: 0, value_dec: 0 }
+    parameter: 106
+    value: 0
+    description: Beaconing advertisement type.
+    unit: 
   beaconing_tx_power:
-    { param_dec: 0, value_dec: 0 }
+    parameter: 107
+    value: 2
+    description: Beaconing TX power
+    unit: 
   beaconing_static_interval:
-    { param_dec: 0, value_dec: 0 }
+    parameter: 108
+    value: 10000
+    description: when the beaconing feature is active, time in milliseconds for beacon advertising periodwhen the tracker is static0 disables beaconing when static
+    unit: milliSecond 
   beaconing_motion_interval:
-    { param_dec: 0, value_dec: 0 }
+    parameter: 109
+    value: 333
+    description: when the beaconing feature is active, time in milliseconds for beacon advertising periodwhen the tracker is moving0 disables beaconing when in motion
+    unit: milliSecond 
   beaconing_motion_duration:
-    { param_dec: 0, value_dec: 0 }
+    parameter: 110
+    value: 20
+    description: when the beaconing feature is active, time in seconds to be considered in motion when receiving a motion event
+    unit: Second 
   ble_cnx_adv_duration:
-    { param_dec: 0, value_dec: 0 }
+    parameter: 111
+    value: 600
+    description: Time in seconds for BLE advertisement duration.
+    unit: Second 
   beacon_id_0:
-    { param_dec: 0, value_dec: 0 }
+    parameter: 112
+    value: 0
+    description: Beacon ID advertised in the BLE Beacon advertisement payload, part 0
+    unit: 
   beacon_id_1:
-    { param_dec: 0, value_dec: 0 }
+    parameter: 113
+    value: 0
+    description: Beacon ID advertised in the BLE Beacon advertisement payload, part 1
+    unit: 
   beacon_id_2:
-    { param_dec: 0, value_dec: 0 }
+    parameter: 114
+    value: 0
+    description: Beacon ID advertised in the BLE Beacon advertisement payload, part 2
+    unit: 
   beacon_id_3:
-    { param_dec: 0, value_dec: 0 }
+    parameter: 115
+    value: 0
+    description: Beacon ID advertised in the BLE Beacon advertisement payload, part 3
+    unit: 
   beacon_id_4:
-    { param_dec: 0, value_dec: 0 }
+    parameter: 116
+    value: 0
+    description: Beacon ID advertised in the BLE Beacon advertisement payload, part 4
+    unit: 
   sos_period:
-    { param_dec: 0, value_dec: 0 }
+    parameter: 117
+    value: 120
+    description: SOS uplink period in seconds
+    unit: Second 
   motion_debounce:
-    { param_dec: 0, value_dec: 0 }
+    parameter: 118
+    value: 1
+    description: Minimum duration of a movement to be detected if motion_sensitivity parameter is set between 1 and 300 triggers motion detection as soon as a single accelerometer sample is above the value set in motion_sensitivity the duration of the period is given by the formula motion_debounce * 20 milli seconds
+    unit: 
   button_mapping:
-    { param_dec: 0, value_dec: 0 }
+    parameter: 119
+    value: 74768
+    description: Configure the button action
+    unit: 
   default_datarate:
-    { param_dec: 0, value_dec: 0 }
+    parameter: 120
+    value: -1
+    description:
+    unit: 
   gps_ehpe_motion:
-    { param_dec: 0, value_dec: 0 }
+    parameter: 121
+    value: 40
+    description: Acceptable GPS horizontal error for GPS geolocation. Applicable if the tracker is in motion.
+    unit: Meters 
   gps_convergence_motion:
-    { param_dec: 0, value_dec: 0 }
+    parameter: 122
+    value: 20
+    description: Time to let to the GPS module to refine the calculated GPS position. Applicable if the tracker is static.
+    unit: Second 
   gps_t0_timeout_motion:
-    { param_dec: 0, value_dec: 0 }
+    parameter: 123
+    value: 30
+    description: Time to let to the GPS module to refine the calculated GPS position. Applicable if the tracker is in motion.
+    unit: Second 
+  ble_cli_active:
+    parameter: 245
+    value: 0
+    description:
+    unit: 
+  profile:
+    parameter: 246
+    value: 0
+    description: Set the dynamic profile of the tracker
+    unit: 
+  consumption:
+    parameter: 247
+    value: 0
+    description: The current consumption of the tracker is resetted set the current consumption of the tracker
+    unit: mAh 
+  ble_bond_info:
+    parameter: 248
+    value: 1
+    description:
+    unit: Second 
   mode:
-    { param_dec: 0, value_dec: 0 }
+    parameter: 249
+    value: 0
+    description: Operational mode of the tracker
+    unit: 
