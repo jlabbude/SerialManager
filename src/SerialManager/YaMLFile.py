@@ -33,7 +33,7 @@ class YaMLFile:
     @staticmethod
     def read_config_template():
         current_config = AbeewaySmartBadgeConfig()
-        with open('~/SerialManager/src/config/abeeway-config-template.yaml', 'r') as yamlfile:
+        with open('/src/config/abeeway-config-template.yaml', 'r') as yamlfile:
             config_data = yaml.safe_load(yamlfile)
 
         for key, value in config_data.get('config', {}).items():
