@@ -7,6 +7,7 @@ from tkinter import Button
 
 import serial.tools.list_ports
 
+from .YaMLFile import YaMLFile
 from .CSVFile import CSVFile
 from .Config import Config
 from .Device import Device
@@ -157,7 +158,7 @@ def main() -> None:
                                  command=lambda: CSVFile.export_devices_from_csv())
 
     else:
-        exit()
+        YaMLFile.read_config_template()
 
     root.grid_rowconfigure(0, weight=1)
     root.grid_rowconfigure(1, weight=1)

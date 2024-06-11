@@ -5,7 +5,8 @@ from tkinter import filedialog
 import tkinter as tk
 import yaml
 
-from SerialManager.GUI_setup import console, root
+from .GUI_setup import console, root
+from .YaMLConfigDataClasses import AbeewaySmartBadgeConfig
 
 
 class YaMLFile:
@@ -30,6 +31,10 @@ class YaMLFile:
             console.insert(tk.END, "No file selected.\n")
 
     @staticmethod
-    def create_config() -> None:
-        with open(os.path.join(os.path.dirname(__file__), "utils", "config.yaml"), "w") as file:
-            pass
+    def read_config_template():
+        current_config = AbeewaySmartBadgeConfig()
+        with open('~/SerialManager/src/config/abeeway-config-template.yaml', 'r') as yamlfile:
+            config_data = yaml.safe_load(yamlfile)
+
+        for key, value in config_data.get('config', {}).items():
+            print(f'{key}')
