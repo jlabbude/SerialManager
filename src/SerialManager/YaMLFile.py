@@ -7,6 +7,7 @@ import yaml
 
 from .GUI_setup import console, root
 from .YaMLConfigDataClasses import AbeewaySmartBadgeConfig
+from .CustomGUI import TesteConfig
 
 
 class YaMLFile:
@@ -33,8 +34,8 @@ class YaMLFile:
     @staticmethod
     def read_config_template():
         current_config = AbeewaySmartBadgeConfig()
-        with open('/src/config/abeeway-config-template.yaml', 'r') as yamlfile:
+        with open('/home/lucas/SerialManager/src/config/abeeway-config-template.yaml', 'r') as yamlfile:
             config_data = yaml.safe_load(yamlfile)
-
-        for key, value in config_data.get('config', {}).items():
-            print(f'{key}')
+        values = config_data.get('config', {}).items()
+        root2 = tk.Tk()
+        app = TesteConfig(root2, list_items=values)

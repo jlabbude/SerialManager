@@ -123,6 +123,22 @@ def main() -> None:
                                  font=("Arial", 12),
                                  command=lambda: Config.import_config())
 
+                root.grid_rowconfigure(0, weight=1)
+                root.grid_rowconfigure(1, weight=1)
+                root.grid_rowconfigure(2, weight=1)
+                root.grid_rowconfigure(3, weight=1)
+                root.grid_rowconfigure(4, weight=4)
+
+                root.grid_columnconfigure(0, weight=2)
+                root.grid_columnconfigure(1, weight=2)
+
+                button1.grid(row=0, column=0, padx=5, pady=5, sticky="nsew")
+                button2.grid(row=0, column=1, padx=5, pady=5, sticky="nsew")
+                button3.grid(row=1, column=0, padx=5, pady=5, sticky="nsew")
+                button4.grid(row=1, column=1, padx=5, pady=5, sticky="nsew")
+
+                root.mainloop()
+
             case 'upload':
                 button1 = Button(root,
                                  text="Make CSV",
@@ -157,21 +173,23 @@ def main() -> None:
                                  font=("Arial", 12),
                                  command=lambda: CSVFile.export_devices_from_csv())
 
+                root.grid_rowconfigure(0, weight=1)
+                root.grid_rowconfigure(1, weight=1)
+                root.grid_rowconfigure(2, weight=1)
+                root.grid_rowconfigure(3, weight=1)
+                root.grid_rowconfigure(4, weight=4)
+
+                root.grid_columnconfigure(0, weight=2)
+                root.grid_columnconfigure(1, weight=2)
+
+                button1.grid(row=0, column=0, padx=5, pady=5, sticky="nsew")
+                button2.grid(row=0, column=1, padx=5, pady=5, sticky="nsew")
+                button3.grid(row=1, column=0, padx=5, pady=5, sticky="nsew")
+                button4.grid(row=1, column=1, padx=5, pady=5, sticky="nsew")
+
+                root.mainloop()
+
     else:
         YaMLFile.read_config_template()
 
-    root.grid_rowconfigure(0, weight=1)
-    root.grid_rowconfigure(1, weight=1)
-    root.grid_rowconfigure(2, weight=1)
-    root.grid_rowconfigure(3, weight=1)
-    root.grid_rowconfigure(4, weight=4)
-
-    root.grid_columnconfigure(0, weight=2)
-    root.grid_columnconfigure(1, weight=2)
-
-    button1.grid(row=0, column=0, padx=5, pady=5, sticky="nsew")
-    button2.grid(row=0, column=1, padx=5, pady=5, sticky="nsew")
-    button3.grid(row=1, column=0, padx=5, pady=5, sticky="nsew")
-    button4.grid(row=1, column=1, padx=5, pady=5, sticky="nsew")
-
-    root.mainloop()
+        root.mainloop()
