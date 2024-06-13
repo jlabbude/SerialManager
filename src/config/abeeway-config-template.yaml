@@ -25,27 +25,27 @@ config:
     parameter: 4
     value: 0
     description:
-    unit: 
+    unit: !!null
   geoloc_sensor:
     parameter: 5
     value: 1
     description: Geolocation sensor profile used in main operatingmode and SOS
-    unit: 
+    unit: !!null
   geoloc_method:
     parameter: 6
     value: 1
     description: Geolocation policy used for the side operatingmodes
-    unit: 
+    unit: !!null
   antenna:
     parameter: 7
     value: 0
     description:
-    unit: 
+    unit: !!null
   motion_nb_pos:
     parameter: 8
     value: 1
     description: This parameter has been updated in FW2.3In motion tracking mode additional positions are donewhen the device goes to static (after motion_durationperiod). If set to 0, no positions are addedIn motion start/end mode Number of positions toreport during motion events
-    unit: 
+    unit: !!null
   gps_timeout:
     parameter: 9
     value: 240
@@ -70,17 +70,17 @@ config:
     parameter: 13
     value: 213055
     description: Configuration flags
-    unit: 
+    unit: !!null
   transmit_strat:
     parameter: 14
     value: 2
     description: Transmit strategy in motion
-    unit: 
+    unit: !!null
   ble_beacon_cnt:
     parameter: 15
     value: 4
     description: This parameter provides the maximum number of BLE beacons to provide in payload (1)
-    unit: 
+    unit: !!null
   ble_beacon_timeout:
     parameter: 16
     value: 2
@@ -95,22 +95,22 @@ config:
     parameter: 18
     value: 0
     description: Bitmap enabling the LoRaWAN TM confirmation of specific type of uplink message
-    unit: 
+    unit: !!null
   confirmed_ul_retry:
     parameter: 19
     value: 3
     description: The number of retries for each confirmed uplink when the confirmation is not received
-    unit: 
+    unit: !!null
   motion_sensitivity:
     parameter: 20
     value: 131073
     description: Accelerometer configuration.
-    unit: 
+    unit: !!null
   shock_detection:
     parameter: 21
     value: 0
     description: This parameter provides the configuration of the sensitivity of the shock detection.A value of 0 disables shock detection.shock_detection value = (shock intensity (in g) - 1)/0.063.Note When enabled shock_detection sensitivity should be strictly lessthan motion_sensitivity parameter sensitivity
-    unit: 
+    unit: !!null
   periodic_activity_period:
     parameter: 22
     value: 0
@@ -150,12 +150,12 @@ config:
     parameter: 29
     value: 0
     description: Configure the action to be done when entering a critical state
-    unit: 
+    unit: !!null
   transmit_strat_custom:
     parameter: 30
     value: 0
     description:
-    unit: 
+    unit: !!null
   network_timeout_check:
     parameter: 31
     value: 432000
@@ -170,37 +170,37 @@ config:
     parameter: 33
     value: 0
     description: Collection scan type used
-    unit: 
+    unit: !!null
   collection_nb_entry:
     parameter: 34
     value: 20
     description: Maximum number of elements to report in collection payloads after a scan.
-    unit: 
+    unit: !!null
   collection_ble_filter_type:
     parameter: 35
     value: 0
     description: Beacon type to scan and report when CollectionScan Type is BLE
-    unit: 
+    unit: !!null
   collection_ble_filter_main_1:
     parameter: 36
     value: 0
     description: First part of the main BLE filter.
-    unit: 
+    unit: !!null
   collection_ble_filter_main_2:
     parameter: 37
     value: 0
     description: Second part of the main BLE filter.
-    unit: 
+    unit: !!null
   collection_ble_filter_sec_value:
     parameter: 38
     value: 0
     description: BLE secondary value.
-    unit: 
+    unit: !!null
   collection_ble_filter_sec_mask:
     parameter: 39
     value: 0
     description: BLE secondary mask
-    unit: 
+    unit: !!null
   battery_capacity:
     parameter: 40
     value: -1
@@ -210,42 +210,42 @@ config:
     parameter: 41
     value: 0
     description:
-    unit: 
+    unit: !!null
   gnss_constellation:
     parameter: 42
     value: 4
     description: Configure the GNSS constellations used by the GPS chip to compute a position
-    unit: 
+    unit: !!null
   position_ble_filter_type:
     parameter: 77
     value: 0
     description: Beacon type to scan and report when position ScanType is BLE
-    unit: 
+    unit: !!null
   position_ble_filter_main_1:
     parameter: 78
     value: 0
     description: First part of the main BLE filter. (UUID BEACON)
-    unit: 
+    unit: !!null
   position_ble_filter_main_2:
     parameter: 79
     value: 0
     description: Second part of the main BLE filter. (UUID BEACON)
-    unit: 
+    unit: !!null
   position_ble_filter_sec_value:
     parameter: 80
     value: 0
     description: BLE secondary value.
-    unit: 
+    unit: !!null
   position_ble_filter_sec_mask:
     parameter: 81
     value: 0
     description: BLE secondary mask
-    unit: 
+    unit: !!null
   position_ble_report_type:
     parameter: 82
     value: 0
     description: Configure the BLE data to report in payloads.
-    unit: 
+    unit: !!null
   buzzer_volume:
     parameter: 83
     value: 10
@@ -255,12 +255,12 @@ config:
     parameter: 84
     value: 0
     description: Angle Detection method.
-    unit: 
+    unit: !!null
   angle_ref_acq:
     parameter: 85
     value: 2
     description: Reference acquisition mode for Angle detection feature.
-    unit: 
+    unit: !!null
   angle_ref_acc_x:
     parameter: 86
     value: 0
@@ -290,7 +290,7 @@ config:
     parameter: 91
     value: 1
     description: Angle Detection events to report in LoRaWAN TMmessages
-    unit: 
+    unit: !!null
   angle_report_period:
     parameter: 92
     value: 300
@@ -340,12 +340,12 @@ config:
     parameter: 101
     value: 0
     description: Profile applicable to configure several parameters at once, used when application starts, after a reset or when the tracker is turned on
-    unit: 
+    unit: !!null
   password:
     parameter: 102
     value: 123
     description: password used to access user command
-    unit: 
+    unit: !!null
   gps_t0_timeout:
     parameter: 103
     value: 30
@@ -365,12 +365,12 @@ config:
     parameter: 106
     value: 0
     description: Beaconing advertisement type.
-    unit: 
+    unit: !!null
   beaconing_tx_power:
     parameter: 107
     value: 2
     description: Beaconing TX power
-    unit: 
+    unit: !!null
   beaconing_static_interval:
     parameter: 108
     value: 10000
@@ -395,27 +395,27 @@ config:
     parameter: 112
     value: 0
     description: Beacon ID advertised in the BLE Beacon advertisement payload, part 0
-    unit: 
+    unit: !!null
   beacon_id_1:
     parameter: 113
     value: 0
     description: Beacon ID advertised in the BLE Beacon advertisement payload, part 1
-    unit: 
+    unit: !!null
   beacon_id_2:
     parameter: 114
     value: 0
     description: Beacon ID advertised in the BLE Beacon advertisement payload, part 2
-    unit: 
+    unit: !!null
   beacon_id_3:
     parameter: 115
     value: 0
     description: Beacon ID advertised in the BLE Beacon advertisement payload, part 3
-    unit: 
+    unit: !!null
   beacon_id_4:
     parameter: 116
     value: 0
     description: Beacon ID advertised in the BLE Beacon advertisement payload, part 4
-    unit: 
+    unit: !!null
   sos_period:
     parameter: 117
     value: 120
@@ -425,17 +425,17 @@ config:
     parameter: 118
     value: 1
     description: Minimum duration of a movement to be detected if motion_sensitivity parameter is set between 1 and 300 triggers motion detection as soon as a single accelerometer sample is above the value set in motion_sensitivity the duration of the period is given by the formula motion_debounce * 20 milli seconds
-    unit: 
+    unit: !!null
   button_mapping:
     parameter: 119
     value: 74768
     description: Configure the button action
-    unit: 
+    unit: !!null
   default_datarate:
     parameter: 120
     value: -1
     description:
-    unit: 
+    unit: !!null
   gps_ehpe_motion:
     parameter: 121
     value: 40
@@ -455,12 +455,12 @@ config:
     parameter: 245
     value: 0
     description:
-    unit: 
+    unit: !!null
   profile:
     parameter: 246
     value: 0
     description: Set the dynamic profile of the tracker
-    unit: 
+    unit: !!null
   consumption:
     parameter: 247
     value: 0

@@ -3,6 +3,8 @@ import shutil
 from tkinter import filedialog
 
 import tkinter as tk
+from typing import Any
+
 import yaml
 
 from .GUI_setup import console, root
@@ -35,7 +37,11 @@ class YaMLFile:
     def read_config_template():
         current_config = AbeewaySmartBadgeConfig()
         with open('/home/lucas/SerialManager/src/config/abeeway-config-template.yaml', 'r') as yamlfile:
-            config_data = yaml.safe_load(yamlfile)
-        values = config_data.get('config', {}).items()
+            config_data: dict[dict] = yaml.safe_load(yamlfile).get('config', [{}])
+        param_names = [value for value in config_data]
+        values: list[int] = []
+        for name in param_names:
+            values.append(config_data.get(name).get('value'))
+        root.withdraw()
         root2 = tk.Tk()
-        app = TesteConfig(root2, list_items=values)
+        TesteConfig(root2, items=param_names, values=values)

@@ -46,21 +46,20 @@ class CustomDialog(simpledialog.Dialog):
 
 class TesteConfig(simpledialog.Dialog):
 
-    def __init__(self, root, list_items):
+    def __init__(self, root, items, values):
         self.root = root
-        self.root.title("Dropdown List App")
+        self.root.title("Config create")
         self.tree = ttk.Treeview(root)
         self.tree.pack(fill='both', expand=True)
 
         self.tree.heading('#0', text='Configurations', anchor='w')
 
-        self.create_list(list_items)
+        self.create_list(items, values)
 
-    def create_list(self, list_items):
-        for key, value in list_items:
-            parent = self.tree.insert('', 'end', text=key)
-            for sub_key, sub_value in value.items():
-                self.create_value_entry(parent, sub_key)
+    def create_list(self, list_items, values):
+        for item, value in zip(list_items, values):
+            parent = self.tree.insert('', 'end', text=item)
+            self.create_value_entry(parent, value)
 
     def create_value_entry(self, parent, sub_key):
         frame = ttk.Frame(self.root)
