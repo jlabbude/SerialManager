@@ -1,3 +1,4 @@
+import tkinter.commondialog
 from tkinter import Label, simpledialog, Entry, W, ttk
 
 
@@ -61,12 +62,10 @@ class TesteConfig(simpledialog.Dialog):
             parent = self.tree.insert('', 'end', text=item)
             self.create_value_entry(parent, value)
 
-    def create_value_entry(self, parent, sub_key):
-        frame = ttk.Frame(self.root)
-        self.tree.insert(parent, 'end', text=sub_key, open=True, values=(frame,))
-
-        # Bind click event to open the dialog
-        self.tree.bind("<Double-1>", self.on_double_click)
+    def create_value_entry(self, parent, value):
+        entry = Entry(self.root, width=30)
+        entry.pack()
+        self.tree.insert(parent, 'end', text='', open=True, values=(entry,))
 
     def on_double_click(self, event):
         item_id = self.tree.selection()[0]
