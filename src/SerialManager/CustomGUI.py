@@ -1,4 +1,3 @@
-import tkinter.commondialog
 from tkinter import Label, simpledialog, Entry, W, ttk
 
 
@@ -50,32 +49,39 @@ class TesteConfig(simpledialog.Dialog):
     def __init__(self, root, items, values):
         self.root = root
         self.root.title("Config create")
-        self.tree = ttk.Treeview(root)
+        self.tree = ttk.Treeview(root, columns=('Value'), show='tree headings')
         self.tree.pack(fill='both', expand=True)
 
         self.tree.heading('#0', text='Configurations', anchor='w')
+        self.tree.heading('Value', text='Value', anchor='w')
 
         self.create_list(items, values)
 
     def create_list(self, list_items, values):
         for item, value in zip(list_items, values):
-            parent = self.tree.insert('', 'end', text=item)
-            self.create_value_entry(parent, value)
+            parent = self.tree.insert('', 'end', text=item, values=(value,))
+            self.tree.set(parent, 'Value', value)
 
-    def create_value_entry(self, parent, value):
-        entry = Entry(self.root, width=30)
-        entry.pack()
-        self.tree.insert(parent, 'end', text='', open=True, values=(entry,))
+        self.tree.bind('<Double-1>', self.on_double_click)
 
     def on_double_click(self, event):
         item_id = self.tree.selection()[0]
-        item_text = self.tree.item(item_id, "text")
+        column = self.tree.identify_column(event.x)
 
-        if self.tree.parent(item_id):  # Check if it is a child node
-            value = simpledialog.askinteger("Input", f"Enter value for {item_text}:")
-            if value is not None:
-                print(f"Entered value for {item_text}: {value}")
+        if column == '#2':  # 'Value' column
+            x, y, width, height = self.tree.bbox(item_id, column)
+            value = self.tree.item(item_id, 'values')[0]
 
-    @staticmethod
-    def on_submit(value, sub_key):
-        print(f"Value entered for {sub_key}: {value}")
+            entry = ttk.Entry(self.tree, width=30)
+            entry.insert(0, value)
+            entry.place(x=x, y=y, width=width, height=height)
+            entry.bind('<Return>', lambda e: self.update_value(entry, item_id))
+            entry.focus()
+
+            # Bind the Escape key to remove the entry box without saving
+            entry.bind('<Escape>', lambda e: entry.destroy())
+
+    def update_value(self, entry, item_id):
+        new_value = entry.get()
+        self.tree.set(item_id, 'Value', new_value)
+        entry.destroy()
