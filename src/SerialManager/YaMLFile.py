@@ -40,8 +40,10 @@ class YaMLFile:
             config_data: dict[dict] = yaml.safe_load(yamlfile).get('config', [{}])
         param_names = [value for value in config_data]
         values: list[int] = []
+        description: list[str] = []
         for name in param_names:
             values.append(config_data.get(name).get('value'))
+            description.append(config_data.get(name).get('description'))
         root.withdraw()
         root2 = tk.Tk()
-        TesteConfig(root2, items=param_names, values=values)
+        TesteConfig(root2, items=param_names, values=values, description=description)

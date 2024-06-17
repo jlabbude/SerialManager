@@ -1,4 +1,4 @@
-from tkinter import Label, simpledialog, Entry, W, ttk
+from tkinter import Label, simpledialog, Entry, W, ttk, messagebox
 
 
 class HidePassword(simpledialog.Dialog):
@@ -46,14 +46,16 @@ class CustomDialog(simpledialog.Dialog):
 
 class TesteConfig(simpledialog.Dialog):
 
-    def __init__(self, root, items, values):
+    def __init__(self, root, items, values, description):
         self.root = root
         self.root.title("Config create")
-        self.tree = ttk.Treeview(root, columns=('Value'), show='tree headings')
+        self.tree = ttk.Treeview(root, columns='Value', show='tree headings')
         self.tree.pack(fill='both', expand=True)
 
         self.tree.heading('#0', text='Configurations', anchor='w')
         self.tree.heading('Value', text='Value', anchor='w')
+
+        self.description = description
 
         self.create_list(items, values)
 
@@ -68,19 +70,29 @@ class TesteConfig(simpledialog.Dialog):
         item_id = self.tree.selection()[0]
         column = self.tree.identify_column(event.x)
 
-        if column == '#1':
-            x, y, width, height = self.tree.bbox(item_id, column)
-            value = self.tree.item(item_id, 'values')[0]
+        match column:
+            case '#0':
+                messagebox.showinfo(title='', message=self.description[self.tree.index(item=str(item_id))])
+            case '#1':
+                x, y, width, height = self.tree.bbox(item_id, column)
+                value = self.tree.item(item_id, 'values')[0]
 
-            entry = ttk.Entry(self.tree, width=30)
-            entry.insert(0, value)
-            entry.place(x=x, y=y, width=width, height=height)
-            entry.bind('<Return>', lambda e: self.update_value(entry, item_id))
-            entry.focus()
+                entry = ttk.Entry(self.tree, width=30)
+                entry.insert(0, value)
+                entry.place(x=x, y=y, width=width, height=height)
+                entry.bind('<Return>', lambda e: self.update_value(entry, item_id))
+                entry.focus()
 
-            entry.bind('<Escape>', lambda e: entry.destroy())
+                entry.bind('<Escape>', lambda e: entry.destroy())
+            case _:
+                exit()  # Never happens
 
     def update_value(self, entry, item_id):
         new_value = entry.get()
-        self.tree.set(item_id, 'Value', new_value)
+        try:
+            self.tree.set(item_id, 'Value', int(new_value))
+        except ValueError:
+            self.tree.set(item_id, 'Value', 0)
         entry.destroy()
+        print(f"New value -> {item_id} : {new_value}")
+        # TODO config_builder
