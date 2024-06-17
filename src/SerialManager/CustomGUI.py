@@ -68,7 +68,7 @@ class TesteConfig(simpledialog.Dialog):
         item_id = self.tree.selection()[0]
         column = self.tree.identify_column(event.x)
 
-        if column == '#2':  # 'Value' column
+        if column == '#1':
             x, y, width, height = self.tree.bbox(item_id, column)
             value = self.tree.item(item_id, 'values')[0]
 
@@ -78,7 +78,6 @@ class TesteConfig(simpledialog.Dialog):
             entry.bind('<Return>', lambda e: self.update_value(entry, item_id))
             entry.focus()
 
-            # Bind the Escape key to remove the entry box without saving
             entry.bind('<Escape>', lambda e: entry.destroy())
 
     def update_value(self, entry, item_id):
