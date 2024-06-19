@@ -63,6 +63,8 @@ class TesteConfig(simpledialog.Dialog):
 
         self.tooltip = ToolTip(self.tree)
 
+        self.current_item = None
+
     def create_list(self, list_items, values, units):
         for item, value, unit in zip(list_items, values, units):
             parent = self.tree.insert('', 'end', text=item, values=(value,))
@@ -75,15 +77,17 @@ class TesteConfig(simpledialog.Dialog):
 
     def on_mouse_hover(self, event):
         item_id = self.tree.identify_row(event.y)
-        if item_id:
-            item_index = self.tree.index(item_id)
-            if item_index < len(self.description):
-                self.tooltip.showtip(self.description[item_index], event.x, event.y)
-        else:
+        if item_id != self.current_item:
             self.tooltip.hidetip()
+            self.current_item = item_id
+            if item_id:
+                item_index = self.tree.index(item_id)
+                if item_index < len(self.description):
+                    self.tooltip.showtip(self.description[item_index], event.x, event.y)
 
     def on_mouse_leave(self, _event):
         self.tooltip.hidetip()
+        self.current_item = None
 
     def on_double_click(self, event):
         item_id = self.tree.selection()[0]
