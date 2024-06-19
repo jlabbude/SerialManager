@@ -1,478 +1,1218 @@
 # firmware version 2.4-1
 
+# list types:
+# 0 = single choice
+# 1 = multiple choice
+
 config:
   ul_period:
     parameter: 0
     value: 300
     description: Periodicity of position or activity messages in motion, start/end, activity or permanent operating mode.
-    unit: Second 
+    description-long: |
+    list-type:
+    list:
+    range-low:
+    range-high:
+    unit: Second
   lora_period:
     parameter: 1
     value: 600
     description: Periodicity of LoRa heartbeat messages.
-    unit: Second 
+    description-long: |
+    list-type:
+    list:
+    range-low:
+    range-high:
+    unit: Second
   pw_stat_period:
     parameter: 2
     value: 0
     description:
-    unit: Second 
+    description-long: |
+    list-type:
+    list:
+    range-low:
+    range-high:
+    unit: Second
   periodic_pos_period:
     parameter: 3
     value: 0
     description: The device sends additional positions at the periodic_pos_period frequency. This feature is disabled when itsassociated configuration parameter is set to 0.This periodic position reporting uses the geoloc_method geolocation strategy.
-    unit: Second 
+    description-long: |
+      The device sends additional positions at the periodic_pos_period frequency. This feature is disabled when its
+      associated configuration parameter is set to 0.
+      This periodic position reporting uses the geoloc_method geolocation strategy.
+    list-type:
+    list:
+    range-low:
+    range-high:
+    unit: Second
   unknown:
     parameter: 4
     value: 0
     description:
-    unit: !!null
+    description-long: |
+    list-type:
+    list:
+    range-low:
+    range-high:
+    unit: _
   geoloc_sensor:
     parameter: 5
     value: 1
     description: Geolocation sensor profile used in main operatingmode and SOS
-    unit: !!null
+    description-long: |
+    list-type: 0
+    list:
+      - WIFI only
+      - GPS only
+      - LPGPS (AGPS/GPS)
+      - Reserved (do not use)
+      - Reserved (do not use)
+      - Reserved (do not use)
+      - WIFI-GPS only (WIFI then GPS if WIFI fails in one geolocation cycle)
+      - WIFI-LPGPS only (WIFI then LPGPS if WIFI fails in one geolocation cycle)
+      - Reserved (do not use)
+      - WIFI-LPGPS first, then WIFI-GPS until timeout, then back to WIFI-LPGPS
+      - BLE scan only
+      - BLE-GPS only (BLE then GPS if BLE fails in one geolocation cycle)
+      - BLE-LPGPS only (BLE then LPGPS if BLE fails in one geolocation cycle)
+    range-low:
+    range-high:
+    unit: _
   geoloc_method:
     parameter: 6
     value: 1
     description: Geolocation policy used for the side operatingmodes
-    unit: !!null
+    description-long: |
+    list-type: 0
+    list:
+      - WIFI
+      - GPS
+      - LPGPS (AGPS/GPS)
+      - WIFI-GPS only (WIFI then GPS if WIFI fails in one geolocation cycle)
+      - WIFI-LPGPS only (WIFI then LPGPS if WIFI fails in one geolocation cycle)
+      - BLE scan only
+      - BLE-GPS only (BLE then GPS if BLE fails in one geolocation cycle)
+      - BLE-LPGPS only (BLE then LPGPS if BLE fails in one geolocation cycle)
+    range-low:
+    range-high:
+    unit: _
   antenna:
     parameter: 7
     value: 0
     description:
-    unit: !!null
+    description-long: |
+      This parameter has been updated in FW2.3
+      In motion tracking mode: additional positions are done
+      when the device goes to static (after motion_duration
+      period). If set to 0, no positions are added
+      In motion start/end mode: Number of positions to
+      report during motion events
+    list-type:
+    list:
+    range-low:
+    range-high:
+    unit: _
   motion_nb_pos:
     parameter: 8
     value: 1
     description: This parameter has been updated in FW2.3In motion tracking mode additional positions are donewhen the device goes to static (after motion_durationperiod). If set to 0, no positions are addedIn motion start/end mode Number of positions toreport during motion events
-    unit: !!null
+    description-long: |
+    list-type:
+    list:
+    range-low:
+    range-high:
+    unit: _
   gps_timeout:
     parameter: 9
     value: 240
     description: Timeout used for GPS geolocation mode before sending a message. (GPS position or timeout)
-    unit: Second 
+    description-long: |
+    list-type:
+    list:
+    range-low:
+    range-high:
+    unit: Second
   agps_timeout:
     parameter: 10
     value: 45
     description: Timeout used for LPGPS geolocation mode beforesending the geolocation message.
-    unit: Second 
+    description-long: |
+    list-type:
+    list:
+    range-low:
+    range-high:
+    unit: Second
   gps_ehpe:
     parameter: 11
     value: 20
     description: Acceptable GPS horizontal error for GPS geolocation
-    unit: meter 
+    description-long: |
+    list-type:
+    list:
+    range-low:
+    range-high:
+    unit: Meter
   gps_convergence:
     parameter: 12
     value: 30
     description: Time let to the GPS module to refine the calculated GPS position
-    unit: Second 
+    description-long: |
+    list-type:
+    list:
+    range-low:
+    range-high:
+    unit: Second
   config_flags:
     parameter: 13
     value: 213055
     description: Configuration flags
-    unit: !!null
+    description-long: |
+    list-type: 1
+    list:
+      - bit0 Frame pending mechanism
+      - bit1 Activate very long button press to switch to off mode
+      - bit2 Deprecated, to not used
+      - bit3 Send a configuration uplink message in response to a configuration modification downlink.
+      - Bit4 WIFI payload with Cypher (0) or without Cypher (1) (1)
+      - bit5 Activate BLE connectivity interface at the start time (2)
+      - bit6 First WIFI scan when geolocation starts. If disabled (0), WIFI position is replaced by a geoloc start message
+      - bit7 LED blinks when a GPS fix is received. Set to enable the feature, reset to disable
+      - bit8 Set to enable the sending of a motion start message
+      - bit9 Set to enable the sending of a motion end message
+      - bit10 Set to enable a new OTA join when leaving the mode OFF (3)
+      - bit11 Asymmetric BLE pairing 0 accepted, 1 rejected (4) (5)
+      - bit12 Set to enable Long WIFI payload with up to 12 BSSID (6)
+      - bit13 Set to enable Collection Long Report
+      - bit14 Set to enable the autostart of the tracker when leaving shipping state (7)
+      - bit15 Set to forbid the mode OFF. (8)
+      - bit16 Set to enable a melody during SOS
+      - bit17 Set to enable the automatic data rate selection in case of too long payloads (9) (10)
+      - bit18 Set to enable extended position payload, (type=0x0E), reset to use classic payload (type=0x03)
+      - Bit19 Reserved, do not used
+      - Bit20 Enable the CLI over BLE
+    range-low:
+    range-high:
+    unit: _
   transmit_strat:
     parameter: 14
     value: 2
     description: Transmit strategy in motion
-    unit: !!null
+    description-long: |
+    list-type:
+    list:
+      - Single fixed. Single TX. Using the data rate configured in default_datarate parameter.
+      - Single random Single TX. Using a random data rate within [DR0-DR5].
+      - Dual random First TX using a random data rate within [DR4-DR5], next TX using a random data rate within [DR0-DR3].
+      - Dual fixed First TX using a random data rate within [DR4-DR5]. Next TX Using the data rate configured in default_datarate parameter. (not recommended)
+      - Reserved, internal use only.
+      - Activate the strategy defined with transmit_strat_custom parameter"
+    range-low:
+    range-high:
+    unit: _
   ble_beacon_cnt:
     parameter: 15
     value: 4
     description: This parameter provides the maximum number of BLE beacons to provide in payload (1)
-    unit: !!null
+    description-long: |
+    list-type:
+    list:
+    range-low:
+    range-high:
+    unit: _
   ble_beacon_timeout:
     parameter: 16
     value: 2
     description: BLE scan duration
-    unit: Second 
+    description-long: |
+    list-type:
+    list:
+    range-low:
+    range-high:
+    unit: Second
   gps_standby_timeout:
     parameter: 17
     value: 0
     description: Duration of the GPS standby mode before going OFF.When 0, no standby timeout is applied
-    unit: Second 
+    description-long: |
+    list-type:
+    list:
+    range-low:
+    range-high:
+    unit: Second
   confirmed_ul_bitmap:
     parameter: 18
     value: 0
     description: Bitmap enabling the LoRaWAN TM confirmation of specific type of uplink message
-    unit: !!null
+    description-long: |
+    list-type:
+    list:
+    range-low:
+    range-high:
+    unit: _
   confirmed_ul_retry:
     parameter: 19
     value: 3
     description: The number of retries for each confirmed uplink when the confirmation is not received
-    unit: !!null
+    description-long: |
+    list-type:
+    list:
+    range-low:
+    range-high:
+    unit: _
   motion_sensitivity:
     parameter: 20
     value: 131073
     description: Accelerometer configuration.
-    unit: !!null
+    description-long: |
+      Accelerometer configuration. Functioning has been modified in FW
+      2.3
+
+      1-30:
+      The threshold is coded as follow: motion_sensitivity * 0.063g
+
+      31-99:
+      Same mode than above with the value 30. The threshold is capped to 30 * 0.063 = 1,89g
+
+      100:
+      Default mode (was 0 in firmware version 2.2-x and below).
+
+      101-200:
+      Default mode (sensitivity ranging from 1% to 100% as in firmware version 2.2-x and below).
+    list-type:
+    list:
+    range-low:
+    range-high:
+    unit: _
   shock_detection:
     parameter: 21
     value: 0
-    description: This parameter provides the configuration of the sensitivity of the shock detection.A value of 0 disables shock detection.shock_detection value = (shock intensity (in g) - 1)/0.063.Note When enabled shock_detection sensitivity should be strictly lessthan motion_sensitivity parameter sensitivity
-    unit: !!null
+    description: This parameter provides the configuration of the sensitivity of the shock detection.
+    description-long: |
+      This parameter provides the configuration of the sensitivity of the shock detection.
+      A value of 0 disables shock detection.
+      shock_detection value = (shock intensity (in g) - 1)/0.063.
+      
+      Note - When enabled shock_detection sensitivity should be strictly less
+      than motion_sensitivity parameter sensitivity
+    list-type:
+    list:
+    range-low:
+    range-high:
+    unit: _
   periodic_activity_period:
     parameter: 22
     value: 0
     description: Period of the periodic position report. When set to 0, the reporting is disabled.
-    unit: Second 
+    description-long: |
+    list-type:
+    list:
+    range-low:
+    range-high:
+    unit: Second
   motion_duration:
     parameter: 23
     value: 180
     description: Period of time required to detect the end of a motion
-    unit: Second 
+    description-long: |
+    list-type:
+    list:
+    range-low:
+    range-high:
+    unit: Second
   geofencing_scan_period:
     parameter: 24
     value: 0
-    description: scan period (in seconds).0 means the BLE geozoning scan is disabled
-    unit: Second 
+    description: Scan period (in seconds).
+    description-long: |
+      Scan period (in seconds). 
+      0 means the BLE geozoning scan is disabled
+    list-type:
+    list:
+    range-low:
+    range-high:
+    unit: Second
   geofencing_collect_period:
     parameter: 25
     value: 60
-    description: Period in second at which the last beacon seen is inserted in the collection.0, means there is no geozoning collection reported.
-    unit: Second 
+    description: Period in second at which the last beacon seen is inserted in the collection.
+    description-long: |
+      Period in second at which the last beacon seen is inserted in the collection.
+      0, means there is no geozoning collection reported.
+    list-type:
+    list:
+    range-low:
+    range-high:
+    unit: Second
   ble_rssi_filter:
     parameter: 26
     value: -85
-    description: RSSI value to filter BLE beacons with BLE-GPSgeolocation mode. (negative value, refer to thesection Two’s complement Encoding forinformation for the encoding).
-    unit: dBm 
+    description: RSSI value to filter BLE beacons with BLE-GPSgeolocation mode.
+    description-long: |
+      RSSI value to filter BLE beacons with BLE-GPS
+      geolocation mode. (negative value, refer to the
+      section Two’s complement Encoding for
+      information for the encoding).
+    list-type:
+    list:
+    range-low:
+    range-high:
+    unit: dBm
   temperature_high:
     parameter: 27
     value: 255
-    description: Configure the high threshold temperature255 = disabled
-    unit: ºC 
+    description: High threshold.
+    description-long: |
+      Configure the high threshold temperature
+      255 = disabled
+    list-type:
+    list:
+    range-low:
+    range-high:
+    unit: ºC
   temperature_low:
     parameter: 28
     value: 255
-    description: Configure the low threshold temperature255 = disabled
-    unit: °C 
+    description: Low threshold temperature.
+    description-long: |
+      Configure the low threshold temperature
+      255 = disabled
+    list-type:
+    list:
+    range-low:
+    range-high:
+    unit: °C
   temperature_action:
     parameter: 29
     value: 0
     description: Configure the action to be done when entering a critical state
-    unit: !!null
+    description-long: |
+      Configure the action to be done when entering a critical state:
+      0: No action
+      1: Geolocation disabled if temperature_high is reached
+      2: Geolocation disabled if temperature_low is reached
+      3: Geolocation disabled if temperature_low or temperature_high is reached
+    list-type: 0
+    list:
+      - No action.
+      - Battery level is shown with the LEDs.
+      - Start/Stop SOS.
+      - Alert.
+      - Whitelist a badge with proximity.
+      - Angle detection manual trigger.
+      - Special sequence activation
+    range-low:
+    range-high:
+    unit: _
   transmit_strat_custom:
     parameter: 30
     value: 0
     description:
-    unit: !!null
+    description-long: |
+      bit 0: ADR activation in static (0: enabled)
+
+      bit 1: Transmission type:
+      • 0: single transmission
+      • 1: double transmission
+
+      bit 2-4: First transmission, data rate distribution:
+      • 0: Random
+      • 1: Bell Curve
+      • 2: Ring
+
+      bit 5-7: Second transmission, data rate distribution:
+      • 0: Random
+      • 1: Bell Curve
+      • 2: Ring
+
+      bit 8-15: Bitmap representing each data rate to select for the first transmission (from DR0 to DR7) (4) bit 8 is DR0, then Bit 9, DR1 and so on.
+
+      bit 16-23: Bitmap representing each data rate to select for the second transmission (from DR0 to DR7) (4). bit 16 is DR0, then Bit 17, DR1 and so on.
+    list-type:
+    list:
+    range-low:
+    range-high:
+    unit: _
   network_timeout_check:
     parameter: 31
     value: 432000
-    description: Time without received downlink, before asking a link check request0 No timeout check is done
-    unit: Second 
+    description: Time without received downlink, before asking a link check request.
+    description-long: |
+      Time without received downlink, before asking a link check request
+      0: No timeout check is done
+    list-type:
+    list:
+    range-low:
+    range-high:
+    unit: Second
   network_timeout_reset:
     parameter: 32
     value: 172800
-    description: Time after network_timeout_check without received downlink before the tracker resets.0 feature deactivated
-    unit: Second 
+    description: Time after network_timeout_check without received downlink before the tracker resets.
+    description-long: |
+      Time after network_timeout_check without received downlink before the tracker resets.
+      0: feature deactivated
+    list-type:
+    list:
+    range-low:
+    range-high:
+    unit: Second
   collection_scan_type:
     parameter: 33
     value: 0
     description: Collection scan type used
-    unit: !!null
+    description-long: |
+      Collection scan type used:
+      0- No collection scan
+      1- BLE collection scan
+      2- WIFI collection scan
+    list-type: 0
+    list:
+      - No collection scan
+      - BLE collection scan
+      - WIFI collection scan
+    range-low:
+    range-high:
+    unit: _
   collection_nb_entry:
     parameter: 34
     value: 20
     description: Maximum number of elements to report in collection payloads after a scan.
-    unit: !!null
+    description-long: |
+    list-type:
+    list:
+    range-low:
+    range-high:
+    unit: _
   collection_ble_filter_type:
     parameter: 35
     value: 0
     description: Beacon type to scan and report when CollectionScan Type is BLE
-    unit: !!null
+    description-long: |
+      Beacon type to scan and report when Collection
+      Scan Type is BLE:
+      0- No filter.
+      1- Eddystone UID only.
+      2- Eddystone URL only.
+      3- All Eddystone.
+      4- iBeacon UID only.
+      5- altBeacon only.
+      6- Reserved, internal use only
+    list-type:
+      - No filter.
+      - Eddystone UID only.
+      - Eddystone URL only.
+      - All Eddystone.
+      - iBeacon UID only.
+      - altBeacon only.
+      - Reserved, internal use only
+    list:
+    range-low:
+    range-high:
+    unit: _
   collection_ble_filter_main_1:
     parameter: 36
     value: 0
     description: First part of the main BLE filter.
-    unit: !!null
+    description-long: |
+    list-type:
+    list:
+    range-low:
+    range-high:
+    unit: _
   collection_ble_filter_main_2:
     parameter: 37
     value: 0
     description: Second part of the main BLE filter.
-    unit: !!null
+    description-long: |
+    list-type:
+    list:
+    range-low:
+    range-high:
+    unit: _
   collection_ble_filter_sec_value:
     parameter: 38
     value: 0
     description: BLE secondary value.
-    unit: !!null
+    description-long: |
+    list-type:
+    list:
+    range-low:
+    range-high:
+    unit: _
   collection_ble_filter_sec_mask:
     parameter: 39
     value: 0
     description: BLE secondary mask
-    unit: !!null
+    description-long: |
+    list-type:
+    list:
+    range-low:
+    range-high:
+    unit: _
   battery_capacity:
     parameter: 40
     value: -1
     description: Battery setting
-    unit: mAh 
+    description-long: |
+      Battery setting:
+      -1: Used provisioned value.
+      0: Rechargeable battery.
+      1-65535: Capacity of the primary battery
+    list-type:
+    list:
+    range-low:
+    range-high:
+    unit: mAh
   reed_switch_configuration:
     parameter: 41
     value: 0
     description:
-    unit: !!null
+    description-long: |
+    list-type:
+    list:
+    range-low:
+    range-high:
+    unit: _
   gnss_constellation:
     parameter: 42
     value: 4
     description: Configure the GNSS constellations used by the GPS chip to compute a position
-    unit: !!null
+    description-long: |
+      Configure the GNSS constellations used by the GPS chip to compute a position:
+      0- GPS only.
+      1- GLONASS only.
+      2- GPS and GLONASS.
+      3- GPS and Galileo.
+      4- GPS, GLONASS and Galileo.
+      5- Beidou only.
+      6- GPS and Beidou.
+      If a value is set out of the range, configuration 4 is used.
+    list-type: 0
+    list:
+      - GPS only.
+      - GLONASS only.
+      - GPS and GLONASS.
+      - GPS and Galileo.
+      - GPS, GLONASS and
+      - Beidou only.
+      - GPS and Beidou.
+    range-low:
+    range-high:
+    unit: _
   position_ble_filter_type:
     parameter: 77
     value: 0
-    description: Beacon type to scan and report when position ScanType is BLE
-    unit: !!null
+    description: Beacon type to scan and report when position scan type is BLE
+    description-long: |
+      - No filter.
+      - Eddystone UID only.
+      - Eddystone URL only.
+      - All Eddystone.
+      - iBeacon UID only.
+      - AltBeacon only.
+      - Reserved, internal use only
+    list-type:
+    list:
+    range-low:
+    range-high:
+    unit: _
   position_ble_filter_main_1:
     parameter: 78
     value: 0
     description: First part of the main BLE filter. (UUID BEACON)
-    unit: !!null
+    description-long: |
+    list-type:
+    list:
+    range-low:
+    range-high:
+    unit: _
   position_ble_filter_main_2:
     parameter: 79
     value: 0
     description: Second part of the main BLE filter. (UUID BEACON)
-    unit: !!null
+    description-long: |
+    list-type:
+    list:
+    range-low:
+    range-high:
+    unit: _
   position_ble_filter_sec_value:
     parameter: 80
     value: 0
     description: BLE secondary value.
-    unit: !!null
+    description-long: |
+    list-type:
+    list:
+    range-low:
+    range-high:
+    unit: _
   position_ble_filter_sec_mask:
     parameter: 81
     value: 0
     description: BLE secondary mask
-    unit: !!null
+    description-long: |
+    list-type:
+    list:
+    range-low:
+    range-high:
+    unit: _
   position_ble_report_type:
     parameter: 82
     value: 0
     description: Configure the BLE data to report in payloads.
-    unit: !!null
+    description-long: |
+    list-type: 0
+    list:
+      - MAC address.
+      - Short ID
+      - Long ID
+      - short beacon ID including the Major and Minor field (iBeacon only) (4)
+    range-low:
+    range-high:
+    unit: _
   buzzer_volume:
     parameter: 83
     value: 10
     description: Configuration of the buzzer volume
-    unit: Percent 
+    description-long: |
+    list-type:
+    list:
+    range-low:
+    range-high:
+    unit: Percent
   angle_detect_mode:
     parameter: 84
     value: 0
     description: Angle Detection method.
-    unit: !!null
+    description-long: |
+    list-type:
+    list:
+      - Disabled.
+      - Critical angle detection only.
+      - Critical angle detection + Angle deviation detection
+      - Critical angle detection triggered on shock detection
+    range-low:
+    range-high:
+    unit: _
   angle_ref_acq:
     parameter: 85
     value: 2
     description: Reference acquisition mode for Angle detection feature.
-    unit: !!null
+    description-long: |
+    list-type:
+    list:
+      - Manual (2)
+      - Configured
+      - Automatic
+      - Assisted
+    range-low:
+    range-high:
+    unit: _
   angle_ref_acc_x:
     parameter: 86
     value: 0
     description: X axis for reference orientation vector. 0xFFFF means this axis is ignored.
-    unit: mg 
+    description-long: |
+    list-type:
+    list:
+    range-low:
+    range-high:
+    unit: mg
   angle_ref_acc_y:
     parameter: 87
     value: 0
     description: Y axis for reference orientation vector. 0xFFFF means this axis is ignored.
-    unit: mg 
+    description-long: |
+    list-type:
+    list:
+    range-low:
+    range-high:
+    unit: mg
   angle_ref_acc_z:
     parameter: 88
     value: 0
     description: Z axis for reference orientation vector. 0xFFFF means this axis is ignored.
-    unit: mg 
+    description-long: |
+    list-type:
+    list:
+    range-low:
+    range-high:
+    unit: mg
   angle_critical:
     parameter: 89
     value: 30
     description: Critical Angle.
-    unit: Degrees 
+    description-long: |
+    list-type:
+    list:
+    range-low:
+    range-high:
+    unit: Degrees
   angle_critical_hyst:
     parameter: 90
     value: 5
     description: Critical angle hysteresis.
-    unit: Degrees 
+    description-long: |
+    list-type:
+    list:
+    range-low:
+    range-high:
+    unit: Degrees
   angle_report_mode:
     parameter: 91
     value: 1
     description: Angle Detection events to report in LoRaWAN TMmessages
-    unit: !!null
+    description-long: |
+      Angle Detection events to report in LoRaWAN TM
+      messages:
+      • Bit 0: normal → critical.
+      • Bit 1: critical → normal.
+      • Bit 2: learning → normal.
+      • Bit 3: normal → learning.
+      • Bit 4: critical → learning.
+    list-type: 1
+    list:
+      - normal → critical.
+      - critical → normal.
+      - learning → normal.
+      - normal → learning.
+      - critical → learning.
+    range-low:
+    range-high:
+    unit: _
   angle_report_period:
     parameter: 92
     value: 300
     description: Reporting period between repeated event messages. 0 means reports and repetitions will be transmitted after positions.
-    unit: Second 
+    description-long: |
+    list-type:
+    list:
+    range-low:
+    range-high:
+    unit: Second
   angle_report_repeat:
     parameter: 93
     value: 0
     description: number of event message repetitions.0 indicates only one event message is sent (no repetition).
-    unit:  
+    description-long: |
+    list-type:
+    list:
+    range-low:
+    range-high:
+    unit:
   angle_rising_time:
     parameter: 94
     value: 5
     description: Rising time phase duration, in seconds.
-    unit: Second 
+    description-long: |
+    list-type:
+    list:
+    range-low:
+    range-high:
+    unit: Second
   angle_falling_time:
     parameter: 95
     value: 5
     description: Falling time phase duration, in seconds.
-    unit: Second 
+    description-long: |
+    list-type:
+    list:
+    range-low:
+    range-high:
+    unit: Second
   angle_learning_time:
     parameter: 96
     value: 5
     description: Learning time phase duration, in seconds. In automatic reference acquisition this is also the period between 2 learning steps
-    unit: Second 
+    description-long: |
+    list-type:
+    list:
+    range-low:
+    range-high:
+    unit: Second
   angle_acc_accuracy:
     parameter: 97
     value: 100
     description: Accuracy of the measured acceleration.
-    unit: mg 
+    description-long: |
+    list-type:
+    list:
+    range-low:
+    range-high:
+    unit: mg
   angle_deviation_delta:
     parameter: 98
     value: 0
     description: A deviation of angle_deviation_delta from the previous reported orientation triggers an event message. Applicable only with angle deviation methods.
-    unit: Degrees 
+    description-long: |
+    list-type:
+    list:
+    range-low:
+    range-high:
+    unit: Degrees
   angle_deviation_min_interval:
     parameter: 99
     value: 10
     description: No event message is sent before the delay angle_deviation_min_interval from previous angle deviation event is elapsed. Any deviation before this delay is ignored. Applicable only with angle deviation methods.
-    unit: Degrees 
+    description-long: |
+    list-type:
+    list:
+    range-low:
+    range-high:
+    unit: Degrees
   angle_deviation_max_interval:
     parameter: 100
     value: 0
     description: No event message is sent after this duration from first event message is elapsed. Applicable only with angle deviation methods.
-    unit: Degrees 
+    description-long: |
+    list-type:
+    list:
+    range-low:
+    range-high:
+    unit: Degrees
   default_profile:
     parameter: 101
     value: 0
     description: Profile applicable to configure several parameters at once, used when application starts, after a reset or when the tracker is turned on
-    unit: !!null
+    description-long: |
+    list-type: 0
+    list:
+      - None
+      - Sleep
+      - Economic
+      - Intensive
+    range-low:
+    range-high:
+    unit: _
   password:
     parameter: 102
     value: 123
     description: password used to access user command
-    unit: !!null
+    description-long: |
+    list-type:
+    list:
+    range-low:
+    range-high:
+    unit: _
   gps_t0_timeout:
     parameter: 103
     value: 30
-    description: Time in seconds to abort the GPS or LPGPS geolocation when not enough satellites are in view.The condition is at least one satellite with a C/N greater than 15 at the end of the configured period.When 0, the timeout doesn’t apply
-    unit: Second 
+    description: Time in seconds to abort the GPS or LPGPS geolocation.
+    description-long: |
+      Time in seconds to abort the GPS or LPGPS geolocation when not enough satellites are in view.
+      The condition is at least one satellite with a C/N greater than 15 at the end of the configured period.
+      When 0, the timeout doesn’t apply
+    list-type:
+    list:
+    range-low:
+    range-high:
+    unit: Second
   gps_fix_timeout:
     parameter: 104
     value: 0
-    description: GPS Abort the current GPS geolocation if there is no GPS fix at the end of this durationLPGPS get back to LPGPS geolocation if there is no GPS fix at the end of this durationWhen 0, the timeout doesn’t apply
-    unit: Second 
+    description: GPS Abort the current GPS geolocation if there is no GPS fix at the end of this duration.
+    description-long: |
+      GPS: Abort the current GPS geolocation if there is no GPS fix at the end of this duration
+      LPGPS: get back to LPGPS geolocation if there is no GPS fix at the end of this duration
+      When 0, the timeout doesn’t apply
+    list-type:
+    list:
+    range-low:
+    range-high:
+    unit: Second
   geofencing_scan_duration:
     parameter: 105
     value: 370
     description: BLE geozoning scan duration expressed in milliseconds
-    unit: milliSecond 
+    description-long: |
+    list-type:
+    list:
+    range-low:
+    range-high:
+    unit: milliSecond
   beaconing_type:
     parameter: 106
     value: 0
     description: Beaconing advertisement type.
-    unit: !!null
+    description-long: |
+    list-type: 0
+    list:
+      - Disabled
+      - Proximity
+      - Quuppa
+      - Eddystone
+      - Ibeacon
+      - Altbeacon
+    range-low:
+    range-high:
+    unit: _
   beaconing_tx_power:
     parameter: 107
     value: 2
     description: Beaconing TX power
-    unit: !!null
+    description-long: |
+    list-type: 0
+    list:
+      - +4 dBm
+      - +3 dBm
+      - +0 dBm
+      - -4 dBm
+      - -8 dBm
+      - -12 dBm
+      - -16 dBm
+      - -20 dBm
+      - -40 dBm
+    range-low:
+    range-high:
+    unit: _
   beaconing_static_interval:
     parameter: 108
     value: 10000
-    description: when the beaconing feature is active, time in milliseconds for beacon advertising periodwhen the tracker is static0 disables beaconing when static
-    unit: milliSecond 
+    description: when the beaconing feature is active, time in milliseconds for beacon advertising periodwhen the tracker is static
+    description-long: |
+      when the beaconing feature is active, time in milliseconds for beacon advertising period
+      when the tracker is static
+      0 disables beaconing when static
+    list-type:
+    list:
+    range-low:
+    range-high:
+    unit: milliSecond
   beaconing_motion_interval:
     parameter: 109
     value: 333
-    description: when the beaconing feature is active, time in milliseconds for beacon advertising periodwhen the tracker is moving0 disables beaconing when in motion
-    unit: milliSecond 
+    description: when the beaconing feature is active, time in milliseconds for beacon advertising periodwhen the tracker is moving
+    description-long: |
+      when the beaconing feature is active, time in milliseconds for beacon advertising period
+      when the tracker is moving
+      0 disables beaconing when in motion
+    list-type:
+    list:
+    range-low:
+    range-high:
+    unit: milliSecond
   beaconing_motion_duration:
     parameter: 110
     value: 20
     description: when the beaconing feature is active, time in seconds to be considered in motion when receiving a motion event
-    unit: Second 
+    description-long: |
+    list-type:
+    list:
+    range-low:
+    range-high:
+    unit: Second
   ble_cnx_adv_duration:
     parameter: 111
     value: 600
     description: Time in seconds for BLE advertisement duration.
-    unit: Second 
+    description-long: |
+    list-type:
+    list:
+    range-low:
+    range-high:
+    unit: Second
   beacon_id_0:
     parameter: 112
     value: 0
     description: Beacon ID advertised in the BLE Beacon advertisement payload, part 0
-    unit: !!null
+    description-long: |
+    list-type:
+    list:
+    range-low:
+    range-high:
+    unit: _
   beacon_id_1:
     parameter: 113
     value: 0
     description: Beacon ID advertised in the BLE Beacon advertisement payload, part 1
-    unit: !!null
+    description-long: |
+    list-type:
+    list:
+    range-low:
+    range-high:
+    unit: _
   beacon_id_2:
     parameter: 114
     value: 0
     description: Beacon ID advertised in the BLE Beacon advertisement payload, part 2
-    unit: !!null
+    description-long: |
+    list-type:
+    list:
+    range-low:
+    range-high:
+    unit: _
   beacon_id_3:
     parameter: 115
     value: 0
     description: Beacon ID advertised in the BLE Beacon advertisement payload, part 3
-    unit: !!null
+    description-long: |
+    list-type:
+    list:
+    range-low:
+    range-high:
+    unit: _
   beacon_id_4:
     parameter: 116
     value: 0
     description: Beacon ID advertised in the BLE Beacon advertisement payload, part 4
-    unit: !!null
+    description-long: |
+    list-type:
+    list:
+    range-low:
+    range-high:
+    unit: _
   sos_period:
     parameter: 117
     value: 120
     description: SOS uplink period in seconds
-    unit: Second 
+    description-long: |
+    list-type:
+    list:
+    range-low:
+    range-high:
+    unit: Second
   motion_debounce:
     parameter: 118
     value: 1
-    description: Minimum duration of a movement to be detected if motion_sensitivity parameter is set between 1 and 300 triggers motion detection as soon as a single accelerometer sample is above the value set in motion_sensitivity the duration of the period is given by the formula motion_debounce * 20 milli seconds
-    unit: !!null
+    description: Minimum duration of a movement
+    description-long: |
+      Minimum duration of a movement to be detected if motion_sensitivity parameter is set between 1 and 30
+      0 triggers motion detection as soon as a single accelerometer sample is above the value set in motion_sensitivity the duration of the period is given by the formula: motion_debounce * 20 milli seconds
+    list-type:
+    list:
+    range-low:
+    range-high:
+    unit: _
   button_mapping:
     parameter: 119
     value: 74768
     description: Configure the button action
-    unit: !!null
+    description-long: |
+      Bit0-3: Button long press action
+      Bit4-7: Button short press action
+      Bit8-11: 2 short button presses action
+      Bit12-15: 3 or more short button presses action
+      Bit16-19: Button long press duration in seconds, range is [1:8]
+      
+      Possible actions are listed below, coded on 4 bits:
+
+      - No action.
+      - Battery level is shown with the LEDs.
+      - Start/Stop SOS.
+      - Alert.
+      - Whitelist a badge with proximity.
+      - Angle detection manual trigger.
+      - Special sequence activation
+    list-type:
+    list: # todo
+    range-low:
+    range-high:
+    unit: _
   default_datarate:
     parameter: 120
     value: -1
     description:
-    unit: !!null
+    description-long: |
+      -1: use the provisioned data rate.
+      0-7: set the corresponding data rate.
+      If the configured data rate is not supported by the Lora MAC. The min data rate supported is used instead
+    list-type:
+    list:
+    range-low:
+    range-high:
+    unit: _
   gps_ehpe_motion:
     parameter: 121
     value: 40
     description: Acceptable GPS horizontal error for GPS geolocation. Applicable if the tracker is in motion.
-    unit: Meters 
+    description-long: |
+    list-type:
+    list:
+    range-low:
+    range-high:
+    unit: Meters
   gps_convergence_motion:
     parameter: 122
     value: 20
     description: Time to let to the GPS module to refine the calculated GPS position. Applicable if the tracker is static.
-    unit: Second 
+    description-long: |
+    list-type:
+    list:
+    range-low:
+    range-high:
+    unit: Second
   gps_t0_timeout_motion:
     parameter: 123
     value: 30
     description: Time to let to the GPS module to refine the calculated GPS position. Applicable if the tracker is in motion.
-    unit: Second 
+    description-long: |
+    list-type:
+    list:
+    range-low:
+    range-high:
+    unit: Second
   ble_cli_active:
     parameter: 245
     value: 0
     description:
-    unit: !!null
+    description-long: |
+    list-type: 0
+    list:
+      - Disable the CLI traces over BLE interface with tracker connected to Abeeway tracking app.
+      - Enables the CLI traces over BLE interface with tracker connected to Abeeway tracking app.
+    range-low:
+    range-high:
+    unit: _
   profile:
     parameter: 246
     value: 0
     description: Set the dynamic profile of the tracker
-    unit: !!null
+    description-long: |
+    list-type: 0
+    list:
+      - None
+      - Sleep
+      - Economic
+      - Intensive
+    range-low:
+    range-high:
+    unit: _
   consumption:
     parameter: 247
     value: 0
     description: The current consumption of the tracker is resetted set the current consumption of the tracker
-    unit: mAh 
+    description-long: |
+    list-type:
+    list:
+    range-low:
+    range-high:
+    unit: mAh
   ble_bond_info:
     parameter: 248
     value: 1
     description:
-    unit: Second 
+    description-long: |
+    list-type:
+    list:
+    range-low:
+    range-high:
+    unit: Second
   mode:
     parameter: 249
     value: 0
     description: Operational mode of the tracker
-    unit: 
+    description-long: |
+    list-type: 0
+    list:
+      - Standby
+      - Motion tracking
+      - Permanent tracking
+      - Motion start/end tracking
+      - Activity tracking
+      - Off mode"
+    range-low:
+    range-high:
+    unit: _
