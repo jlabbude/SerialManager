@@ -1,15 +1,13 @@
 import os
 import shutil
-from tkinter import filedialog
-
 import tkinter as tk
-from typing import Any
+from tkinter import filedialog
 
 import yaml
 
+from .CustomGUI import TesteConfig
 from .GUI_setup import console, root
 from .YaMLConfigDataClasses import AbeewaySmartBadgeConfig
-from .CustomGUI import TesteConfig
 
 
 class YaMLFile:
@@ -38,16 +36,28 @@ class YaMLFile:
         current_config = AbeewaySmartBadgeConfig()
         with open('/home/lucas/SerialManager/src/config/abeeway-config-template.yaml', 'r') as yamlfile:
             config_data: dict[dict] = yaml.safe_load(yamlfile).get('config', [{}])
+        # TODO refactor this mess
         param_names = [value for value in config_data]
         values: list[int] = []
         description: list[str] = []
         description_long: list[str] = []
         units: list[str] = []
+        select_list: list[str] = []
+        list_flags: list[bool | None] = []
         for name in param_names:
             values.append(config_data.get(name).get('value'))
             description.append(config_data.get(name).get('description'))
             description_long.append(config_data.get(name).get('description-long'))
             units.append(config_data.get(name).get('unit'))
+            select_list.append(config_data.get(name).get('list'))
+            list_flags.append(config_data.get(name).get('list-type'))
         root.withdraw()
         root2 = tk.Tk()
-        TesteConfig(root2, items=param_names, values=values, description=description, units=units, description_long=description_long)
+        TesteConfig(root=root2,
+                    items=param_names,
+                    values=values,
+                    description=description,
+                    description_long=description_long,
+                    units=units,
+                    select_list=select_list,
+                    list_flag=list_flags)

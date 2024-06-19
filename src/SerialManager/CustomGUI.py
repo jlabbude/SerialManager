@@ -1,4 +1,5 @@
-from tkinter import Label, simpledialog, Entry, W, ttk, Toplevel, LEFT, SOLID, Button
+from tkinter import Label, simpledialog, Entry, W, ttk, Toplevel, LEFT, SOLID, Button, Listbox, MULTIPLE, BOTH, END, \
+    messagebox
 
 
 class HidePassword(simpledialog.Dialog):
@@ -46,7 +47,15 @@ class CustomDialog(simpledialog.Dialog):
 
 class TesteConfig(simpledialog.Dialog):
 
-    def __init__(self, root, items, values, description, description_long, units):
+    def __init__(self,
+                 root,
+                 items,
+                 values,
+                 description,
+                 description_long,
+                 units,
+                 select_list,
+                 list_flag):
         self.root = root
         self.root.title("Config create")
         self.root.geometry("600x400")
@@ -60,11 +69,43 @@ class TesteConfig(simpledialog.Dialog):
 
         self.description = description
         self.description_long = description_long
+        self.select_list = select_list
+        self.list_flag = list_flag
         self.create_list(items, values, units)
 
         self.tooltip = ToolTip(self.tree)
 
         self.current_item = None
+
+    def create_select_list(self, select_list):
+        popup = Toplevel(self.root)
+        popup.title("Select Items")
+        popup.geometry("300x300")
+
+        listbox = Listbox(popup, selectmode=MULTIPLE)
+        listbox.pack(padx=10, pady=10, expand=True, fill=BOTH)
+
+        selected_items = []
+
+        def get_selected_items():
+            selected_indices = listbox.curselection()
+            nonlocal selected_items
+            selected_items = [listbox.get(i) for i in selected_indices]
+            popup.destroy()
+
+        for field in select_list:
+            listbox.insert(END, field)
+
+        btn_select = Button(popup, text="Select", command=get_selected_items)
+        btn_select.pack(pady=10)
+        btn_select.wait_window()
+
+        if len(selected_items) == 0:
+            messagebox.showwarning("No Selection",
+                                   "Please select at least 1 application.")
+            return
+        else:
+            pass  # TODO
 
     def create_list(self, list_items, values, units):
         for item, value, unit in zip(list_items, values, units):
@@ -94,6 +135,7 @@ class TesteConfig(simpledialog.Dialog):
         item_id = self.tree.selection()[0]
         column = self.tree.identify_column(event.x)
         description_long = self.description_long[self.tree.index(item_id)]
+        list_flags = self.list_flag
 
         match column:
             case '#0':
@@ -105,18 +147,20 @@ class TesteConfig(simpledialog.Dialog):
                     ok_button = Button(top, text="OK", command=top.destroy)
                     ok_button.pack(pady=10)
             case '#1':
-                x, y, width, height = self.tree.bbox(item_id, column)
-                value = self.tree.item(item_id, 'values')[0]
+                match list_flags:
+                    case True:
+                        self.create_select_list(select_list=self.select_list)
+                    case False | None:
+                        x, y, width, height = self.tree.bbox(item_id, column)
+                        value = self.tree.item(item_id, 'values')[0]
 
-                entry = ttk.Entry(self.tree, width=30)
-                entry.insert(0, value)
-                entry.place(x=x, y=y, width=width, height=height)
-                entry.bind('<Return>', lambda e: self.update_value(entry, item_id))
-                entry.focus()
+                        entry = ttk.Entry(self.tree, width=30)
+                        entry.insert(0, value)
+                        entry.place(x=x, y=y, width=width, height=height)
+                        entry.bind('<Return>', lambda e: self.update_value(entry, item_id))
+                        entry.focus()
 
-                entry.bind('<Escape>', lambda e: entry.destroy())
-            case _:
-                pass
+                        entry.bind('<Escape>', lambda e: entry.destroy())
 
     def update_value(self, entry, item_id):
         new_value = entry.get()
