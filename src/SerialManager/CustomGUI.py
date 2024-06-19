@@ -1,4 +1,4 @@
-from tkinter import Label, simpledialog, Entry, W, ttk, messagebox, Toplevel, LEFT, SOLID
+from tkinter import Label, simpledialog, Entry, W, ttk, Toplevel, LEFT, SOLID, Button
 
 
 class HidePassword(simpledialog.Dialog):
@@ -46,7 +46,7 @@ class CustomDialog(simpledialog.Dialog):
 
 class TesteConfig(simpledialog.Dialog):
 
-    def __init__(self, root, items, values, description, units):
+    def __init__(self, root, items, values, description, description_long, units):
         self.root = root
         self.root.title("Config create")
         self.root.geometry("600x400")
@@ -59,6 +59,7 @@ class TesteConfig(simpledialog.Dialog):
         self.tree.heading('Value', text='Value', anchor='w')
 
         self.description = description
+        self.description_long = description_long
         self.create_list(items, values, units)
 
         self.tooltip = ToolTip(self.tree)
@@ -92,10 +93,17 @@ class TesteConfig(simpledialog.Dialog):
     def on_double_click(self, event):
         item_id = self.tree.selection()[0]
         column = self.tree.identify_column(event.x)
+        description_long = self.description_long[self.tree.index(item_id)]
 
         match column:
             case '#0':
-                messagebox.showinfo(title='', message='TODO')
+                if description_long:
+                    top = Toplevel(self.root)
+                    top.title('')
+                    text_label = Label(top, text=description_long)
+                    text_label.pack(padx=20, pady=20)
+                    ok_button = Button(top, text="OK", command=top.destroy)
+                    ok_button.pack(pady=10)
             case '#1':
                 x, y, width, height = self.tree.bbox(item_id, column)
                 value = self.tree.item(item_id, 'values')[0]

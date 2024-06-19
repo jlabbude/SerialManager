@@ -41,11 +41,13 @@ class YaMLFile:
         param_names = [value for value in config_data]
         values: list[int] = []
         description: list[str] = []
+        description_long: list[str] = []
         units: list[str] = []
         for name in param_names:
             values.append(config_data.get(name).get('value'))
             description.append(config_data.get(name).get('description'))
+            description_long.append(config_data.get(name).get('description-long'))
             units.append(config_data.get(name).get('unit'))
         root.withdraw()
         root2 = tk.Tk()
-        TesteConfig(root2, items=param_names, values=values, description=description, units=units)
+        TesteConfig(root2, items=param_names, values=values, description=description, units=units, description_long=description_long)
