@@ -1,6 +1,7 @@
 import os
 import shutil
 import tkinter as tk
+from dataclasses import dataclass, field
 from tkinter import filedialog
 
 import yaml
@@ -8,6 +9,16 @@ import yaml
 from .CustomGUI import TesteConfig
 from .GUI_setup import console, root
 from .YaMLConfigDataClasses import AbeewaySmartBadgeConfig
+
+
+@dataclass
+class ConfigStruct:
+    values: list[int] = field(default_factory=list)
+    description: list[str] = field(default_factory=list)
+    description_long: list[str] = field(default_factory=list)
+    units: list[str] = field(default_factory=list)
+    select_list: list[str] = field(default_factory=list)
+    list_flags: list[bool | None] = field(default_factory=list)
 
 
 class YaMLFile:
@@ -34,30 +45,24 @@ class YaMLFile:
     @staticmethod
     def read_config_template():
         current_config = AbeewaySmartBadgeConfig()
+        gui_display_config = ConfigStruct()
         with open('/home/lucas/SerialManager/src/config/abeeway-config-template.yaml', 'r') as yamlfile:
             config_data: dict[dict] = yaml.safe_load(yamlfile).get('config', [{}])
-        # TODO refactor this mess
         param_names = [value for value in config_data]
-        values: list[int] = []
-        description: list[str] = []
-        description_long: list[str] = []
-        units: list[str] = []
-        select_list: list[str] = []
-        list_flags: list[bool | None] = []
         for name in param_names:
-            values.append(config_data.get(name).get('value'))
-            description.append(config_data.get(name).get('description'))
-            description_long.append(config_data.get(name).get('description-long'))
-            units.append(config_data.get(name).get('unit'))
-            select_list.append(config_data.get(name).get('list'))
-            list_flags.append(config_data.get(name).get('list-type'))
+            gui_display_config.values.append(config_data.get(name).get('value'))
+            gui_display_config.description.append(config_data.get(name).get('description'))
+            gui_display_config.description_long.append(config_data.get(name).get('description-long'))
+            gui_display_config.units.append(config_data.get(name).get('unit'))
+            gui_display_config.select_list.append(config_data.get(name).get('list'))
+            gui_display_config.list_flags.append(config_data.get(name).get('list-type'))
         root.withdraw()
         root2 = tk.Tk()
         TesteConfig(root=root2,
                     items=param_names,
-                    values=values,
-                    description=description,
-                    description_long=description_long,
-                    units=units,
-                    select_list=select_list,
-                    list_flag=list_flags)
+                    values=gui_display_config.values,
+                    description=gui_display_config.description,
+                    description_long=gui_display_config.description_long,
+                    units=gui_display_config.units,
+                    select_list=gui_display_config.select_list,
+                    list_flag=gui_display_config.list_flags)

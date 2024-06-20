@@ -1,12 +1,15 @@
 from dataclasses import dataclass
 
+""""
+Unlike YaML template file, this is used to encapsule mutable data during runtime.
+Meanwhile, the YaML file is intended to be used to generate the cfg file to be pasted to the device
+"""
 
-# Unlike YaML template file, this is used to encapsule mutable data during runtime.
-# Meanwhile, the YaML file is intended to be used to generate the cfg file to be pasted to the device
+
 @dataclass
 class AbeewaySmartBadgeConfig:  # <- Firmware version 2.4-1 only
-                                # TODO add a way to choose which version on the class constructor
-             # [param, value]
+    # TODO add a way to choose which version on the class constructor
+    # [param, value]
     ul_period: [int, int] = (0, 300)
     lora_period: [int, int] = (1, 600)
     pw_stat_period: [int, int] = (2, 0)
