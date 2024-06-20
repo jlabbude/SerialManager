@@ -46,7 +46,7 @@ class YaMLFile:
     def read_config_template():
         current_config = AbeewaySmartBadgeConfig()
         gui_display_config = ConfigStruct()
-        with open('/home/lucas/SerialManager/src/config/abeeway-config-template.yaml', 'r') as yamlfile:
+        with open('/home/lucas/Codigo/SerialManager/src/config/abeeway-config-template.yaml', 'r') as yamlfile:
             config_data: dict[dict] = yaml.safe_load(yamlfile).get('config', [{}])
         param_names = [value for value in config_data]
         for name in param_names:

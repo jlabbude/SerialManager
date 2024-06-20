@@ -1,4 +1,4 @@
-from tkinter import Label, simpledialog, Entry, W, ttk, Toplevel, LEFT, SOLID, Button, Listbox, MULTIPLE, BOTH, END, \
+from tkinter import Label, simpledialog, Entry, W, ttk, Toplevel, LEFT, SOLID, Button, Listbox, BOTH, END, \
     messagebox
 
 
@@ -82,15 +82,14 @@ class TesteConfig(simpledialog.Dialog):
         popup.title("Select Items")
         popup.geometry("300x300")
 
-        listbox = Listbox(popup, selectmode=MULTIPLE)
+        listbox = Listbox(popup)
         listbox.pack(padx=10, pady=10, expand=True, fill=BOTH)
 
-        selected_items = []
+        selected_item = ()
 
         def get_selected_items():
-            selected_indices = listbox.curselection()
-            nonlocal selected_items
-            selected_items = [listbox.get(i) for i in selected_indices]
+            nonlocal selected_item
+            selected_item = listbox.curselection()
             popup.destroy()
 
         for field in select_list:
@@ -100,12 +99,12 @@ class TesteConfig(simpledialog.Dialog):
         btn_select.pack(pady=10)
         btn_select.wait_window()
 
-        if len(selected_items) == 0:
+        if selected_item == ():
             messagebox.showwarning("No Selection",
-                                   "Please select at least 1 application.")
+                                   "Please select at least 1.")
             return
         else:
-            pass  # TODO
+            return selected_item[0]
 
     def create_list(self, list_items, values, units):
         for item, value, unit in zip(list_items, values, units):
@@ -135,7 +134,8 @@ class TesteConfig(simpledialog.Dialog):
         item_id = self.tree.selection()[0]
         column = self.tree.identify_column(event.x)
         description_long = self.description_long[self.tree.index(item_id)]
-        list_flags = self.list_flag
+        select_list = self.select_list[self.tree.index(item_id)]
+        list_flag = self.list_flag[self.tree.index(item_id)]
 
         match column:
             case '#0':
@@ -147,10 +147,14 @@ class TesteConfig(simpledialog.Dialog):
                     ok_button = Button(top, text="OK", command=top.destroy)
                     ok_button.pack(pady=10)
             case '#1':
-                match list_flags:
-                    case True:
-                        self.create_select_list(select_list=self.select_list)
-                    case False | None:
+                match list_flag:
+                    case 0:
+                        print("Select list")
+                        self.tree.set(value=self.create_select_list(select_list=select_list),
+                                      item=item_id,
+                                      column='Value')
+                    case 1 | None:
+                        print("Entry")
                         x, y, width, height = self.tree.bbox(item_id, column)
                         value = self.tree.item(item_id, 'values')[0]
 

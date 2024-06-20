@@ -208,7 +208,7 @@ config:
       - Dual random First TX using a random data rate within [DR4-DR5], next TX using a random data rate within [DR0-DR3].
       - Dual fixed First TX using a random data rate within [DR4-DR5]. Next TX Using the data rate configured in default_datarate parameter. (not recommended)
       - Reserved, internal use only.
-      - Activate the strategy defined with transmit_strat_custom parameter"
+      - Activate the strategy defined with transmit_strat_custom parameter.
     range-low:
     range-high:
     unit: _
@@ -501,6 +501,7 @@ config:
       5- altBeacon only.
       6- Reserved, internal use only
     list-type:
+    list:
       - No filter.
       - Eddystone UID only.
       - Eddystone URL only.
@@ -508,7 +509,6 @@ config:
       - iBeacon UID only.
       - altBeacon only.
       - Reserved, internal use only
-    list:
     range-low:
     range-high:
     unit: _
@@ -1212,7 +1212,7 @@ config:
       - Permanent tracking
       - Motion start/end tracking
       - Activity tracking
-      - Off mode"
+      - Off mode
     range-low:
     range-high:
     unit: _
