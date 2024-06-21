@@ -1,5 +1,5 @@
 from tkinter import Label, simpledialog, Entry, W, ttk, Toplevel, LEFT, SOLID, Button, Listbox, BOTH, END, \
-    messagebox
+    messagebox, MULTIPLE
 
 
 class HidePassword(simpledialog.Dialog):
@@ -71,7 +71,7 @@ class TesteConfig(simpledialog.Dialog):
         self.description_long = description_long
         self.select_list = select_list
         self.list_flag = list_flag
-        self.create_list(items, values, units)
+        self.create_gui_list(items, values, units)
 
         self.tooltip = ToolTip(self.tree)
 
@@ -106,7 +106,39 @@ class TesteConfig(simpledialog.Dialog):
         else:
             return selected_item[0]
 
-    def create_list(self, list_items, values, units):
+    def create_bit_list(self, select_list):
+        popup = Toplevel(self.root)
+        popup.title("Select Items")
+        popup.geometry("300x300")
+
+        listbox = Listbox(popup, selectmode=MULTIPLE)
+        listbox.pack(padx=10, pady=10, expand=True, fill=BOTH)
+
+        dec = 0
+
+        def get_selected_items():
+            selected_indices = listbox.curselection()
+            nonlocal dec
+            print([*range(0, len(select_list))])
+            print(selected_indices)
+            dec = int(''.join(['1' if bit in selected_indices else '0' for bit in [*range(0, len(select_list))]]), 2)
+            popup.destroy()
+
+        for choice in reversed(select_list):
+            listbox.insert(END, choice)
+
+        btn_select = Button(popup, text="Select", command=get_selected_items)
+        btn_select.pack(pady=10)
+        btn_select.wait_window()
+
+        if dec is 0:
+            messagebox.showwarning("No Selection",
+                                   "Please select at least 1 application.")
+            return 0
+        else:
+            return dec
+
+    def create_gui_list(self, list_items, values, units):
         for item, value, unit in zip(list_items, values, units):
             parent = self.tree.insert('', 'end', text=item, values=(value,))
             self.tree.set(parent, 'Value', value)
@@ -149,12 +181,14 @@ class TesteConfig(simpledialog.Dialog):
             case '#1':
                 match list_flag:
                     case 0:
-                        print("Select list")
                         self.tree.set(value=self.create_select_list(select_list=select_list),
                                       item=item_id,
                                       column='Value')
-                    case 1 | None:
-                        print("Entry")
+                    case 1:
+                        self.tree.set(value=self.create_bit_list(select_list=select_list),
+                                      item=item_id,
+                                      column='Value')
+                    case None:
                         x, y, width, height = self.tree.bbox(item_id, column)
                         value = self.tree.item(item_id, 'values')[0]
 
