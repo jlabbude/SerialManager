@@ -172,27 +172,27 @@ config:
     description-long: |
     list-type: 1
     list:
-      - bit0 Frame pending mechanism
-      - bit1 Activate very long button press to switch to off mode
-      - bit2 Deprecated, to not used
-      - bit3 Send a configuration uplink message in response to a configuration modification downlink.
-      - Bit4 WIFI payload with Cypher (0) or without Cypher (1) (1)
-      - bit5 Activate BLE connectivity interface at the start time (2)
-      - bit6 First WIFI scan when geolocation starts. If disabled (0), WIFI position is replaced by a geoloc start message
-      - bit7 LED blinks when a GPS fix is received. Set to enable the feature, reset to disable
-      - bit8 Set to enable the sending of a motion start message
-      - bit9 Set to enable the sending of a motion end message
-      - bit10 Set to enable a new OTA join when leaving the mode OFF (3)
-      - bit11 Asymmetric BLE pairing 0 accepted, 1 rejected (4) (5)
-      - bit12 Set to enable Long WIFI payload with up to 12 BSSID (6)
-      - bit13 Set to enable Collection Long Report
-      - bit14 Set to enable the autostart of the tracker when leaving shipping state (7)
-      - bit15 Set to forbid the mode OFF. (8)
-      - bit16 Set to enable a melody during SOS
-      - bit17 Set to enable the automatic data rate selection in case of too long payloads (9) (10)
-      - bit18 Set to enable extended position payload, (type=0x0E), reset to use classic payload (type=0x03)
-      - Bit19 Reserved, do not used
-      - Bit20 Enable the CLI over BLE
+      - Frame pending mechanism
+      - Activate very long button press to switch to off mode
+      - Deprecated, to not used
+      - Send a configuration uplink message in response to a configuration modification downlink.
+      - WIFI payload with Cypher (0) or without Cypher (1) (1)
+      - Activate BLE connectivity interface at the start time (2)
+      - First WIFI scan when geolocation starts. If disabled (0), WIFI position is replaced by a geoloc start message
+      - LED blinks when a GPS fix is received. Set to enable the feature, reset to disable
+      - Set to enable the sending of a motion start message
+      - Set to enable the sending of a motion end message
+      - Set to enable a new OTA join when leaving the mode OFF (3)
+      - Asymmetric BLE pairing 0 accepted, 1 rejected (4) (5)
+      - Set to enable Long WIFI payload with up to 12 BSSID (6)
+      - Set to enable Collection Long Report
+      - Set to enable the autostart of the tracker when leaving shipping state (7)
+      - Set to forbid the mode OFF. (8)
+      - Set to enable a melody during SOS
+      - Set to enable the automatic data rate selection in case of too long payloads (9) (10)
+      - Set to enable extended position payload, (type=0x0E), reset to use classic payload (type=0x03)
+      - Reserved, do not used
+      - Enable the CLI over BLE
     range-low:
     range-high:
     unit: _
@@ -1106,8 +1106,49 @@ config:
       - Whitelist a badge with proximity.
       - Angle detection manual trigger.
       - Special sequence activation
-    list-type:
-    list: # todo
+    list-type: 2
+    list:
+      - Button long press action:
+          - No action.
+          - Battery level is shown with the LEDs.
+          - Start/Stop SOS.
+          - Alert.
+          - Whitelist a badge with proximity.
+          - Angle detection manual trigger.
+          - Special sequence activation
+      - Button short press action:
+          - No action.
+          - Battery level is shown with the LEDs.
+          - Start/Stop SOS.
+          - Alert.
+          - Whitelist a badge with proximity.
+          - Angle detection manual trigger.
+          - Special sequence activation
+      - 2 short button presses action:
+          - No action.
+          - Battery level is shown with the LEDs.
+          - Start/Stop SOS.
+          - Alert.
+          - Whitelist a badge with proximity.
+          - Angle detection manual trigger.
+          - Special sequence activation
+      - 3 or more short button presses action:
+          - No action.
+          - Battery level is shown with the LEDs.
+          - Start/Stop SOS.
+          - Alert.
+          - Whitelist a badge with proximity.
+          - Angle detection manual trigger.
+          - Special sequence activation
+      - Button long press duration in seconds, range is [1:8]:
+          - 1
+          - 2
+          - 3
+          - 4
+          - 5
+          - 6
+          - 7
+          - 8
     range-low:
     range-high:
     unit: _

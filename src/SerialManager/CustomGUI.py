@@ -138,6 +138,9 @@ class TesteConfig(simpledialog.Dialog):
         else:
             return dec
 
+    def create_button_list(self, select_list):
+        pass  # TODO double popup for each type of button
+
     def create_gui_list(self, list_items, values, units):
         for item, value, unit in zip(list_items, values, units):
             parent = self.tree.insert('', 'end', text=item, values=(value,))
