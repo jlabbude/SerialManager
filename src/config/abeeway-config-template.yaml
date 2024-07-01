@@ -1088,7 +1088,7 @@ config:
     unit: _
   button_mapping:
     parameter: 119
-    value: 74768
+    value: 8211
     description: Configure the button action
     description-long: |
       Bit0-3: Button long press action
@@ -1116,7 +1116,7 @@ config:
           - Whitelist a badge with proximity.
           - Angle detection manual trigger.
           - Special sequence activation
-      - Button short press action:
+      - 3 or more short button presses action:
           - No action.
           - Battery level is shown with the LEDs.
           - Start/Stop SOS.
@@ -1132,7 +1132,7 @@ config:
           - Whitelist a badge with proximity.
           - Angle detection manual trigger.
           - Special sequence activation
-      - 3 or more short button presses action:
+      - Button short press action:
           - No action.
           - Battery level is shown with the LEDs.
           - Start/Stop SOS.
@@ -1140,7 +1140,7 @@ config:
           - Whitelist a badge with proximity.
           - Angle detection manual trigger.
           - Special sequence activation
-      - Button long press duration in seconds, range is [1:8]:
+      - Button long press duration:
           - 1
           - 2
           - 3

@@ -6,7 +6,7 @@ from tkinter import filedialog
 
 import yaml
 
-from .CustomGUI import TesteConfig
+from .CustomGUI import ConfigGUI
 from .GUI_setup import console, root
 from .YaMLConfigDataClasses import AbeewaySmartBadgeConfig
 
@@ -17,7 +17,7 @@ class ConfigStruct:
     description: list[str] = field(default_factory=list)
     description_long: list[str] = field(default_factory=list)
     units: list[str] = field(default_factory=list)
-    select_list: list[str] = field(default_factory=list)
+    select_list: list[str | dict[str: list[str]]] = field(default_factory=list)
     list_flags: list[bool | None] = field(default_factory=list)
 
 
@@ -58,11 +58,11 @@ class YaMLFile:
             gui_display_config.list_flags.append(config_data.get(name).get('list-type'))
         root.withdraw()
         root2 = tk.Tk()
-        TesteConfig(root=root2,
-                    items=param_names,
-                    values=gui_display_config.values,
-                    description=gui_display_config.description,
-                    description_long=gui_display_config.description_long,
-                    units=gui_display_config.units,
-                    select_list=gui_display_config.select_list,
-                    list_flag=gui_display_config.list_flags)
+        ConfigGUI(root=root2,
+                  items=param_names,
+                  values=gui_display_config.values,
+                  description=gui_display_config.description,
+                  description_long=gui_display_config.description_long,
+                  units=gui_display_config.units,
+                  select_list=gui_display_config.select_list,
+                  list_flag=gui_display_config.list_flags)

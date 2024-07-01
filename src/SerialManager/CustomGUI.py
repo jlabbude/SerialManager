@@ -1,5 +1,5 @@
 from tkinter import Label, simpledialog, Entry, W, ttk, Toplevel, LEFT, SOLID, Button, Listbox, BOTH, END, \
-    messagebox, MULTIPLE
+    messagebox, MULTIPLE, Tk
 
 
 class HidePassword(simpledialog.Dialog):
@@ -45,7 +45,7 @@ class CustomDialog(simpledialog.Dialog):
             self.starting_num = None
 
 
-class TesteConfig(simpledialog.Dialog):
+class ConfigGUI(simpledialog.Dialog):
 
     def __init__(self,
                  root,
@@ -139,7 +139,10 @@ class TesteConfig(simpledialog.Dialog):
             return dec
 
     def create_button_list(self, select_list):
-        pass  # TODO double popup for each type of button
+        self.root.withdraw()
+        root2 = Tk()
+        ButtonConfig(root=root2, select_list=select_list)
+        return 0
 
     def create_gui_list(self, list_items, values, units):
         for item, value, unit in zip(list_items, values, units):
@@ -191,6 +194,10 @@ class TesteConfig(simpledialog.Dialog):
                         self.tree.set(value=self.create_bit_list(select_list=select_list),
                                       item=item_id,
                                       column='Value')
+                    case 2:
+                        self.tree.set(value=self.create_button_list(select_list=select_list),
+                                      item=item_id,
+                                      column='Value')
                     case None:
                         x, y, width, height = self.tree.bbox(item_id, column)
                         value = self.tree.item(item_id, 'values')[0]
@@ -237,3 +244,72 @@ class ToolTip:
         self.tipwindow = None
         if tw:
             tw.destroy()
+
+
+class ButtonConfig(simpledialog.Dialog):
+    def __init__(self, root, select_list: list[dict[str: list[str]]]):
+        self.root = root
+        self.select_list = select_list
+
+        self.root.title("Config create")
+        self.root.geometry("600x400")
+
+        self.tree = ttk.Treeview(root, columns=['Action'], show='tree headings')
+        self.tree.pack(fill='both', expand=True)
+
+        self.tree.heading('#0', text='Button', anchor='w')
+        self.tree.heading('Action', text='Mapping', anchor='w')
+
+        self.create_gui_list(select_list=select_list)
+
+    def create_gui_list(self, select_list):
+        for dicts in select_list:  # lol
+            for keys in dicts.keys():
+                parent = self.tree.insert('', 'end', text=keys, values=(0,))
+                self.tree.set(parent, 'Action', dicts[keys][0])
+
+        self.tree.bind('<Double-1>', self.on_double_click)
+
+    def create_bit_list(self, select_list, index) -> str:
+        # TODO ASSOCIATE WITH KEY
+        popup = Toplevel(self.root)
+        popup.title("Select Items")
+        popup.geometry("300x300")
+
+        listbox = Listbox(popup)
+        listbox.pack(padx=10, pady=10, expand=True, fill=BOTH)
+
+        selected_item = ()
+
+        def get_selected_items():
+            nonlocal selected_item
+            selected_item = listbox.curselection()
+            popup.destroy()
+
+        values: list[str | int] = []
+
+        for dicts in select_list:
+            for keys in dicts.values():
+                print(dicts.values())
+                listbox.insert(END, keys)
+
+        btn_select = Button(popup, text="Select", command=get_selected_items)
+        btn_select.pack(pady=10)
+        btn_select.wait_window()
+
+        if selected_item == ():
+            messagebox.showwarning("No Selection",
+                                   "Please select at least 1.")
+            return '0000'
+        else:
+            return f'{selected_item[0]:04b}'
+
+    def on_double_click(self, event):
+        item_id = self.tree.selection()[0]
+        row = self.tree.identify_row(y=event.y)
+
+        match row:
+            case '#5':
+                self.create_bit_list(select_list=self.select_list, index=4)
+            case _:
+                self.create_bit_list(select_list=self.select_list, index=0)
