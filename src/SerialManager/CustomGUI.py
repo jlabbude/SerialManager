@@ -288,10 +288,9 @@ class ButtonConfig(simpledialog.Dialog):
 
         values: list[str | int] = []
 
-        for dicts in select_list:
-            for keys in dicts.values():
-                print(dicts.values())
-                listbox.insert(END, keys)
+        print(select_list[index].values(), select_list[index].values())
+        for dicts in list(select_list[index].values())[0]:
+            listbox.insert(END, dicts)
 
         btn_select = Button(popup, text="Select", command=get_selected_items)
         btn_select.pack(pady=10)
@@ -309,7 +308,7 @@ class ButtonConfig(simpledialog.Dialog):
         row = self.tree.identify_row(y=event.y)
 
         match row:
-            case '#5':
+            case 'I005':
                 self.create_bit_list(select_list=self.select_list, index=4)
             case _:
                 self.create_bit_list(select_list=self.select_list, index=0)
