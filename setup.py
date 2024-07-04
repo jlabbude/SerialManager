@@ -16,6 +16,7 @@ setup(
         "tk",
         "requests",
         "typing_extensions",
+        "kapak",
     ],
     entry_points={
         "console_scripts": [
