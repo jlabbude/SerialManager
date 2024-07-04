@@ -5,7 +5,7 @@ with open("README.md", "r") as f:
 
 setup(
     name="SerialManager",
-    version="1.5",
+    version="1.5.1",
     description="Abeeway configuration tool",
     author="João Lucas",
     url="https://github.com/jlabbude/SerialManager",
@@ -30,4 +30,8 @@ setup(
     python_requires='>=3.0',
     long_description=description,
     long_description_content_type="text/markdown",
+    include_package_data=True,
+    package_data={
+        '': ['*.yaml'],
+    },
 )

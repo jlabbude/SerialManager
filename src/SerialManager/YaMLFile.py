@@ -46,7 +46,7 @@ class YaMLFile:
     @staticmethod
     def read_and_set_config() -> list[(int, int)]:
         gui_display_config = ConfigStruct()
-        with open('/home/lucas/SerialManager/src/config/abeeway-config-template.yaml', 'r') as yamlfile:
+        with open(os.path.join(os.path.dirname(os.path.abspath(__file__)), 'abeeway-config-template.yaml'), 'r') as yamlfile:
             config_data: dict[dict] = yaml.safe_load(yamlfile).get('config', [{}])
         param_names = [value for value in config_data]
         for name in param_names:
