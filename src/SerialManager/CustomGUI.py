@@ -119,8 +119,6 @@ class ConfigGUI(simpledialog.Dialog):
         def get_selected_items():
             selected_indices = listbox.curselection()
             nonlocal dec
-            print([*range(0, len(select_list))])
-            print(selected_indices)
             dec = int(''.join(['1' if bit in selected_indices else '0' for bit in [*range(0, len(select_list))]]), 2)
             popup.destroy()
 
@@ -138,11 +136,13 @@ class ConfigGUI(simpledialog.Dialog):
         else:
             return dec
 
-    def create_button_list(self, select_list):
-        self.root.withdraw()
+    @staticmethod
+    def create_button_list(select_list):
         root2 = Tk()
-        ButtonConfig(root=root2, select_list=select_list)
-        return 0
+        button = ButtonConfig(root=root2, select_list=select_list)
+        root2.wait_window()
+
+        return button.values
 
     def create_gui_list(self, list_items, values, units):
         for item, value, unit in zip(list_items, values, units):
@@ -246,7 +246,7 @@ class ToolTip:
             tw.destroy()
 
 
-class ButtonConfig(simpledialog.Dialog):
+class ButtonConfig:
     def __init__(self, root, select_list: list[dict[str: list[str]]]):
         self.root = root
         self.select_list = select_list
@@ -262,6 +262,11 @@ class ButtonConfig(simpledialog.Dialog):
 
         self.create_gui_list(select_list=select_list)
 
+        self.ok_button = Button(self.root, text="OK", command=lambda: self.on_ok())
+        self.ok_button.pack(pady=10)
+
+        self.values: list[str] = ['0001', '0010', '0100', '0001', '0000']
+
     def create_gui_list(self, select_list):
         for dicts in select_list:  # lol
             for keys in dicts.keys():
@@ -271,7 +276,6 @@ class ButtonConfig(simpledialog.Dialog):
         self.tree.bind('<Double-1>', self.on_double_click)
 
     def create_bit_list(self, select_list, index) -> str:
-        # TODO ASSOCIATE WITH KEY
         popup = Toplevel(self.root)
         popup.title("Select Items")
         popup.geometry("300x300")
@@ -286,9 +290,6 @@ class ButtonConfig(simpledialog.Dialog):
             selected_item = listbox.curselection()
             popup.destroy()
 
-        values: list[str | int] = []
-
-        print(select_list[index].values(), select_list[index].values())
         for dicts in list(select_list[index].values())[0]:
             listbox.insert(END, dicts)
 
@@ -296,19 +297,28 @@ class ButtonConfig(simpledialog.Dialog):
         btn_select.pack(pady=10)
         btn_select.wait_window()
 
+        self.values[index] = f'{selected_item[0]:04b}'
         if selected_item == ():
             messagebox.showwarning("No Selection",
                                    "Please select at least 1.")
             return '0000'
         else:
-            return f'{selected_item[0]:04b}'
+            return self.values[index]
 
     def on_double_click(self, event):
         item_id = self.tree.selection()[0]
-        row = self.tree.identify_row(y=event.y)
+        row = int(self.tree.identify_row(y=event.y).removeprefix('I'))
 
         match row:
-            case 'I005':
-                self.create_bit_list(select_list=self.select_list, index=4)
+            case 5:
+                self.tree.set(value=self.create_bit_list(select_list=self.select_list, index=row - 1),
+                              item=item_id,
+                              column='Action')
             case _:
-                self.create_bit_list(select_list=self.select_list, index=0)
+                self.tree.set(value=self.create_bit_list(select_list=self.select_list, index=row - 1),
+                              item=item_id,
+                              column='Action')
+
+    def on_ok(self):
+        self.values = int(''.join(iter(self.values)), 2)
+        self.root.destroy()
