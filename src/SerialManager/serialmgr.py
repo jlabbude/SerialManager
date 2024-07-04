@@ -190,6 +190,7 @@ def main() -> None:
                 root.mainloop()
 
     else:
-        YaMLFile.read_config_template()
+        seta = YaMLFile()
+        seta.create_cfg()
 
-        root.mainloop()
+        root.destroy()

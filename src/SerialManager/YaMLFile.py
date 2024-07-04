@@ -8,12 +8,13 @@ import yaml
 
 from .CustomGUI import ConfigGUI
 from .GUI_setup import console, root
-from .YaMLConfigDataClasses import AbeewaySmartBadgeConfig
+from .ConfigGen import ConfigGen
 
 
 @dataclass
 class ConfigStruct:
     values: list[int] = field(default_factory=list)
+    parameter: list[int] = field(default_factory=list)
     description: list[str] = field(default_factory=list)
     description_long: list[str] = field(default_factory=list)
     units: list[str] = field(default_factory=list)
@@ -43,8 +44,7 @@ class YaMLFile:
             console.insert(tk.END, "No file selected.\n")
 
     @staticmethod
-    def read_config_template():
-        current_config = AbeewaySmartBadgeConfig()
+    def read_and_set_config() -> list[(int, int)]:
         gui_display_config = ConfigStruct()
         with open('/home/lucas/SerialManager/src/config/abeeway-config-template.yaml', 'r') as yamlfile:
             config_data: dict[dict] = yaml.safe_load(yamlfile).get('config', [{}])
@@ -56,13 +56,22 @@ class YaMLFile:
             gui_display_config.units.append(config_data.get(name).get('unit'))
             gui_display_config.select_list.append(config_data.get(name).get('list'))
             gui_display_config.list_flags.append(config_data.get(name).get('list-type'))
+            gui_display_config.parameter.append(config_data.get(name).get('parameter'))
         root.withdraw()
         root2 = tk.Tk()
-        ConfigGUI(root=root2,
-                  items=param_names,
-                  values=gui_display_config.values,
-                  description=gui_display_config.description,
-                  description_long=gui_display_config.description_long,
-                  units=gui_display_config.units,
-                  select_list=gui_display_config.select_list,
-                  list_flag=gui_display_config.list_flags)
+        result = ConfigGUI(root=root2,
+                           items=param_names,
+                           values=gui_display_config.values,
+                           description=gui_display_config.description,
+                           description_long=gui_display_config.description_long,
+                           units=gui_display_config.units,
+                           select_list=gui_display_config.select_list,
+                           list_flag=gui_display_config.list_flags,
+                           parameters=gui_display_config.parameter)
+        root2.wait_window()
+        return result.cfg
+
+    def create_cfg(self) -> None:
+        values = self.read_and_set_config()
+        gen = ConfigGen(cfg=values)
+        gen.create_cfg_file()

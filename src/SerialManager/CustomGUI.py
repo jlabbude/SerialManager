@@ -50,6 +50,7 @@ class ConfigGUI(simpledialog.Dialog):
     def __init__(self,
                  root,
                  items,
+                 parameters,
                  values,
                  description,
                  description_long,
@@ -73,9 +74,21 @@ class ConfigGUI(simpledialog.Dialog):
         self.list_flag = list_flag
         self.create_gui_list(items, values, units)
 
+        self.ok_button = Button(self.root, text="OK", command=lambda: self.on_ok())
+        self.ok_button.pack(pady=10)
+        self.cfg: list[(int, int)] = []
+        self.parameters = parameters
+
+        self.initial_cfg(parameters, values)
+
         self.tooltip = ToolTip(self.tree)
 
         self.current_item = None
+        
+    def initial_cfg(self, parameters: list[int], values: list[int]) -> None:
+        cfg = self.cfg
+        for param, val in zip(parameters, values):
+            cfg.append((param, val))
 
     def create_select_list(self, select_list):
         popup = Toplevel(self.root)
@@ -174,6 +187,7 @@ class ConfigGUI(simpledialog.Dialog):
         description_long = self.description_long[self.tree.index(item_id)]
         select_list = self.select_list[self.tree.index(item_id)]
         list_flag = self.list_flag[self.tree.index(item_id)]
+        index = (int(self.tree.identify_row(y=event.y).removeprefix('I'), 16))-1
 
         match column:
             case '#0':
@@ -187,15 +201,30 @@ class ConfigGUI(simpledialog.Dialog):
             case '#1':
                 match list_flag:
                     case 0:
-                        self.tree.set(value=self.create_select_list(select_list=select_list),
+                        value = self.create_select_list(select_list=select_list)
+                        param = list(self.cfg[index])[0]
+                        self.cfg[index] = (param, value)
+
+                        print(self.cfg[index])
+                        self.tree.set(value=value,
                                       item=item_id,
                                       column='Value')
                     case 1:
-                        self.tree.set(value=self.create_bit_list(select_list=select_list),
+                        value = self.create_bit_list(select_list=select_list)
+                        param = list(self.cfg[index])[0]
+                        self.cfg[index] = (param, value)
+
+                        print(self.cfg[index])
+                        self.tree.set(value=value,
                                       item=item_id,
                                       column='Value')
                     case 2:
-                        self.tree.set(value=self.create_button_list(select_list=select_list),
+                        value = self.create_button_list(select_list=select_list)
+                        param = list(self.cfg[index])[0]
+                        self.cfg[index] = (param, value)
+
+                        print(self.cfg[index])
+                        self.tree.set(value=value,
                                       item=item_id,
                                       column='Value')
                     case None:
@@ -205,20 +234,27 @@ class ConfigGUI(simpledialog.Dialog):
                         entry = ttk.Entry(self.tree, width=30)
                         entry.insert(0, value)
                         entry.place(x=x, y=y, width=width, height=height)
-                        entry.bind('<Return>', lambda e: self.update_value(entry, item_id))
+                        entry.bind('<Return>', lambda e: self.update_value(entry, item_id, index))
                         entry.focus()
 
                         entry.bind('<Escape>', lambda e: entry.destroy())
 
-    def update_value(self, entry, item_id):
+    def update_value(self, entry, item_id, index):
         new_value = entry.get()
         try:
             self.tree.set(item_id, 'Value', int(new_value))
+            param = list(self.cfg[index])[0]
+            self.cfg[index] = (param, int(new_value))
+
+            print(self.cfg[index])
+
         except ValueError:
             self.tree.set(item_id, 'Value', 0)
         entry.destroy()
-        print(f"New value -> {item_id} : {new_value}")
-        # TODO config_builder
+        print(f"New value -> {item_id} : {new_value}\n")
+
+    def on_ok(self):
+        self.root.destroy()
 
 
 class ToolTip:
