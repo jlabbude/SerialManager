@@ -6,8 +6,6 @@ from time import sleep
 from tkinter import Button
 
 import serial.tools.list_ports
-import yaml
-import yaml_include
 
 from .YaMLFile import YaMLFile
 from .CSVFile import CSVFile
