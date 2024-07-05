@@ -5,7 +5,7 @@ with open("README.md", "r") as f:
 
 setup(
     name="SerialManager",
-    version="1.5.2",
+    version="1.5.3",
     description="Abeeway configuration tool",
     author="João Lucas",
     url="https://github.com/jlabbude/SerialManager",
@@ -17,6 +17,7 @@ setup(
         "requests",
         "typing_extensions",
         "kapak",
+        "pyyaml"
     ],
     entry_points={
         "console_scripts": [
