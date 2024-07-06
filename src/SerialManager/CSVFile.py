@@ -12,8 +12,8 @@ import kapak.error
 import requests
 from kapak.aes import decrypt
 
-from .GUI_setup import root, console
-from .CustomGUI import HidePassword, CustomDialog
+from SerialManager.GUI_setup import root, console
+from SerialManager.CustomGUI import HidePassword, CustomDialog
 
 
 @dataclass

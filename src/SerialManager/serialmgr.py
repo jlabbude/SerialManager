@@ -7,11 +7,11 @@ from tkinter import Button
 
 import serial.tools.list_ports
 
-from .YaMLFile import YaMLFile
-from .CSVFile import CSVFile
-from .Config import Config
-from .Device import Device
-from .GUI_setup import root, console
+from SerialManager.YaMLFile import YaMLFile
+from SerialManager.CSVFile import CSVFile
+from SerialManager.Config import Config
+from SerialManager.Device import Device
+from SerialManager.GUI_setup import root, console
 
 baud_rate = 9600
 operating_system = system()

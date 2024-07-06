@@ -4,7 +4,7 @@ from time import sleep
 
 from serial import Serial
 
-from .Config import Config
+from SerialManager.Config import Config
 
 
 class Device:

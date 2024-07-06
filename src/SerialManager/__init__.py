@@ -1,1 +1,3 @@
-from .serialmgr import main
+from SerialManager.serialmgr import main
+
+main()

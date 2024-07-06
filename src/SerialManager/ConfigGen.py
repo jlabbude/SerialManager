@@ -13,4 +13,3 @@ class ConfigGen:
         with open(cfgfile, 'w') as file:
             for config in cfg:
                 file.write(f'config set {config[0]} {config[1]}\n')
-        print("write")

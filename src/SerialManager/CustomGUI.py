@@ -18,7 +18,7 @@ class HidePassword(simpledialog.Dialog):
         self.result = self.password_entry.get()
 
 
-class CustomDialog(simpledialog.Dialog):
+class CustomDialog:
     def __init__(self, parent, title=None):
         self.num_entry = None
         self.name_entry = None
@@ -45,7 +45,7 @@ class CustomDialog(simpledialog.Dialog):
             self.starting_num = None
 
 
-class ConfigGUI(simpledialog.Dialog):
+class ConfigGUI:
 
     def __init__(self,
                  root,
@@ -56,7 +56,9 @@ class ConfigGUI(simpledialog.Dialog):
                  description_long,
                  units,
                  select_list,
-                 list_flag):
+                 list_flag,
+                 rangehl: list[(int, int), None],
+                 disabled: list[int, None]):
         self.root = root
         self.root.title("Config create")
         self.root.geometry("600x400")
@@ -68,6 +70,8 @@ class ConfigGUI(simpledialog.Dialog):
         self.tree.heading('Unit', text='Unit', anchor='w')
         self.tree.heading('Value', text='Value', anchor='w')
 
+        self.disabled: list[int, None] = disabled
+        self.rangehl: list[(int, int), None] = rangehl
         self.description = description
         self.description_long = description_long
         self.select_list = select_list
@@ -142,7 +146,7 @@ class ConfigGUI(simpledialog.Dialog):
         btn_select.pack(pady=10)
         btn_select.wait_window()
 
-        if dec is 0:
+        if dec == 0:
             messagebox.showwarning("No Selection",
                                    "Please select at least 1 application.")
             return 0
@@ -205,7 +209,6 @@ class ConfigGUI(simpledialog.Dialog):
                         param = list(self.cfg[index])[0]
                         self.cfg[index] = (param, value)
 
-                        print(self.cfg[index])
                         self.tree.set(value=value,
                                       item=item_id,
                                       column='Value')
@@ -214,7 +217,6 @@ class ConfigGUI(simpledialog.Dialog):
                         param = list(self.cfg[index])[0]
                         self.cfg[index] = (param, value)
 
-                        print(self.cfg[index])
                         self.tree.set(value=value,
                                       item=item_id,
                                       column='Value')
@@ -223,7 +225,6 @@ class ConfigGUI(simpledialog.Dialog):
                         param = list(self.cfg[index])[0]
                         self.cfg[index] = (param, value)
 
-                        print(self.cfg[index])
                         self.tree.set(value=value,
                                       item=item_id,
                                       column='Value')
@@ -241,17 +242,37 @@ class ConfigGUI(simpledialog.Dialog):
 
     def update_value(self, entry, item_id, index):
         new_value = entry.get()
+        intval: int = int(new_value)
+        rangehl: (int, int) = (self.rangehl[index][0], self.rangehl[index][1])
+        disabled: int | None = self.disabled[index]
         try:
-            self.tree.set(item_id, 'Value', int(new_value))
+            if rangehl[0] is not None and intval < rangehl[0]:
+                if disabled is not None:
+                    ask = messagebox.askyesno(title="Warning",
+                                              message="Value is lower than minimum, disable parameter?")
+                    if ask:
+                        intval = disabled
+                    else:
+                        intval = rangehl[0]
+                else:
+                    intval = rangehl[0]
+            elif rangehl[1] is not None and intval > rangehl[1]:
+                if disabled is not None:
+                    ask = messagebox.askyesno(title="Warning",
+                                              message="Value is higher than maximum, disable parameter?")
+                    if ask:
+                        intval = disabled
+                    else:
+                        intval = rangehl[1]
+                else:
+                    intval = rangehl[1]
+            self.tree.set(item_id, 'Value', intval)
             param = list(self.cfg[index])[0]
-            self.cfg[index] = (param, int(new_value))
-
-            print(self.cfg[index])
+            self.cfg[index] = (param, intval)
 
         except ValueError:
             self.tree.set(item_id, 'Value', 0)
         entry.destroy()
-        print(f"New value -> {item_id} : {new_value}\n")
 
     def on_ok(self):
         self.root.destroy()

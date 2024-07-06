@@ -5,8 +5,8 @@ import tkinter as tk
 from tkinter import filedialog
 from typing_extensions import Buffer
 
-from .GUI_setup import console
-from .smartbadgecfgdict import config_dict
+from SerialManager.GUI_setup import console
+from SerialManager.smartbadgecfgdict import config_dict
 
 
 class Config:
@@ -42,7 +42,7 @@ class Config:
 
     @staticmethod
     def check_config_discrepancy(serial_port: str, br: int) -> bool:
-        from .Device import Device
+        from Device import Device
         device_config = Device.config_show_at_device(serial_port=serial_port, br=br)
         deveui = str(Device.get_deveui(serial_port=serial_port, br=br))
         config_file = os.path.join(os.path.join(os.path.dirname(__file__), "utils"), "config.cfg")
@@ -75,7 +75,7 @@ class Config:
 
     @staticmethod
     def import_config() -> None:
-        from .serialmgr import define_os_specific_startingdir
+        from serialmgr import define_os_specific_startingdir
         filename = filedialog.askopenfilename(initialdir=define_os_specific_startingdir(),
                                               filetypes=[("Text files", "*.txt"),
                                                          ("Config files", "*.cfg"),

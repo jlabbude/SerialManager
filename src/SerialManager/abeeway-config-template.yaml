@@ -12,9 +12,10 @@ config:
     description-long: |
     list-type:
     list:
-    range-low:
-    range-high:
+    range-low: 15
+    range-high: 86400
     unit: Second
+    disabled:
   lora_period:
     parameter: 1
     value: 600
@@ -22,9 +23,10 @@ config:
     description-long: |
     list-type:
     list:
-    range-low:
-    range-high:
+    range-low: 300
+    range-high: 86400
     unit: Second
+    disabled:
   pw_stat_period:
     parameter: 2
     value: 0
@@ -32,9 +34,10 @@ config:
     description-long: |
     list-type:
     list:
-    range-low:
-    range-high:
+    range-low: 300
+    range-high: 604800
     unit: Second
+    disabled: 0
   periodic_pos_period:
     parameter: 3
     value: 0
@@ -45,9 +48,10 @@ config:
       This periodic position reporting uses the geoloc_method geolocation strategy.
     list-type:
     list:
-    range-low:
-    range-high:
+    range-low: 900
+    range-high: 604800
     unit: Second
+    disabled: 0
   unknown:
     parameter: 4
     value: 0
@@ -58,6 +62,7 @@ config:
     range-low:
     range-high:
     unit: _
+    disabled:
   geoloc_sensor:
     parameter: 5
     value: 1
@@ -78,9 +83,10 @@ config:
       - BLE scan only
       - BLE-GPS only (BLE then GPS if BLE fails in one geolocation cycle)
       - BLE-LPGPS only (BLE then LPGPS if BLE fails in one geolocation cycle)
-    range-low:
-    range-high:
+    range-low: 0
+    range-high: 12
     unit: _
+    disabled:
   geoloc_method:
     parameter: 6
     value: 1
@@ -96,9 +102,10 @@ config:
       - BLE scan only
       - BLE-GPS only (BLE then GPS if BLE fails in one geolocation cycle)
       - BLE-LPGPS only (BLE then LPGPS if BLE fails in one geolocation cycle)
-    range-low:
-    range-high:
+    range-low: 0
+    range-high: 7
     unit: _
+    disabled:
   antenna:
     parameter: 7
     value: 0
@@ -113,8 +120,9 @@ config:
     list-type:
     list:
     range-low:
-    range-high:
+    range-hig :h:
     unit: _
+    disabled:
   motion_nb_pos:
     parameter: 8
     value: 1
@@ -122,9 +130,10 @@ config:
     description-long: |
     list-type:
     list:
-    range-low:
-    range-high:
+    range-low: 0
+    range-high: 20
     unit: _
+    disabled:
   gps_timeout:
     parameter: 9
     value: 240
@@ -132,9 +141,10 @@ config:
     description-long: |
     list-type:
     list:
-    range-low:
-    range-high:
+    range-low: 30
+    range-high: 300
     unit: Second
+    disabled:
   agps_timeout:
     parameter: 10
     value: 45
@@ -142,9 +152,10 @@ config:
     description-long: |
     list-type:
     list:
-    range-low:
-    range-high:
+    range-low: 15
+    range-high: 250
     unit: Second
+    disabled:
   gps_ehpe:
     parameter: 11
     value: 20
@@ -152,9 +163,10 @@ config:
     description-long: |
     list-type:
     list:
-    range-low:
-    range-high:
+    range-low: 0
+    range-high: 100
     unit: Meter
+    disabled:
   gps_convergence:
     parameter: 12
     value: 30
@@ -162,9 +174,10 @@ config:
     description-long: |
     list-type:
     list:
-    range-low:
-    range-high:
+    range-low: 0
+    range-high: 300
     unit: Second
+    disabled:
   config_flags:
     parameter: 13
     value: 213055
@@ -193,9 +206,10 @@ config:
       - Set to enable extended position payload, (type=0x0E), reset to use classic payload (type=0x03)
       - Reserved, do not used
       - Enable the CLI over BLE
-    range-low:
-    range-high:
+    range-low: 0
+    range-high: 0x1FFFFF
     unit: _
+    disabled:
   transmit_strat:
     parameter: 14
     value: 2
@@ -209,9 +223,10 @@ config:
       - Dual fixed First TX using a random data rate within [DR4-DR5]. Next TX Using the data rate configured in default_datarate parameter. (not recommended)
       - Reserved, internal use only.
       - Activate the strategy defined with transmit_strat_custom parameter.
-    range-low:
-    range-high:
+    range-low: 0
+    range-high: 5
     unit: _
+    disabled:
   ble_beacon_cnt:
     parameter: 15
     value: 4
@@ -219,9 +234,10 @@ config:
     description-long: |
     list-type:
     list:
-    range-low:
-    range-high:
+    range-low: 1
+    range-high: 4
     unit: _
+    disabled:
   ble_beacon_timeout:
     parameter: 16
     value: 2
@@ -229,9 +245,10 @@ config:
     description-long: |
     list-type:
     list:
-    range-low:
-    range-high:
+    range-low: 1
+    range-high: 5
     unit: Second
+    disabled:
   gps_standby_timeout:
     parameter: 17
     value: 0
@@ -239,9 +256,10 @@ config:
     description-long: |
     list-type:
     list:
-    range-low:
-    range-high:
+    range-low: 1
+    range-high: 43200
     unit: Second
+    disabled: 0
   confirmed_ul_bitmap:
     parameter: 18
     value: 0
@@ -249,9 +267,10 @@ config:
     description-long: |
     list-type:
     list:
-    range-low:
-    range-high:
+    range-low: 0
+    range-high: 0xFFFF
     unit: _
+    disabled:
   confirmed_ul_retry:
     parameter: 19
     value: 3
@@ -259,9 +278,10 @@ config:
     description-long: |
     list-type:
     list:
-    range-low:
-    range-high:
+    range-low: 0
+    range-high: 8
     unit: _
+    disabled:
   motion_sensitivity:
     parameter: 20
     value: 131073
@@ -283,9 +303,10 @@ config:
       Default mode (sensitivity ranging from 1% to 100% as in firmware version 2.2-x and below).
     list-type:
     list:
-    range-low:
-    range-high:
+    range-low: 1
+    range-high: 200
     unit: _
+    disabled:
   shock_detection:
     parameter: 21
     value: 0
@@ -299,9 +320,10 @@ config:
       than motion_sensitivity parameter sensitivity
     list-type:
     list:
-    range-low:
-    range-high:
+    range-low: 1
+    range-high: 111
     unit: _
+    disabled: 0
   periodic_activity_period:
     parameter: 22
     value: 0
@@ -309,9 +331,10 @@ config:
     description-long: |
     list-type:
     list:
-    range-low:
-    range-high:
+    range-low: 900
+    range-high: 604800
     unit: Second
+    disabled: 0
   motion_duration:
     parameter: 23
     value: 180
@@ -319,9 +342,10 @@ config:
     description-long: |
     list-type:
     list:
-    range-low:
-    range-high:
+    range-low: 60
+    range-high: 3600
     unit: Second
+    disabled:
   geofencing_scan_period:
     parameter: 24
     value: 0
@@ -331,9 +355,10 @@ config:
       0 means the BLE geozoning scan is disabled
     list-type:
     list:
-    range-low:
-    range-high:
+    range-low: 1
+    range-high: 300
     unit: Second
+    disabled: 0
   geofencing_collect_period:
     parameter: 25
     value: 60
@@ -343,9 +368,10 @@ config:
       0, means there is no geozoning collection reported.
     list-type:
     list:
-    range-low:
-    range-high:
+    range-low: 15
+    range-high: 3600
     unit: Second
+    disabled: 0
   ble_rssi_filter:
     parameter: 26
     value: -85
@@ -357,9 +383,10 @@ config:
       information for the encoding).
     list-type:
     list:
-    range-low:
-    range-high:
+    range-low: -100
+    range-high: 40
     unit: dBm
+    disabled:
   temperature_high:
     parameter: 27
     value: 255
@@ -369,9 +396,10 @@ config:
       255 = disabled
     list-type:
     list:
-    range-low:
-    range-high:
+    range-low: -44
+    range-high: 85
     unit: ºC
+    disabled: 255
   temperature_low:
     parameter: 28
     value: 255
@@ -381,9 +409,10 @@ config:
       255 = disabled
     list-type:
     list:
-    range-low:
-    range-high:
+    range-low: -44
+    range-high: 85
     unit: °C
+    disabled: 255
   temperature_action:
     parameter: 29
     value: 0
@@ -403,9 +432,10 @@ config:
       - Whitelist a badge with proximity.
       - Angle detection manual trigger.
       - Special sequence activation
-    range-low:
-    range-high:
+    range-low: 0
+    range-high: 3
     unit: _
+    disabled:
   transmit_strat_custom:
     parameter: 30
     value: 0
@@ -432,9 +462,10 @@ config:
       bit 16-23: Bitmap representing each data rate to select for the second transmission (from DR0 to DR7) (4). bit 16 is DR0, then Bit 17, DR1 and so on.
     list-type:
     list:
-    range-low:
-    range-high:
+    range-low: 0
+    range-high: 0xFFFFFF
     unit: _
+    disabled:
   network_timeout_check:
     parameter: 31
     value: 432000
@@ -444,9 +475,10 @@ config:
       0: No timeout check is done
     list-type:
     list:
-    range-low:
-    range-high:
+    range-low: 86400
+    range-high: 5184000
     unit: Second
+    disabled: 0
   network_timeout_reset:
     parameter: 32
     value: 172800
@@ -456,9 +488,10 @@ config:
       0: feature deactivated
     list-type:
     list:
-    range-low:
-    range-high:
+    range-low: 21600
+    range-high: 2592000
     unit: Second
+    disabled: 0
   collection_scan_type:
     parameter: 33
     value: 0
@@ -473,9 +506,10 @@ config:
       - No collection scan
       - BLE collection scan
       - WIFI collection scan
-    range-low:
-    range-high:
+    range-low: 0
+    range-high: 2
     unit: _
+    disabled:
   collection_nb_entry:
     parameter: 34
     value: 20
@@ -483,9 +517,10 @@ config:
     description-long: |
     list-type:
     list:
-    range-low:
-    range-high:
+    range-low: 1
+    range-high: 20
     unit: _
+    disabled:
   collection_ble_filter_type:
     parameter: 35
     value: 0
@@ -509,9 +544,10 @@ config:
       - iBeacon UID only.
       - altBeacon only.
       - Reserved, internal use only
-    range-low:
-    range-high:
+    range-low: 0
+    range-high: 6
     unit: _
+    disabled:
   collection_ble_filter_main_1:
     parameter: 36
     value: 0
@@ -519,9 +555,10 @@ config:
     description-long: |
     list-type:
     list:
-    range-low:
-    range-high:
+    range-low: 0x0
+    range-high: 0xFFFFFFFF
     unit: _
+    disabled:
   collection_ble_filter_main_2:
     parameter: 37
     value: 0
@@ -529,9 +566,10 @@ config:
     description-long: |
     list-type:
     list:
-    range-low:
-    range-high:
+    range-low: 0x0
+    range-high: 0xFFFFFFFF
     unit: _
+    disabled:
   collection_ble_filter_sec_value:
     parameter: 38
     value: 0
@@ -539,9 +577,10 @@ config:
     description-long: |
     list-type:
     list:
-    range-low:
-    range-high:
+    range-low: 0x0
+    range-high: 0xFFFFFFFF
     unit: _
+    disabled:
   collection_ble_filter_sec_mask:
     parameter: 39
     value: 0
@@ -549,9 +588,10 @@ config:
     description-long: |
     list-type:
     list:
-    range-low:
-    range-high:
+    range-low: 0x0
+    range-high: 0xFFFFFFFF
     unit: _
+    disabled:
   battery_capacity:
     parameter: 40
     value: -1
@@ -563,9 +603,10 @@ config:
       1-65535: Capacity of the primary battery
     list-type:
     list:
-    range-low:
-    range-high:
+    range-low: -1
+    range-high: 65535
     unit: mAh
+    disabled:
   reed_switch_configuration:
     parameter: 41
     value: 0
@@ -576,6 +617,7 @@ config:
     range-low:
     range-high:
     unit: _
+    disabled:
   gnss_constellation:
     parameter: 42
     value: 4
@@ -599,9 +641,10 @@ config:
       - GPS, GLONASS and
       - Beidou only.
       - GPS and Beidou.
-    range-low:
-    range-high:
+    range-low: 0
+    range-high: 6
     unit: _
+    disabled:
   position_ble_filter_type:
     parameter: 77
     value: 0
@@ -616,9 +659,10 @@ config:
       - Reserved, internal use only
     list-type:
     list:
-    range-low:
-    range-high:
+    range-low: 0
+    range-high: 6
     unit: _
+    disabled:
   position_ble_filter_main_1:
     parameter: 78
     value: 0
@@ -626,9 +670,10 @@ config:
     description-long: |
     list-type:
     list:
-    range-low:
-    range-high:
+    range-low: 0x0
+    range-high: 0xFFFFFFFF
     unit: _
+    disabled:
   position_ble_filter_main_2:
     parameter: 79
     value: 0
@@ -636,9 +681,10 @@ config:
     description-long: |
     list-type:
     list:
-    range-low:
-    range-high:
+    range-low: 0x0
+    range-high: 0xFFFFFFFF
     unit: _
+    disabled:
   position_ble_filter_sec_value:
     parameter: 80
     value: 0
@@ -646,9 +692,10 @@ config:
     description-long: |
     list-type:
     list:
-    range-low:
-    range-high:
+    range-low: 0x0
+    range-high: 0xFFFFFFFF
     unit: _
+    disabled:
   position_ble_filter_sec_mask:
     parameter: 81
     value: 0
@@ -656,9 +703,10 @@ config:
     description-long: |
     list-type:
     list:
-    range-low:
-    range-high:
+    range-low: 0x0
+    range-high: 0xFFFFFFFF
     unit: _
+    disabled:
   position_ble_report_type:
     parameter: 82
     value: 0
@@ -670,9 +718,10 @@ config:
       - Short ID
       - Long ID
       - short beacon ID including the Major and Minor field (iBeacon only) (4)
-    range-low:
-    range-high:
+    range-low: 0
+    range-high: 3
     unit: _
+    disabled:
   buzzer_volume:
     parameter: 83
     value: 10
@@ -680,9 +729,10 @@ config:
     description-long: |
     list-type:
     list:
-    range-low:
-    range-high:
+    range-low: 0
+    range-high: 100
     unit: Percent
+    disabled:
   angle_detect_mode:
     parameter: 84
     value: 0
@@ -694,9 +744,10 @@ config:
       - Critical angle detection only.
       - Critical angle detection + Angle deviation detection
       - Critical angle detection triggered on shock detection
-    range-low:
-    range-high:
+    range-low: 0
+    range-high: 3
     unit: _
+    disabled:
   angle_ref_acq:
     parameter: 85
     value: 2
@@ -708,9 +759,10 @@ config:
       - Configured
       - Automatic
       - Assisted
-    range-low:
-    range-high:
+    range-low: 0
+    range-high: 3
     unit: _
+    disabled:
   angle_ref_acc_x:
     parameter: 86
     value: 0
@@ -718,9 +770,10 @@ config:
     description-long: |
     list-type:
     list:
-    range-low:
-    range-high:
+    range-low: 0xFFFF, -1000
+    range-high: 1000
     unit: mg
+    disabled:
   angle_ref_acc_y:
     parameter: 87
     value: 0
@@ -728,9 +781,10 @@ config:
     description-long: |
     list-type:
     list:
-    range-low:
-    range-high:
+    range-low: 0xFFFF, -1000
+    range-high: 1000
     unit: mg
+    disabled:
   angle_ref_acc_z:
     parameter: 88
     value: 0
@@ -738,9 +792,10 @@ config:
     description-long: |
     list-type:
     list:
-    range-low:
-    range-high:
+    range-low: 0xFFFF, -1000
+    range-high: 1000
     unit: mg
+    disabled:
   angle_critical:
     parameter: 89
     value: 30
@@ -748,9 +803,10 @@ config:
     description-long: |
     list-type:
     list:
-    range-low:
-    range-high:
+    range-low: 5
+    range-high: 175
     unit: Degrees
+    disabled:
   angle_critical_hyst:
     parameter: 90
     value: 5
@@ -758,9 +814,10 @@ config:
     description-long: |
     list-type:
     list:
-    range-low:
-    range-high:
+    range-low: 0
+    range-high: 180
     unit: Degrees
+    disabled:
   angle_report_mode:
     parameter: 91
     value: 1
@@ -780,9 +837,10 @@ config:
       - learning → normal.
       - normal → learning.
       - critical → learning.
-    range-low:
-    range-high:
+    range-low: 0
+    range-high: 0x1F
     unit: _
+    disabled:
   angle_report_period:
     parameter: 92
     value: 300
@@ -790,9 +848,10 @@ config:
     description-long: |
     list-type:
     list:
-    range-low:
-    range-high:
+    range-low: 60
+    range-high: 36000
     unit: Second
+    disabled: 0
   angle_report_repeat:
     parameter: 93
     value: 0
@@ -800,9 +859,10 @@ config:
     description-long: |
     list-type:
     list:
-    range-low:
-    range-high:
+    range-low: 0
+    range-high: 7
     unit:
+      disabled:
   angle_rising_time:
     parameter: 94
     value: 5
@@ -810,9 +870,10 @@ config:
     description-long: |
     list-type:
     list:
-    range-low:
-    range-high:
+    range-low: 0
+    range-high: 3600
     unit: Second
+    disabled:
   angle_falling_time:
     parameter: 95
     value: 5
@@ -820,9 +881,10 @@ config:
     description-long: |
     list-type:
     list:
-    range-low:
-    range-high:
+    range-low: 0
+    range-high: 3600
     unit: Second
+    disabled:
   angle_learning_time:
     parameter: 96
     value: 5
@@ -830,9 +892,10 @@ config:
     description-long: |
     list-type:
     list:
-    range-low:
-    range-high:
+    range-low: 0
+    range-high: 3600
     unit: Second
+    disabled:
   angle_acc_accuracy:
     parameter: 97
     value: 100
@@ -840,9 +903,10 @@ config:
     description-long: |
     list-type:
     list:
-    range-low:
-    range-high:
+    range-low: 0
+    range-high: 1000
     unit: mg
+    disabled:
   angle_deviation_delta:
     parameter: 98
     value: 0
@@ -850,9 +914,10 @@ config:
     description-long: |
     list-type:
     list:
-    range-low:
-    range-high:
+    range-low: 0
+    range-high: 175
     unit: Degrees
+    disabled:
   angle_deviation_min_interval:
     parameter: 99
     value: 10
@@ -860,9 +925,10 @@ config:
     description-long: |
     list-type:
     list:
-    range-low:
-    range-high:
+    range-low: 0
+    range-high: 1800
     unit: Degrees
+    disabled:
   angle_deviation_max_interval:
     parameter: 100
     value: 0
@@ -871,8 +937,9 @@ config:
     list-type:
     list:
     range-low:
-    range-high:
+    range-high: 86400
     unit: Degrees
+    disabled:
   default_profile:
     parameter: 101
     value: 0
@@ -884,9 +951,10 @@ config:
       - Sleep
       - Economic
       - Intensive
-    range-low:
-    range-high:
+    range-low: 0
+    range-high: 4
     unit: _
+    disabled:
   password:
     parameter: 102
     value: 123
@@ -894,9 +962,10 @@ config:
     description-long: |
     list-type:
     list:
-    range-low:
-    range-high:
+    range-low: 99
+    range-high: 999999
     unit: _
+    disabled:
   gps_t0_timeout:
     parameter: 103
     value: 30
@@ -907,9 +976,10 @@ config:
       When 0, the timeout doesn’t apply
     list-type:
     list:
-    range-low:
-    range-high:
+    range-low: 1
+    range-high: 300
     unit: Second
+    disabled: 0
   gps_fix_timeout:
     parameter: 104
     value: 0
@@ -920,9 +990,10 @@ config:
       When 0, the timeout doesn’t apply
     list-type:
     list:
-    range-low:
-    range-high:
+    range-low: 1
+    range-high: 300
     unit: Second
+    disabled: 0
   geofencing_scan_duration:
     parameter: 105
     value: 370
@@ -930,9 +1001,10 @@ config:
     description-long: |
     list-type:
     list:
-    range-low:
-    range-high:
+    range-low: 370
+    range-high: 3000
     unit: milliSecond
+    disabled:
   beaconing_type:
     parameter: 106
     value: 0
@@ -946,9 +1018,10 @@ config:
       - Eddystone
       - Ibeacon
       - Altbeacon
-    range-low:
-    range-high:
+    range-low: 0
+    range-high: 5
     unit: _
+    disabled:
   beaconing_tx_power:
     parameter: 107
     value: 2
@@ -965,9 +1038,10 @@ config:
       - -16 dBm
       - -20 dBm
       - -40 dBm
-    range-low:
-    range-high:
+    range-low: 0
+    range-high: 8
     unit: _
+    disabled:
   beaconing_static_interval:
     parameter: 108
     value: 10000
@@ -978,9 +1052,10 @@ config:
       0 disables beaconing when static
     list-type:
     list:
-    range-low:
-    range-high:
+    range-low: 100
+    range-high: 10000
     unit: milliSecond
+    disabled: 0
   beaconing_motion_interval:
     parameter: 109
     value: 333
@@ -991,9 +1066,10 @@ config:
       0 disables beaconing when in motion
     list-type:
     list:
-    range-low:
-    range-high:
+    range-low: 100
+    range-high: 10000
     unit: milliSecond
+    disabled: 0
   beaconing_motion_duration:
     parameter: 110
     value: 20
@@ -1001,9 +1077,10 @@ config:
     description-long: |
     list-type:
     list:
-    range-low:
-    range-high:
+    range-low: 4
+    range-high: 255
     unit: Second
+    disabled:
   ble_cnx_adv_duration:
     parameter: 111
     value: 600
@@ -1011,9 +1088,10 @@ config:
     description-long: |
     list-type:
     list:
-    range-low:
-    range-high:
+    range-low: 30
+    range-high: 18000
     unit: Second
+    disabled:
   beacon_id_0:
     parameter: 112
     value: 0
@@ -1021,9 +1099,10 @@ config:
     description-long: |
     list-type:
     list:
-    range-low:
-    range-high:
+    range-low: 1
+    range-high: 0xFFFFFFFF
     unit: _
+    disabled:
   beacon_id_1:
     parameter: 113
     value: 0
@@ -1031,9 +1110,10 @@ config:
     description-long: |
     list-type:
     list:
-    range-low:
-    range-high:
+    range-low: 1
+    range-high: 0xFFFFFFFF
     unit: _
+    disabled:
   beacon_id_2:
     parameter: 114
     value: 0
@@ -1041,9 +1121,10 @@ config:
     description-long: |
     list-type:
     list:
-    range-low:
-    range-high:
+    range-low: 1
+    range-high: 0xFFFFFFFF
     unit: _
+    disabled:
   beacon_id_3:
     parameter: 115
     value: 0
@@ -1051,9 +1132,10 @@ config:
     description-long: |
     list-type:
     list:
-    range-low:
-    range-high:
+    range-low: 1
+    range-high: 0xFFFFFFFF
     unit: _
+    disabled:
   beacon_id_4:
     parameter: 116
     value: 0
@@ -1061,9 +1143,10 @@ config:
     description-long: |
     list-type:
     list:
-    range-low:
-    range-high:
+    range-low: 1
+    range-high: 0xFFFFFFFF
     unit: _
+    disabled:
   sos_period:
     parameter: 117
     value: 120
@@ -1071,9 +1154,10 @@ config:
     description-long: |
     list-type:
     list:
-    range-low:
-    range-high:
+    range-low: 15
+    range-high: 300
     unit: Second
+    disabled:
   motion_debounce:
     parameter: 118
     value: 1
@@ -1083,9 +1167,10 @@ config:
       0 triggers motion detection as soon as a single accelerometer sample is above the value set in motion_sensitivity the duration of the period is given by the formula: motion_debounce * 20 milli seconds
     list-type:
     list:
-    range-low:
-    range-high:
+    range-low: 0
+    range-high: 4
     unit: _
+    disabled:
   button_mapping:
     parameter: 119
     value: 8211
@@ -1149,9 +1234,10 @@ config:
           - 6 seconds.
           - 7 seconds.
           - 8 seconds.
-    range-low:
-    range-high:
+    range-low: 0
+    range-high: 0x00086666
     unit: _
+    disabled:
   default_datarate:
     parameter: 120
     value: -1
@@ -1162,9 +1248,10 @@ config:
       If the configured data rate is not supported by the Lora MAC. The min data rate supported is used instead
     list-type:
     list:
-    range-low:
-    range-high:
+    range-low: -10
+    range-high: 7
     unit: _
+    disabled:
   gps_ehpe_motion:
     parameter: 121
     value: 40
@@ -1172,9 +1259,10 @@ config:
     description-long: |
     list-type:
     list:
-    range-low:
-    range-high:
+    range-low: 0
+    range-high: 100
     unit: Meters
+    disabled:
   gps_convergence_motion:
     parameter: 122
     value: 20
@@ -1182,9 +1270,10 @@ config:
     description-long: |
     list-type:
     list:
-    range-low:
-    range-high:
+    range-low: 0
+    range-high: 300
     unit: Second
+    disabled:
   gps_t0_timeout_motion:
     parameter: 123
     value: 30
@@ -1192,9 +1281,10 @@ config:
     description-long: |
     list-type:
     list:
-    range-low:
-    range-high:
+    range-low: 0
+    range-high: 300
     unit: Second
+    disabled:
   ble_cli_active:
     parameter: 245
     value: 0
@@ -1207,6 +1297,7 @@ config:
     range-low:
     range-high:
     unit: _
+    disabled: 0
   profile:
     parameter: 246
     value: 0
@@ -1218,9 +1309,10 @@ config:
       - Sleep
       - Economic
       - Intensive
-    range-low:
-    range-high:
+    range-low: 0
+    range-high: 5
     unit: _
+    disabled:
   consumption:
     parameter: 247
     value: 0
@@ -1228,9 +1320,10 @@ config:
     description-long: |
     list-type:
     list:
-    range-low:
-    range-high:
+    range-low: 1
+    range-high: 0xFFFFFFFF
     unit: mAh
+    disabled: 0
   ble_bond_info:
     parameter: 248
     value: 1
@@ -1241,6 +1334,7 @@ config:
     range-low:
     range-high:
     unit: Second
+    disabled: 0
   mode:
     parameter: 249
     value: 0
@@ -1254,6 +1348,7 @@ config:
       - Motion start/end tracking
       - Activity tracking
       - Off mode
-    range-low:
-    range-high:
+    range-low: 0
+    range-high: 5
     unit: _
+    disabled:
