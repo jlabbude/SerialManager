@@ -115,13 +115,13 @@ def main() -> None:
                                  font=("Arial", 12),
                                  command=lambda: serial_parallel_process(target=Device.start_dev))
                 button2 = Button(root,
-                                 text="Import config",
+                                 text="Export/Import config",
                                  bg="lightblue",
                                  fg="black",
                                  width=15,
                                  height=2,
                                  font=("Arial", 12),
-                                 command=lambda: Config.import_config())
+                                 command=lambda: Config.export_or_import())
 
                 root.grid_rowconfigure(0, weight=1)
                 root.grid_rowconfigure(1, weight=1)

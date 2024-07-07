@@ -3,9 +3,11 @@ import re
 import shutil
 import tkinter as tk
 from tkinter import filedialog
+from tkinter.simpledialog import askstring
+
 from typing_extensions import Buffer
 
-from SerialManager.GUI_setup import console
+from SerialManager.GUI_setup import console, root
 from SerialManager.smartbadgecfgdict import config_dict
 
 
@@ -74,20 +76,58 @@ class Config:
         return True
 
     @staticmethod
-    def import_config() -> None:
-        from serialmgr import define_os_specific_startingdir
-        filename = filedialog.askopenfilename(initialdir=define_os_specific_startingdir(),
-                                              filetypes=[("Text files", "*.txt"),
-                                                         ("Config files", "*.cfg"),
-                                                         ("YaML files", "*.yaml")])
-        if filename:
-            destination_dir = os.path.join(os.path.dirname(__file__), "utils")
-            os.makedirs(destination_dir, exist_ok=True)
-            destination_file = os.path.join(destination_dir, "config.cfg")
-            try:
-                shutil.copy(filename, destination_file)
-                console.insert(tk.END, "Config file imported successfully.\n")
-            except Exception as e:
-                console.insert(tk.END, "Error:" + str(e) + "\n")
-        else:
-            console.insert(tk.END, "No file selected.\n")
+    def export_or_import() -> None:
+        from SerialManager.serialmgr import define_os_specific_startingdir
+
+        def export_import():
+            def on_csv():
+                choice.set("export")
+                file_dialog.destroy()
+
+            def on_bin():
+                choice.set("import")
+                file_dialog.destroy()
+
+            file_dialog = tk.Toplevel(root)
+            file_dialog.title("Select")
+            tk.Label(file_dialog, text="Import or export?").pack(pady=10)
+            tk.Button(file_dialog, text="Export current config", command=on_csv).pack(side="left", padx=20, pady=20)
+            tk.Button(file_dialog, text="Import external config", command=on_bin).pack(side="right", padx=20, pady=20)
+            file_dialog.transient(root)
+            file_dialog.grab_set()
+            root.wait_window(file_dialog)
+
+        choice = tk.StringVar()
+        export_import()
+
+        match choice.get():
+            case "import":
+                filename = filedialog.askopenfilename(initialdir=define_os_specific_startingdir(),
+                                                      filetypes=[("Text files", "*.txt"),
+                                                                 ("Config files", "*.cfg"),
+                                                                 ("YaML files", "*.yaml")])
+                if filename:
+                    destination_dir = os.path.join(os.path.dirname(__file__), "utils")
+                    os.makedirs(destination_dir, exist_ok=True)
+                    destination_file = os.path.join(destination_dir, "config.cfg")
+                    try:
+                        shutil.copy(filename, destination_file)
+                        console.insert(tk.END, "Config file imported successfully.\n")
+                    except Exception as e:
+                        console.insert(tk.END, "Error:" + str(e) + "\n")
+                else:
+                    console.insert(tk.END, "No file selected.\n")
+            case "export":
+                file = filedialog.askdirectory(initialdir=define_os_specific_startingdir())
+                config_file = os.path.join(os.path.join(os.path.dirname(__file__), "utils"), "config.cfg")
+
+                if file and config_file:
+                    new_file_name = askstring("Input", "Nome da operação:",
+                                              parent=None)
+                    if new_file_name:
+                        new_file_path = os.path.join(file, new_file_name)
+                        new_file_name.join(".cfg")
+                        shutil.copy(config_file, os.path.join(file, new_file_path + ".cfg"))
+                        console.insert(tk.END, "Config file exported successfully as {}.\n".format(new_file_name))
+                    else:
+                        console.insert(tk.END, "No new file name provided. Operation cancelled.\n")

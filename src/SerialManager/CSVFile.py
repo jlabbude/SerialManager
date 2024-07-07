@@ -188,7 +188,7 @@ class CSVFile:
 
     @staticmethod
     def importer() -> None:
-        from .serialmgr import define_os_specific_startingdir
+        from SerialManager.serialmgr import define_os_specific_startingdir
 
         def choose_file_type():
             def on_csv():

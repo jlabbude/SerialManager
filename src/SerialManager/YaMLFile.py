@@ -28,7 +28,7 @@ class YaMLFile:
 
     @staticmethod
     def import_config() -> None:
-        from .serialmgr import define_os_specific_startingdir
+        from SerialManager.serialmgr import define_os_specific_startingdir
         filename = filedialog.askopenfilename(initialdir=define_os_specific_startingdir(),
                                               filetypes=[("Text files", "*.txt"),
                                                          ("Config files", "*.cfg"),
