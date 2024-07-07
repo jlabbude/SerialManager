@@ -10,7 +10,7 @@ setup(
     author="João Lucas",
     url="https://github.com/jlabbude/SerialManager",
     packages=find_packages(where="src"),
-    package_dir={"": ""},
+    package_dir={"SerialManager": "src/SerialManager"},
     install_requires=[
         "pyserial",
         "tk",

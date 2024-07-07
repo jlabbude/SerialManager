@@ -22,3 +22,5 @@ template.txt
 /trash/**
 /src/config/config2.cfg
 /src/SerialManager.egg-info/
+/SerialManager.egg-info/
+/src/SerialManager/utils/

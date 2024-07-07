@@ -118,16 +118,18 @@ class Config:
                 else:
                     console.insert(tk.END, "No file selected.\n")
             case "export":
-                file = filedialog.askdirectory(initialdir=define_os_specific_startingdir())
+                folder = filedialog.askdirectory(initialdir=define_os_specific_startingdir())
                 config_file = os.path.join(os.path.join(os.path.dirname(__file__), "utils"), "config.cfg")
 
-                if file and config_file:
+                if folder and config_file:
                     new_file_name = askstring("Input", "Nome da operação:",
                                               parent=None)
                     if new_file_name:
-                        new_file_path = os.path.join(file, new_file_name)
+                        new_file_path = os.path.join(folder, new_file_name)
                         new_file_name.join(".cfg")
-                        shutil.copy(config_file, os.path.join(file, new_file_path + ".cfg"))
+                        shutil.copy(config_file, os.path.join(folder, new_file_path + ".cfg"))
                         console.insert(tk.END, "Config file exported successfully as {}.\n".format(new_file_name))
                     else:
                         console.insert(tk.END, "No new file name provided. Operation cancelled.\n")
+                else:
+                    console.insert(tk.END, "No folder selected.\n")
