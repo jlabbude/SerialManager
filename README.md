@@ -13,7 +13,7 @@ To install I recommend you use the package installer for Python - **pip**
   pip install serialmanager
 ```
 
-## Usage
+## Usages
 
 ```bash
   serialmgr abeeway config
@@ -21,11 +21,21 @@ To install I recommend you use the package installer for Python - **pip**
 
 Run this command to open the GUI related to device configuring.
 
+---
+
 ```bash
  serialmgr abeeway upload
 ```
 
 Run this command to open the GUI related to building a CSV to upload info about the configured devices to a cloud service, in this case, ThingPark.
+
+---
+
+```bash
+ serialmgr abeeway create-cfg
+```
+
+Run this command to open the GUI related to creating a config file. **Firmware 2.4-1**
 
 ## Compatibility
 
