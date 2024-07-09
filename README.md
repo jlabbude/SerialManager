@@ -61,7 +61,10 @@ Run this command to open the GUI related to creating a config file. **Firmware 2
 - Devices with firmware versions above or below 2.4-1 will report config error due to not having that config parameter 
 
 ## Future goals
-- [ ] Change config file to yaml from cfg and add GUI to manipule it
+- [X] Change config file to yaml from cfg and add GUI to manipule it
 - [ ] Support for multiple firmware versions
 - [ ] Support for different types of devices
 - [ ] Support for flashing the firmware of these devices
+
+## TO DO
+- [ ] Add search bar to `create-cfg`
