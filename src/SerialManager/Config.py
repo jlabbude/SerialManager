@@ -44,7 +44,7 @@ class Config:
 
     @staticmethod
     def check_config_discrepancy(serial_port: str, br: int) -> bool:
-        from Device import Device
+        from SerialManager.Device import Device
         device_config = Device.config_show_at_device(serial_port=serial_port, br=br)
         deveui = str(Device.get_deveui(serial_port=serial_port, br=br))
         config_file = os.path.join(os.path.join(os.path.dirname(__file__), "utils"), "config.cfg")
