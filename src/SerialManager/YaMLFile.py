@@ -1,14 +1,11 @@
 import os
-import shutil
 import tkinter as tk
 from dataclasses import dataclass, field
-from tkinter import filedialog
 
 import yaml
 
-from SerialManager.CustomGUI import ConfigGUI
-from SerialManager.GUI_setup import console, root
 from SerialManager.ConfigGen import ConfigGen
+from SerialManager.CustomGUI import ConfigGUI
 
 
 @dataclass
@@ -26,27 +23,7 @@ class ConfigStruct:
 
 class YaMLFile:
 
-    @staticmethod
-    def import_config() -> None:
-        from SerialManager.serialmgr import define_os_specific_startingdir
-        filename = filedialog.askopenfilename(initialdir=define_os_specific_startingdir(),
-                                              filetypes=[("Text files", "*.txt"),
-                                                         ("Config files", "*.cfg"),
-                                                         ("YaML files", "*.yaml")])
-        if filename:
-            destination_dir = os.path.join(os.path.dirname(__file__), "utils")
-            os.makedirs(destination_dir, exist_ok=True)
-            destination_file = os.path.join(destination_dir, "config.yaml")
-            try:
-                shutil.copy(filename, destination_file)
-                console.insert(tk.END, "Config file imported successfully.\n")
-            except Exception as e:
-                console.insert(tk.END, "Error:" + str(e) + "\n")
-        else:
-            console.insert(tk.END, "No file selected.\n")
-
-    @staticmethod
-    def read_and_set_config() -> list[(int, int)]:
+    def __init__(self):
         gui_display_config = ConfigStruct()
         with open(os.path.join(os.path.dirname(os.path.abspath(__file__)),
                                'abeeway-config-template.yaml'), 'r') as yamlfile:
@@ -65,33 +42,30 @@ class YaMLFile:
 
             else:
                 gui_display_config.disabled.append(None)
-            if config_data.get(name).get('range-high') is not None or config_data.get(name).get('range-low') is not None:
+            if (config_data.get(name).get('range-high') is not None
+                    or config_data.get(name).get('range-low') is not None):
                 if config_data.get(name).get('range-high') is str or config_data.get(name).get('range-low') is str:
                     gui_display_config.range.append(((int(config_data.get(name).get('range-low')), 16),
                                                      (int(config_data.get(name).get('range-high')), 16)))
                 else:
                     gui_display_config.range.append((config_data.get(name).get('range-low'),
-                                                    (config_data.get(name).get('range-high'))))
+                                                     (config_data.get(name).get('range-high'))))
             else:
                 gui_display_config.range.append(None)
-
-        root.withdraw()
         root2 = tk.Tk()
-        result = ConfigGUI(root=root2,
-                           items=param_names,
-                           values=gui_display_config.values,
-                           description=gui_display_config.description,
-                           description_long=gui_display_config.description_long,
-                           units=gui_display_config.units,
-                           select_list=gui_display_config.select_list,
-                           list_flag=gui_display_config.list_flags,
-                           parameters=gui_display_config.parameter,
-                           rangehl=gui_display_config.range,
-                           disabled=gui_display_config.disabled)
-        root2.wait_window()
-        return result.cfg
+        self.result = ConfigGUI(root=root2,
+                                items=param_names,
+                                values=gui_display_config.values,
+                                description=gui_display_config.description,
+                                description_long=gui_display_config.description_long,
+                                units=gui_display_config.units,
+                                select_list=gui_display_config.select_list,
+                                list_flag=gui_display_config.list_flags,
+                                parameters=gui_display_config.parameter,
+                                rangehl=gui_display_config.range,
+                                disabled=gui_display_config.disabled)
+        root2.mainloop()
 
-    def create_cfg(self) -> None:
-        values = self.read_and_set_config()
-        gen = ConfigGen(cfg=values)
-        gen.create_cfg_file()
+        ConfigGen(cfg=self.result.cfg)
+
+        exit()

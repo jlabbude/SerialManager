@@ -7,27 +7,17 @@ from tkinter import Button
 
 import serial.tools.list_ports
 
-from SerialManager.YaMLFile import YaMLFile
-from SerialManager.CSVFile import CSVFile
-from SerialManager.Config import Config
-from SerialManager.Device import Device
-from SerialManager.GUI_setup import root, console
 
 baud_rate = 9600
 operating_system = system()
 
 
-def define_os_specific_serial_ports() -> None:
-    global serial_port_array
+def define_os_specific_serial_ports() -> list[str]:
     match operating_system:
         case "Linux":
-            serial_port_array = glob("/dev/ttyACM*")
+            return glob("/dev/ttyACM*")
         case "Windows":
-            def get_ports():
-                ports = serial.tools.list_ports.comports()
-                return [port.device for port in ports]
-
-            serial_port_array = get_ports()
+            return [port.device for port in serial.tools.list_ports.comports()]
 
 
 def define_os_specific_startingdir() -> str:
@@ -41,6 +31,7 @@ def define_os_specific_startingdir() -> str:
 
 
 def serial_parallel_process(target: object | None) -> None:
+    serial_port_array = define_os_specific_serial_ports()
     threads = []
     for serial_port in serial_port_array:
         thread = Thread(target=target, args=(serial_port, baud_rate))
@@ -51,6 +42,7 @@ def serial_parallel_process(target: object | None) -> None:
 
 
 def no_join_parallel_process(target: object | None) -> list[Thread]:
+    serial_port_array = define_os_specific_serial_ports()
     threads = []
     for serial_port in serial_port_array:
         thread = Thread(target=target, args=(serial_port, baud_rate))
@@ -60,8 +52,8 @@ def no_join_parallel_process(target: object | None) -> list[Thread]:
 
 
 def config_process() -> None:
-    define_os_specific_serial_ports()
-
+    from SerialManager.Config import Config
+    from SerialManager.Device import Device
     # TODO: investigate instability here
     serial_parallel_process(target=Device.start_dev)
     sleep(5)
@@ -82,14 +74,20 @@ def main() -> None:
     parser_arg.add_argument('abeeway', choices=['config', 'upload', 'create-cfg'])
     args = parser.parse_args()
 
-    root.title("Config window")
-    root.geometry("800x600")
-    root.configure(padx=10, pady=10)
+    # TODO REFACTOR LATER
 
-    console.grid(row=4, column=0, columnspan=2, padx=5, pady=5, sticky="nsew")
     if args.arg == 'abeeway':
         match args.abeeway:
             case 'config':
+                from SerialManager.GUI_setup import root, console
+                from SerialManager.Config import Config
+                from SerialManager.Device import Device
+                root.title("Config window")
+                root.geometry("800x600")
+                root.configure(padx=10, pady=10)
+
+                console.grid(row=4, column=0, columnspan=2, padx=5, pady=5, sticky="nsew")
+
                 button1 = Button(root,
                                  text="Configure device",
                                  bg="lightblue",
@@ -140,6 +138,14 @@ def main() -> None:
                 root.mainloop()
 
             case 'upload':
+                from SerialManager.GUI_setup import root, console
+                from SerialManager.CSVFile import CSVFile
+                root.title("Config window")
+                root.geometry("800x600")
+                root.configure(padx=10, pady=10)
+
+                console.grid(row=4, column=0, columnspan=2, padx=5, pady=5, sticky="nsew")
+
                 button1 = Button(root,
                                  text="Make CSV",
                                  bg="lightblue",
@@ -190,10 +196,8 @@ def main() -> None:
                 root.mainloop()
 
             case 'create-cfg':
-                seta = YaMLFile()
-                seta.create_cfg()
-
-                root.destroy()
+                from SerialManager.YaMLFile import YaMLFile
+                YaMLFile()
 
     else:
         print("Try 'serialmgr abeeway'.")
