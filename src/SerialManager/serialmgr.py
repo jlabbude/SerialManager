@@ -137,6 +137,8 @@ def main() -> None:
 
                 root.mainloop()
 
+                exit()
+
             case 'upload':
                 from SerialManager.GUI_setup import root, console
                 from SerialManager.CSVFile import CSVFile
@@ -194,6 +196,8 @@ def main() -> None:
                 button4.grid(row=1, column=1, padx=5, pady=5, sticky="nsew")
 
                 root.mainloop()
+
+                exit()
 
             case 'create-cfg':
                 from SerialManager.YaMLFile import YaMLFile
