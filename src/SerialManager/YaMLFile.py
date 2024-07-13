@@ -4,7 +4,6 @@ from dataclasses import dataclass, field
 
 import yaml
 
-from SerialManager.ConfigGen import ConfigGen
 from SerialManager.CreateConfigGUI import CreateConfigGui
 
 
@@ -52,29 +51,17 @@ class YaMLFile:
                                                      (config_data.get(name).get('range-high'))))
             else:
                 gui_display_config.range.append(None)
-        result = CreateConfigGui(root=root,
-                                 items=param_names,
-                                 values=gui_display_config.values,
-                                 description=gui_display_config.description,
-                                 description_long=gui_display_config.description_long,
-                                 units=gui_display_config.units,
-                                 select_list=gui_display_config.select_list,
-                                 list_flag=gui_display_config.list_flags,
-                                 parameters=gui_display_config.parameter,
-                                 rangehl=gui_display_config.range,
-                                 disabled=gui_display_config.disabled)
+        CreateConfigGui(root=root,
+                        items=param_names,
+                        values=gui_display_config.values,
+                        description=gui_display_config.description,
+                        description_long=gui_display_config.description_long,
+                        units=gui_display_config.units,
+                        select_list=gui_display_config.select_list,
+                        list_flag=gui_display_config.list_flags,
+                        parameters=gui_display_config.parameter,
+                        rangehl=gui_display_config.range,
+                        disabled=gui_display_config.disabled)
         root.mainloop()
 
-        self.generate_config(result.cfg)
-
         exit()
-
-    @staticmethod
-    def generate_config(cfg: list[(int, int)]) -> None:
-        destination_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), "utils")
-        os.makedirs(destination_dir, exist_ok=True)
-        cfgfile = os.path.join(destination_dir, "config.cfg")
-        with open(cfgfile, 'w') as file:
-            for config in cfg:
-                file.write(f'config set {config[0]} {config[1]}\n')
-        print("Wrote to config.cfg")

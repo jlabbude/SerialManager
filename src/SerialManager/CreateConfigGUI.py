@@ -1,3 +1,4 @@
+import os
 from tkinter import ttk, Button, Toplevel, Listbox, BOTH, END, messagebox, MULTIPLE, Tk, Label, LEFT, SOLID
 
 
@@ -230,7 +231,18 @@ class CreateConfigGui:
             self.tree.set(item_id, 'Value', 0)
         entry.destroy()
 
+    @staticmethod
+    def generate_config(cfg: list[(int, int)]) -> None:
+        destination_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), "utils")
+        os.makedirs(destination_dir, exist_ok=True)
+        cfgfile = os.path.join(destination_dir, "config.cfg")
+        with open(cfgfile, 'w') as file:
+            for config in cfg:
+                file.write(f'config set {config[0]} {config[1]}\n')
+        print("Wrote to config.cfg")
+
     def on_ok(self):
+        self.generate_config(self.cfg)
         self.root.destroy()
 
 
