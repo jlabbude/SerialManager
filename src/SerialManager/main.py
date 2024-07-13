@@ -3,11 +3,15 @@ from glob import glob
 from platform import system
 from threading import Thread
 from time import sleep
+from tkinter import Tk
 
 import serial.tools.list_ports
 
 from Config import Config
 from Device import Device
+from ConsoleButtons import ConsoleButtons
+from CSVFile import CSVFile
+from YaMLFile import YaMLFile
 
 baud_rate = 9600
 operating_system = system()
@@ -75,9 +79,7 @@ def main() -> None:
     if args.arg == 'abeeway':
         match args.abeeway:
             case 'config':
-                from ConsoleButtons import ConsoleButtons
-
-                gui = ConsoleButtons(title="Configure window")
+                gui = ConsoleButtons(title="Configure window", root=Tk())
                 config = Config(root=gui.root, gui_instance=gui)
 
                 (gui
@@ -97,10 +99,7 @@ def main() -> None:
                 exit()
 
             case 'upload':
-                from ConsoleButtons import ConsoleButtons
-                from SerialManager.CSVFile import CSVFile
-
-                gui = ConsoleButtons(title="Upload window")
+                gui = ConsoleButtons(title="Upload window", root=Tk())
                 config = Config(root=gui.root, gui_instance=gui)
                 csvfile = CSVFile(root=gui.root, gui_instance=gui)
 
@@ -121,8 +120,7 @@ def main() -> None:
                 exit()
 
             case 'create-cfg':
-                from SerialManager.YaMLFile import YaMLFile
-                YaMLFile()
+                YaMLFile(root=Tk())
 
     else:
         print("Try 'serialmgr abeeway'.")

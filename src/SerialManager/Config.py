@@ -8,11 +8,12 @@ from tkinter.simpledialog import askstring
 from typing_extensions import Buffer
 
 from abeeway_smartbadge_dict import config_dict
+from ConsoleButtons import ConsoleButtons
 
 
 class Config:
 
-    def __init__(self, gui_instance, root: tk.Tk):
+    def __init__(self, gui_instance: ConsoleButtons, root: tk.Tk):
         self.gui = gui_instance
         self.root = root
 

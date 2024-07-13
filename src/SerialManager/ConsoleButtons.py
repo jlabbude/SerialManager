@@ -2,14 +2,14 @@ from tkinter import Tk, Text, Button, END
 
 
 class ConsoleButtons:
-    root = Tk()
-
     def __init__(self,
+                 root: Tk,
                  title: str,
                  button_width: int = 15,
                  button_height: int = 2,
                  font: (str, int) = ('Arial',  12)):
 
+        self.root = root
         self.console = Text(self.root, wrap="word")
         self.console.grid(row=4, column=0, columnspan=2, padx=5, pady=5, sticky="nsew")
 

@@ -23,7 +23,7 @@ class ConfigStruct:
 
 class YaMLFile:
 
-    def __init__(self):
+    def __init__(self, root: tk.Tk):
         gui_display_config = ConfigStruct()
         with open(os.path.join(os.path.dirname(os.path.abspath(__file__)),
                                'abeeway-config-template.yaml'), 'r') as yamlfile:
@@ -52,8 +52,7 @@ class YaMLFile:
                                                      (config_data.get(name).get('range-high'))))
             else:
                 gui_display_config.range.append(None)
-        root2 = tk.Tk()
-        self.result = ConfigGUI(root=root2,
+        self.result = ConfigGUI(root=root,
                                 items=param_names,
                                 values=gui_display_config.values,
                                 description=gui_display_config.description,
@@ -64,7 +63,7 @@ class YaMLFile:
                                 parameters=gui_display_config.parameter,
                                 rangehl=gui_display_config.range,
                                 disabled=gui_display_config.disabled)
-        root2.mainloop()
+        root.mainloop()
 
         ConfigGen(cfg=self.result.cfg)
 

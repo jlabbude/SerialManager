@@ -13,6 +13,7 @@ import requests
 from kapak.aes import decrypt
 
 from CustomGUI import HidePassword, CustomDialog
+from ConsoleButtons import ConsoleButtons
 
 
 @dataclass
