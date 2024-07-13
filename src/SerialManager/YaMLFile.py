@@ -5,7 +5,7 @@ from dataclasses import dataclass, field
 import yaml
 
 from SerialManager.ConfigGen import ConfigGen
-from SerialManager.CustomGUI import ConfigGUI
+from SerialManager.ConfigGUI import ConfigGUI
 
 
 @dataclass

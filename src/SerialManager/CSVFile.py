@@ -12,8 +12,7 @@ import kapak.error
 import requests
 from kapak.aes import decrypt
 
-from SerialManager.GUI_setup import root, console
-from SerialManager.CustomGUI import HidePassword, CustomDialog
+from CustomGUI import HidePassword, CustomDialog
 
 
 @dataclass
@@ -28,9 +27,12 @@ class DevStruct:
 class CSVFile:
     csv_file = os.path.join(os.path.dirname(__file__), "utils", "output.csv")
 
-    # Fields with a default value already set are supposed to be the most common choices.
-    # However, I've decided to make them mutable to allow, for example, the deletion of devices,
-    # or creation of other devices that aren't the same model of dev_model_id
+    def __init__(self,
+                 root: tk.Tk,
+                 gui_instance: ConsoleButtons):
+        self.root = root
+        self.gui = gui_instance
+
     @staticmethod
     def csv_templater(deveui: str,
                       join_eui: str,
@@ -42,6 +44,21 @@ class CSVFile:
                       dev_model_id: str = "ABEE/Badge-1.0.2b-AS",
                       motion_indicator: str = "RANDOM"
                       ) -> list[str | Any]:
+        """
+        Fields with a default value already set are supposed to be the most common choices.
+        However, I've decided to make them mutable to allow, for example, the deletion of devices,
+        or creation of other devices that aren't the same model of dev_model_id
+        :param deveui:
+        :param join_eui:
+        :param app_key:
+        :param name:
+        :param app_id:
+        :param directive:
+        :param _na:
+        :param dev_model_id:
+        :param motion_indicator:
+        :return:
+        """
         data = [
             [
                 directive, deveui, _na, dev_model_id, join_eui, app_key,
@@ -57,17 +74,16 @@ class CSVFile:
 
         return data
 
-    @staticmethod
-    def fetch_and_choose_app_id() -> str | None:
+    def fetch_and_choose_app_id(self) -> str | None:
         response = requests.get(url='https://community.thingpark.io/thingpark/wireless/'
                                     'rest/subscriptions/mine/appServers',
                                 headers={
-                                    'Authorization': f'Bearer {CSVFile.retrieve_token()}',
+                                    'Authorization': f'Bearer {self.retrieve_token()}',
                                     'accept': 'application/json',
                                 })
         json_appids = response.json()['briefs']  # list of app ids
 
-        popup = tk.Toplevel(root)
+        popup = tk.Toplevel(self.root)
         popup.title("Select Items")
         popup.geometry("300x300")
 
@@ -101,10 +117,13 @@ class CSVFile:
             final_list = [name_id_dict.get(element) for element in selected_items]
             return ",".join(final_list)
 
-    # Name might be a little misleading since it doesn't grab the app_id,
-    # but it's the only field where it has to be retrieved from the already set up network server
-    @staticmethod
-    def grab_dev_info(deveui: str) -> DevStruct:
+    def grab_dev_info(self, deveui: str) -> DevStruct:
+        """
+        Name might be a little misleading since it doesn't grab the app_id,
+        but it's the only field where it has to be retrieved from the already set up network server
+        :param deveui:
+        :return:
+        """
         devstruct = DevStruct()
 
         with open(os.path.join(os.path.dirname(os.path.abspath(__file__)), "utils", "values.csv"),
@@ -116,61 +135,62 @@ class CSVFile:
                     devstruct.join_eui = row[1]
                     devstruct.app_key = row[2]
                 elif row == csv_reader.line_num - 1:
-                    console.insert(tk.END, f"{deveui} not found in values.csv.\n")
+                    self.gui.write_to_console(f"{deveui} not found in values.csv.")
                     return devstruct
 
         return devstruct
 
-    @staticmethod
-    def build_deveui_array_from_log() -> list[str]:
+    def build_deveui_array_from_log(self) -> list[str]:
         deveui_array = []
-        with open(os.path.join(os.path.dirname(os.path.abspath(__file__)), "utils", "deveui.txt"), 'r') as deveui_file:
-            for line in deveui_file:
-                deveui = re.search('(.*)\n', line).group(1).strip().lower()
-                if deveui is not None:
-                    deveui_array.append(deveui)
+        try:
+            with open(os.path.join(os.path.dirname(os.path.abspath(__file__)),
+                                   "utils", "deveui.txt"), 'r') as deveui_file:
+                for line in deveui_file:
+                    deveui = re.search('(.*)', line).group(1).strip().lower()
+                    if deveui is not None:
+                        deveui_array.append(deveui)
+        except FileNotFoundError:
+            self.gui.write_to_console("Please configure a device before")
         return deveui_array
 
-    @staticmethod
-    def export_devices_from_csv() -> None:
+    def export_devices_from_csv(self) -> None:
         with open(CSVFile.csv_file, 'rb') as csvfile:
             response = requests.post(url='https://community.thingpark.io/thingpark/wireless/rest/subscriptions/mine'
                                          '/devices/import?async=true&forceDevAddrs=false'
                                          '&networkSubscriptionsHandlingMode'
                                          '=ADVANCED',
                                      headers={
-                                         'Authorization': f'Bearer {CSVFile.retrieve_token()}',
+                                         'Authorization': f'Bearer {self.retrieve_token()}',
                                          'accept': 'application/json',
                                      },
                                      files={'csv': ('output.csv', csvfile, 'text/csv')}
                                      )
         match response.status_code:
             case 200:
-                console.insert(tk.END, f"Success.\n")
+                self.gui.write_to_console(f"Success.")
             case 403:
-                console.insert(tk.END, f"Token error.\n")
+                self.gui.write_to_console(f"Token error.")
 
-        console.insert(tk.END, f"{response.text}")
+        self.gui.write_to_console(f"{response.text}")
 
     @staticmethod
     def set_name() -> tuple[str, int]:
         popup = tk.Tk()
-        popup.withdraw()  # hide the root window
+        popup.withdraw()  # hide the self.root window
         dialog = CustomDialog(popup, title="Enter Details")
         return dialog.name, dialog.starting_num
 
-    @staticmethod
-    def csv_builder_and_writer() -> None:
-        deveui_array = CSVFile.build_deveui_array_from_log()
+    def csv_builder_and_writer(self) -> None:
+        deveui_array = self.build_deveui_array_from_log()
         csv_file = CSVFile.csv_file
-        app_id = CSVFile.fetch_and_choose_app_id().strip()
+        app_id = self.fetch_and_choose_app_id().strip()
 
         name, starting_num = CSVFile.set_name()
 
         with open(csv_file, mode='w', newline='') as file:
             writer = csv.writer(file)
             for name_num, deveui in enumerate(deveui_array, start=starting_num):
-                dev_info = CSVFile.grab_dev_info(deveui=deveui)
+                dev_info = self.grab_dev_info(deveui=deveui)
                 dev_struct = CSVFile.csv_templater(deveui=dev_info.deveui,
                                                    join_eui=dev_info.join_eui,
                                                    app_key=dev_info.app_key,
@@ -178,17 +198,16 @@ class CSVFile:
                                                    app_id=app_id)
                 writer.writerows(dev_struct)
 
-        console.insert(tk.END, f"CSV file created.\n"
-                               f"There are {len(deveui_array)} devices. \n")
+        self.gui.write_to_console(f"CSV file created.\n"
+                                  f"There are {len(deveui_array)} devices.")
         response = messagebox.askyesno("Device amount", f"Are there {len(deveui_array)} devices?")
         match response:
             case False:
                 os.remove(csv_file)
-                console.insert(tk.END, "CSV file deleted.\n")
+                self.gui.write_to_console("CSV file deleted.")
 
-    @staticmethod
-    def importer() -> None:
-        from SerialManager.serialmgr import define_os_specific_startingdir
+    def importer(self) -> None:
+        from SerialManager.main import define_os_specific_startingdir
 
         def choose_file_type():
             def on_csv():
@@ -199,14 +218,14 @@ class CSVFile:
                 file_type.set("bin")
                 file_dialog.destroy()
 
-            file_dialog = tk.Toplevel(root)
+            file_dialog = tk.Toplevel(self.root)
             file_dialog.title("Select File Type")
             tk.Label(file_dialog, text="Choose what file to import:").pack(pady=10)
             tk.Button(file_dialog, text="Device info (csv)", command=on_csv).pack(side="left", padx=20, pady=20)
             tk.Button(file_dialog, text="API key (bin)", command=on_bin).pack(side="right", padx=20, pady=20)
-            file_dialog.transient(root)
+            file_dialog.transient(self.root)
             file_dialog.grab_set()
-            root.wait_window(file_dialog)
+            self.root.wait_window(file_dialog)
 
         file_type = tk.StringVar()
         choose_file_type()
@@ -219,7 +238,7 @@ class CSVFile:
                 filetypes = [("BIN", "*.bin")]
                 dest_filename = "keys.bin"
             case _:
-                console.insert(tk.END, "No file type selected.\n")
+                self.gui.write_to_console("No file type selected.")
                 return
 
         filename = filedialog.askopenfilename(initialdir=define_os_specific_startingdir(), filetypes=filetypes)
@@ -230,26 +249,25 @@ class CSVFile:
             destination_file = os.path.join(destination_dir, dest_filename)
             try:
                 shutil.copy(filename, destination_file)
-                console.insert(tk.END, f"{file_type.get().upper()} file imported successfully as {dest_filename}.\n")
+                self.gui.write_to_console(f"{file_type.get().upper()} file imported successfully as {dest_filename}.")
             except Exception as e:
-                console.insert(tk.END, "Error:" + str(e) + "\n")
+                self.gui.write_to_console("Error:" + str(e))
         else:
-            console.insert(tk.END, "No file selected.\n")
+            self.gui.write_to_console("No file selected.")
 
-    @staticmethod
-    def retrieve_token() -> str | None:
+    def retrieve_token(self) -> str | None:
         api = open(os.path.join(os.path.dirname(__file__), "utils", "keys.bin"), "rb")
         out = BytesIO()
-        dialog = HidePassword(root, title="Password")
+        dialog = HidePassword(self.root, title="Password")
         password = dialog.result
         try:
             for _ in decrypt(src=api, dst=out, password=password):
                 pass
         except kapak.error.KapakError as e:
-            console.insert(tk.END, f"Error: {e}\n")
+            self.gui.write_to_console(f"Error: {e}")
             return
         except TypeError:
-            console.insert(tk.END, "Empty password.")
+            self.gui.write_to_console("Empty password.")
             return
         out.seek(0)
         decrypted_content = out.read().decode().splitlines()

@@ -7,18 +7,20 @@ from tkinter.simpledialog import askstring
 
 from typing_extensions import Buffer
 
-from SerialManager.GUI_setup import console, root
-from SerialManager.smartbadgecfgdict import config_dict
+from abeeway_smartbadge_dict import config_dict
 
 
 class Config:
 
-    @staticmethod
-    def clear_dev_log():
+    def __init__(self, gui_instance, root: tk.Tk):
+        self.gui = gui_instance
+        self.root = root
+
+    def clear_dev_log(self):
         with open(os.path.join(os.path.dirname(os.path.abspath(__file__)), "utils", "deveui.txt"), 'w') as file:
             file.truncate()
             file.close()
-        console.insert(tk.END, 'DevEUI log cleared.\n')
+        self.gui.write_to_console('DevEUI log cleared.')
 
     @staticmethod
     def get_new_pass() -> Buffer:
@@ -42,8 +44,7 @@ class Config:
         if match:
             return int(match.group(1))
 
-    @staticmethod
-    def check_config_discrepancy(serial_port: str, br: int) -> bool:
+    def check_config_discrepancy(self, serial_port: str, br: int) -> bool:
         from SerialManager.Device import Device
         device_config = Device.config_show_at_device(serial_port=serial_port, br=br)
         deveui = str(Device.get_deveui(serial_port=serial_port, br=br))
@@ -58,26 +59,25 @@ class Config:
                         config_value_dev = Device.get_config_value_from_dev(device_config, config_name)
 
                         if config_parameter_cfg == 249 and config_value_dev == 5:
-                            console.insert(tk.END, f"Config error: {deveui} \n")
-                            console.insert(tk.END, f"An error occurred. Please try starting the device, "
-                                                   f"then configuring again. \n")
+                            self.gui.write_to_console(f"Config error: {deveui} ")
+                            self.gui.write_to_console(f"An error occurred. Please try starting the device, "
+                                                   f"then configuring again. ")
                             return False
 
                         if config_value_cfg != config_value_dev:
-                            console.insert(tk.END, f"Config error: {deveui} \n")
-                            console.insert(tk.END, f"[Parameter : {config_name}] - Current: [{config_value_dev}] | "
-                                                   f"Correct: [{config_value_cfg}] \n")
+                            self.gui.write_to_console(f"Config error: {deveui} ")
+                            self.gui.write_to_console(f"[Parameter : {config_name}] - Current: [{config_value_dev}] | "
+                                                   f"Correct: [{config_value_cfg}] ")
                             return False
         except FileNotFoundError:
-            console.insert(tk.END, f"Config file not found.\n")
+            self.gui.write_to_console(f"Config file not found.")
             return False
 
-        console.insert(tk.END, f"Done: {deveui} \n")
+        self.gui.write_to_console(f"Done: {deveui} ")
         return True
 
-    @staticmethod
-    def export_or_import() -> None:
-        from SerialManager.serialmgr import define_os_specific_startingdir
+    def export_or_import(self) -> None:
+        from SerialManager.main import define_os_specific_startingdir
 
         def export_import():
             def on_csv():
@@ -88,14 +88,14 @@ class Config:
                 choice.set("import")
                 file_dialog.destroy()
 
-            file_dialog = tk.Toplevel(root)
+            file_dialog = tk.Toplevel(self.root)
             file_dialog.title("Select")
             tk.Label(file_dialog, text="Import or export?").pack(pady=10)
             tk.Button(file_dialog, text="Export current config", command=on_csv).pack(side="left", padx=20, pady=20)
             tk.Button(file_dialog, text="Import external config", command=on_bin).pack(side="right", padx=20, pady=20)
-            file_dialog.transient(root)
+            file_dialog.transient(self.root)
             file_dialog.grab_set()
-            root.wait_window(file_dialog)
+            self.root.wait_window(file_dialog)
 
         choice = tk.StringVar()
         export_import()
@@ -112,11 +112,11 @@ class Config:
                     destination_file = os.path.join(destination_dir, "config.cfg")
                     try:
                         shutil.copy(filename, destination_file)
-                        console.insert(tk.END, "Config file imported successfully.\n")
+                        self.gui.write_to_console("Config file imported successfully.")
                     except Exception as e:
-                        console.insert(tk.END, "Error:" + str(e) + "\n")
+                        self.gui.write_to_console("Error:" + str(e) + "")
                 else:
-                    console.insert(tk.END, "No file selected.\n")
+                    self.gui.write_to_console("No file selected.")
             case "export":
                 folder = filedialog.askdirectory(initialdir=define_os_specific_startingdir())
                 config_file = os.path.join(os.path.join(os.path.dirname(__file__), "utils"), "config.cfg")
@@ -128,8 +128,8 @@ class Config:
                         new_file_path = os.path.join(folder, new_file_name)
                         new_file_name.join(".cfg")
                         shutil.copy(config_file, os.path.join(folder, new_file_path + ".cfg"))
-                        console.insert(tk.END, "Config file exported successfully as {}.\n".format(new_file_name))
+                        self.gui.write_to_console("Config file exported successfully as {}.\n".format(new_file_name))
                     else:
-                        console.insert(tk.END, "No new file name provided. Operation cancelled.\n")
+                        self.gui.write_to_console("No new file name provided. Operation cancelled.")
                 else:
-                    console.insert(tk.END, "No folder selected.\n")
+                    self.gui.write_to_console("No folder selected.")
