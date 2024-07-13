@@ -151,28 +151,31 @@ class CSVFile:
                     if deveui is not None:
                         deveui_array.append(deveui)
         except FileNotFoundError:
-            self.gui.write_to_console("Please configure a device before")
+            self.gui.write_to_console("Please configure a device before trying this.")
         return deveui_array
 
     def export_devices_from_csv(self) -> None:
-        with open(CSVFile.csv_file, 'rb') as csvfile:
-            response = requests.post(url='https://community.thingpark.io/thingpark/wireless/rest/subscriptions/mine'
-                                         '/devices/import?async=true&forceDevAddrs=false'
-                                         '&networkSubscriptionsHandlingMode'
-                                         '=ADVANCED',
-                                     headers={
-                                         'Authorization': f'Bearer {self.retrieve_token()}',
-                                         'accept': 'application/json',
-                                     },
-                                     files={'csv': ('output.csv', csvfile, 'text/csv')}
-                                     )
-        match response.status_code:
-            case 200:
-                self.gui.write_to_console(f"Success.")
-            case 403:
-                self.gui.write_to_console(f"Token error.")
+        try:
+            with open(CSVFile.csv_file, 'rb') as csvfile:
+                response = requests.post(url='https://community.thingpark.io/thingpark/wireless/rest/subscriptions/mine'
+                                             '/devices/import?async=true&forceDevAddrs=false'
+                                             '&networkSubscriptionsHandlingMode'
+                                             '=ADVANCED',
+                                         headers={
+                                             'Authorization': f'Bearer {self.retrieve_token()}',
+                                             'accept': 'application/json',
+                                         },
+                                         files={'csv': ('output.csv', csvfile, 'text/csv')}
+                                         )
+            match response.status_code:
+                case 200:
+                    self.gui.write_to_console(f"Success.")
+                case 403:
+                    self.gui.write_to_console(f"Token error.")
 
-        self.gui.write_to_console(f"{response.text}")
+            self.gui.write_to_console(f"{response.text}")
+        except FileNotFoundError:
+            self.gui.write_to_console(f"No CSV output found.")
 
     @staticmethod
     def set_name() -> tuple[str, int]:
@@ -257,27 +260,31 @@ class CSVFile:
             self.gui.write_to_console("No file selected.")
 
     def retrieve_token(self) -> str | None:
-        api = open(os.path.join(os.path.dirname(__file__), "utils", "keys.bin"), "rb")
-        out = BytesIO()
-        dialog = HidePassword(self.root, title="Password")
-        password = dialog.result
         try:
-            for _ in decrypt(src=api, dst=out, password=password):
-                pass
-        except kapak.error.KapakError as e:
-            self.gui.write_to_console(f"Error: {e}")
+            api = open(os.path.join(os.path.dirname(__file__), "utils", "keys.bin"), "rb")
+            out = BytesIO()
+            dialog = HidePassword(self.root, title="Password")
+            password = dialog.result
+            try:
+                for _ in decrypt(src=api, dst=out, password=password):
+                    pass
+            except kapak.error.KapakError as e:
+                self.gui.write_to_console(f"Error: {e}")
+                return
+            except TypeError:
+                self.gui.write_to_console("Empty password.")
+                return
+            out.seek(0)
+            decrypted_content = out.read().decode().splitlines()
+            response = requests.post(url='https://community.thingpark.io/users-auth/protocol/openid-connect/token',
+                                     data={
+                                         'client_id': f'{decrypted_content[0]}',
+                                         'client_secret': f'{decrypted_content[1]}',
+                                         'grant_type': 'client_credentials'
+                                     },
+                                     headers={"content-type": "application/x-www-form-urlencoded"}
+                                     ).json()
+            return response['access_token']
+        except FileNotFoundError:
+            self.gui.write_to_console("Please import your API Key.")
             return
-        except TypeError:
-            self.gui.write_to_console("Empty password.")
-            return
-        out.seek(0)
-        decrypted_content = out.read().decode().splitlines()
-        response = requests.post(url='https://community.thingpark.io/users-auth/protocol/openid-connect/token',
-                                 data={
-                                     'client_id': f'{decrypted_content[0]}',
-                                     'client_secret': f'{decrypted_content[1]}',
-                                     'grant_type': 'client_credentials'
-                                 },
-                                 headers={"content-type": "application/x-www-form-urlencoded"}
-                                 ).json()
-        return response['access_token']

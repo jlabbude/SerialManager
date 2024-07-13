@@ -61,7 +61,8 @@ class YaMLFile:
                         list_flag=gui_display_config.list_flags,
                         parameters=gui_display_config.parameter,
                         rangehl=gui_display_config.range,
-                        disabled=gui_display_config.disabled)
+                        disabled=gui_display_config.disabled)  # <- Type seems to be wrong, but it's on puporse,
+                                                               # as all None values are erased before getting here
         root.mainloop()
 
         exit()

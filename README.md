@@ -62,6 +62,7 @@ Run this command to open the GUI related to creating a config file. **Firmware 2
 
 ## Future goals
 - [X] Change config file to yaml from cfg and add GUI to manipule it
+- [ ] Language selection
 - [ ] Support for multiple firmware versions
 - [ ] Support for different types of devices
 - [ ] Support for flashing the firmware of these devices
