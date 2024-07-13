@@ -1,7 +1,7 @@
 from tkinter import ttk, Button, Toplevel, Listbox, BOTH, END, messagebox, MULTIPLE, Tk, Label, LEFT, SOLID
 
 
-class ConfigGUI:
+class CreateConfigGui:
 
     def __init__(self,
                  root,

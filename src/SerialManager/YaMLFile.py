@@ -5,7 +5,7 @@ from dataclasses import dataclass, field
 import yaml
 
 from SerialManager.ConfigGen import ConfigGen
-from SerialManager.ConfigGUI import ConfigGUI
+from SerialManager.CreateConfigGUI import CreateConfigGui
 
 
 @dataclass
@@ -52,17 +52,17 @@ class YaMLFile:
                                                      (config_data.get(name).get('range-high'))))
             else:
                 gui_display_config.range.append(None)
-        self.result = ConfigGUI(root=root,
-                                items=param_names,
-                                values=gui_display_config.values,
-                                description=gui_display_config.description,
-                                description_long=gui_display_config.description_long,
-                                units=gui_display_config.units,
-                                select_list=gui_display_config.select_list,
-                                list_flag=gui_display_config.list_flags,
-                                parameters=gui_display_config.parameter,
-                                rangehl=gui_display_config.range,
-                                disabled=gui_display_config.disabled)
+        self.result = CreateConfigGui(root=root,
+                                      items=param_names,
+                                      values=gui_display_config.values,
+                                      description=gui_display_config.description,
+                                      description_long=gui_display_config.description_long,
+                                      units=gui_display_config.units,
+                                      select_list=gui_display_config.select_list,
+                                      list_flag=gui_display_config.list_flags,
+                                      parameters=gui_display_config.parameter,
+                                      rangehl=gui_display_config.range,
+                                      disabled=gui_display_config.disabled)
         root.mainloop()
 
         ConfigGen(cfg=self.result.cfg)
