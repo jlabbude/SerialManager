@@ -12,8 +12,8 @@ import kapak.error
 import requests
 from kapak.aes import decrypt
 
-from CustomGUI import HidePassword, CustomDialog
-from ConsoleButtons import ConsoleButtons
+from SerialManager.CustomGUI import HidePassword, CustomDialog
+from SerialManager.ConsoleButtons import ConsoleButtons
 
 
 @dataclass

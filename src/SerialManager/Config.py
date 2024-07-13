@@ -7,8 +7,8 @@ from tkinter.simpledialog import askstring
 
 from typing_extensions import Buffer
 
-from abeeway_smartbadge_dict import config_dict
-from ConsoleButtons import ConsoleButtons
+from SerialManager.abeeway_smartbadge_dict import config_dict
+from SerialManager.ConsoleButtons import ConsoleButtons
 
 
 class Config:
