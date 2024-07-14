@@ -1,9 +1,13 @@
 # Serial Device Manager
 
 ## About
-Python project useful if you want to configure multiple serial devices at once through their CLI. Right now, it's designed to be used to configure Abeeway's trackers.
+**Python package made primarily to automate tasks related to configuring serial devices, and uploading them to cloud services.**
 
-![](https://i.ibb.co/HptPP0S/Screenshot-2024-05-15-15-25-08.png)
+> [!WARNING]
+> Right now it only the creation and implementation of configs to Abeeway's Smart Badge, to be uploaded to Thingpark Community
+
+![Configuring window](https://i.ibb.co/HptPP0S/Screenshot-2024-05-15-15-25-08.png)
+![Config creation window](https://i.ibb.co/xGx9Yfy/Screenshot-20240714-190949.png)
 
 ## Installation
 
