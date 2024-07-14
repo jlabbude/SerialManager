@@ -44,10 +44,12 @@ Run this command to open the GUI related to creating a config file. **Firmware 2
 ## Compatibility
 
 ### Operating Systems
+> [!INFO]
+> This doesn't mean another Windows version or Linux Distro isn't going to work, it's just that I haven't tested anywhere else
 - Linux
-  - Arch
+  - Arch (**KDE**/**XFCE**)
 - Windows
-  - W11
+  - 11
 
 ### Devices
 - Abeeway Smart Badge
@@ -55,6 +57,9 @@ Run this command to open the GUI related to creating a config file. **Firmware 2
   - U310
 
 ### Firmware Version
+> [!INFO]
+> Other firmware versions work, but since configs values/parameters come and go with each version, the application's behaviour may vary depending on which version you have.
+
 - Smart Badge U310/A310
   - 2.4.1
 
