@@ -156,6 +156,7 @@ class CreateConfigGui:
         select_list = self.select_list[self.tree.index(item_id)]
         list_flag = self.list_flag[self.tree.index(item_id)]
         index = (int(self.tree.identify_row(y=event.y).removeprefix('I'), 16))-1
+        print(index)
 
         match column:
             case '#0':
@@ -255,12 +256,17 @@ class CreateConfigGui:
     def finder(self) -> None:
         config = simpledialog.askstring(title="Find config", prompt="Config search")
         matches: list[str] = list(fuzzyfinder(config, self.items))
-        index: int = self.items.index(matches[0])
-        row = self.tree.get_children()
-        a = self.tree.item(row[index])
-        self.tree.see(row[index])
-        self.tree.selection_set(row[index])
-        print(row[index])
+        try:
+            index_param: int = self.items.index(matches[0])
+            index_tree = self.tree.get_children()[index_param]
+            self.tree.see(index_tree)
+            self.tree.selection_set(index_tree)
+            scroll_len = 5 if 13 <= index_tree <= 82 else 0  # 13 and 82 are the index at the upper/lower scroll bounds
+
+            self.tree.yview_scroll(number=scroll_len, what="units")  # Allows it to center the view
+            print(matches)
+        except IndexError:
+            messagebox.showerror(title="ERROR!", message="No matches found!")
 
 
 class ToolTip:

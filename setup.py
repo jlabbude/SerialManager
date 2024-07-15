@@ -17,7 +17,8 @@ setup(
         "requests",
         "typing_extensions",
         "kapak",
-        "pyyaml"
+        "pyyaml",
+        "fuzzyfunder"
     ],
     entry_points={
         "console_scripts": [
