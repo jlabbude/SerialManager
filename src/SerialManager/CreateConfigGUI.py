@@ -258,12 +258,13 @@ class CreateConfigGui:
         matches: list[str] = list(fuzzyfinder(config, self.items))
         try:
             index_param: int = self.items.index(matches[0])
-            index_tree = self.tree.get_children()[index_param]
-            self.tree.see(index_tree)
-            self.tree.selection_set(index_tree)
-            scroll_len = 5 if 13 <= index_tree <= 82 else 0  # 13 and 82 are the index at the upper/lower scroll bounds
+            center_scroll = index_param + 6 if 13 <= index_param <= 82 else index_param
+            # 13 and 82 are the index at the upper/lower scroll bounds, which means trying to center them is pointless.
+            # 6 is the amount of units it's needed to scroll to make the selected parameter centered.
+            children = self.tree.get_children()
+            self.tree.see(children[center_scroll])
+            self.tree.selection_set(children[index_param])
 
-            self.tree.yview_scroll(number=scroll_len, what="units")  # Allows it to center the view
             print(matches)
         except IndexError:
             messagebox.showerror(title="ERROR!", message="No matches found!")
