@@ -1,5 +1,8 @@
 import os
-from tkinter import ttk, Button, Toplevel, Listbox, BOTH, END, messagebox, MULTIPLE, Tk, Label, LEFT, SOLID
+from tkinter import ttk, Button, Toplevel, Listbox, BOTH, END, messagebox, MULTIPLE, Tk, Label, LEFT, SOLID, \
+    simpledialog
+
+from fuzzyfinder.main import fuzzyfinder
 
 
 class CreateConfigGui:
@@ -33,12 +36,16 @@ class CreateConfigGui:
         self.description_long = description_long
         self.select_list = select_list
         self.list_flag = list_flag
+        self.items: list[str] = items
         self.create_gui_list(items, values, units)
 
         self.ok_button = Button(self.root, text="OK", command=lambda: self.on_ok())
         self.ok_button.pack(pady=10)
         self.cfg: list[(int, int)] = []
         self.parameters = parameters
+
+        self.find = Button(self.root, text="Search", command=lambda: self.finder())
+        self.find.pack(pady=10)
 
         self.initial_cfg(parameters, values)
 
@@ -244,6 +251,16 @@ class CreateConfigGui:
     def on_ok(self):
         self.generate_config(self.cfg)
         self.root.destroy()
+
+    def finder(self) -> None:
+        config = simpledialog.askstring(title="Find config", prompt="Config search")
+        matches: list[str] = list(fuzzyfinder(config, self.items))
+        index: int = self.items.index(matches[0])
+        row = self.tree.get_children()
+        a = self.tree.item(row[index])
+        self.tree.see(row[index])
+        self.tree.selection_set(row[index])
+        print(row[index])
 
 
 class ToolTip:
