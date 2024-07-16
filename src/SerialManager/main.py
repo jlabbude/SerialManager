@@ -13,12 +13,9 @@ from SerialManager.ConsoleButtons import ConsoleButtons
 from SerialManager.CSVFile import CSVFile
 from SerialManager.YaMLFile import YaMLFile
 
-baud_rate = 9600
-operating_system = system()
-
 
 def define_os_specific_serial_ports() -> list[str]:
-    match operating_system:
+    match system():
         case "Linux":
             return glob("/dev/ttyACM*")
         case "Windows":
@@ -26,19 +23,16 @@ def define_os_specific_serial_ports() -> list[str]:
 
 
 def define_os_specific_startingdir() -> str:
-    match operating_system:
-        case "Linux":
-            return "~/Desktop"
+    match system():
         case "Windows":
             return "~\\Desktop"
         case _:
             return "~/Desktop"
 
 
-def serial_parallel_process(target: object | None) -> None:
-    serial_port_array = define_os_specific_serial_ports()
-    threads = []
-    for serial_port in serial_port_array:
+def serial_parallel_process(target: object | None, baud_rate: int = 9600) -> None:
+    threads: list[Thread] = []
+    for serial_port in define_os_specific_serial_ports():
         thread = Thread(target=target, args=(serial_port, baud_rate))
         threads.append(thread)
         thread.start()
@@ -46,10 +40,9 @@ def serial_parallel_process(target: object | None) -> None:
         thread.join()
 
 
-def no_join_parallel_process(target: object | None) -> list[Thread]:
-    serial_port_array = define_os_specific_serial_ports()
-    threads = []
-    for serial_port in serial_port_array:
+def no_join_parallel_process(target: object | None, baud_rate: int = 9600) -> list[Thread]:
+    threads: list[Thread] = []
+    for serial_port in define_os_specific_serial_ports():
         thread = Thread(target=target, args=(serial_port, baud_rate))
         threads.append(thread)
         thread.start()
