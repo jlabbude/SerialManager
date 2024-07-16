@@ -1,6 +1,6 @@
 import os
 from tkinter import ttk, Button, Toplevel, Listbox, BOTH, END, messagebox, MULTIPLE, Tk, Label, LEFT, SOLID, \
-    simpledialog
+    simpledialog, Frame
 
 from fuzzyfinder.main import fuzzyfinder
 
@@ -39,13 +39,17 @@ class CreateConfigGui:
         self.items: list[str] = items
         self.create_gui_list(items, values, units)
 
-        self.ok_button = Button(self.root, text="OK", command=lambda: self.on_ok())
-        self.ok_button.pack(pady=10)
         self.cfg: list[(int, int)] = []
         self.parameters = parameters
 
-        self.find = Button(self.root, text="Search", command=lambda: self.finder())
-        self.find.pack(pady=10)
+        button_frame = Frame(self.root)
+        button_frame.pack(pady=10)
+
+        self.ok_button = Button(button_frame, text="OK", command=lambda: self.on_ok())
+        self.ok_button.pack(side="left", padx=5)
+
+        self.find = Button(button_frame, text="Search", command=lambda: self.finder())
+        self.find.pack(side="left", padx=5)
 
         self.initial_cfg(parameters, values)
 
@@ -254,6 +258,7 @@ class CreateConfigGui:
         self.root.destroy()
 
     def finder(self) -> None:
+        # TODO add arrow to navigate through matches
         config = simpledialog.askstring(title="Find config", prompt="Config search")
         matches: list[str] = list(fuzzyfinder(config, self.items))
         try:
