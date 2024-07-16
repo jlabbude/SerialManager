@@ -4,7 +4,7 @@
 **Python package made primarily to automate tasks related to configuring serial devices, and uploading them to cloud services.**
 
 > [!WARNING]
-> Right now it only the creation and implementation of configs to Abeeway's Smart Badge, to be uploaded to Thingpark Community
+> Right now it only supports the creation and implementation of configs to Abeeway's Smart Badge, and the ability to upload devices to ThingPark Community.
 
 ![Configuring window](https://i.ibb.co/HptPP0S/Screenshot-2024-05-15-15-25-08.png)
 ![Config creation window](https://i.ibb.co/xGx9Yfy/Screenshot-20240714-190949.png)
