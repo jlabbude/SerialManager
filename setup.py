@@ -18,7 +18,7 @@ setup(
         "typing_extensions",
         "kapak",
         "pyyaml",
-        "fuzzyfunder"
+        "fuzzyfinder"
     ],
     entry_points={
         "console_scripts": [
