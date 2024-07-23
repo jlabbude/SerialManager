@@ -3,7 +3,6 @@ config_dict = {
     1: 'lora_period',
     2: 'pw_stat_period',
     3: 'periodic_pos_period',
-    4: 'unknown',
     5: 'geoloc_sensor',
     6: 'geoloc_method',
     7: 'antenna',

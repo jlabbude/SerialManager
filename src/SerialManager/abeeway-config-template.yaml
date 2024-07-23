@@ -52,17 +52,6 @@ config:
     range-high: 604800
     unit: Second
     disabled: 0
-  unknown:
-    parameter: 4
-    value: 0
-    description:
-    description-long: |
-    list-type:
-    list:
-    range-low:
-    range-high:
-    unit: _
-    disabled:
   geoloc_sensor:
     parameter: 5
     value: 1
@@ -1010,7 +999,7 @@ config:
     value: 0
     description: Beaconing advertisement type.
     description-long: |
-    list-type: 0
+    list-type: 1
     list:
       - Disabled
       - Proximity
@@ -1329,8 +1318,10 @@ config:
     value: 1
     description:
     description-long: |
-    list-type:
+    list-type: 1
     list:
+      - Delete BLE bond
+      - Indicates that the BLE bond is present on the tracker.
     range-low:
     range-high:
     unit: Second
