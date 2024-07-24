@@ -160,7 +160,6 @@ class CreateConfigGui:
         select_list = self.select_list[self.tree.index(item_id)]
         list_flag = self.list_flag[self.tree.index(item_id)]
         index = (int(self.tree.identify_row(y=event.y).removeprefix('I'), 16))-1
-        print(index)
 
         match column:
             case '#0':
