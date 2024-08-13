@@ -26,7 +26,7 @@ class Config:
     @staticmethod
     def get_new_pass() -> Buffer:
         with open(os.path.join(os.path.join(os.path.dirname(__file__), "utils"), "config.cfg"), 'r') as cfg:
-            match = re.search("config set 102 (.*)", cfg.read())
+            match = re.search("(?<=config set 102 )\d+", cfg.read())
             return (match.group().encode() if match else b'123') + b'\r'
 
     @staticmethod
@@ -62,13 +62,13 @@ class Config:
                         if config_parameter_cfg == 249 and config_value_dev == 5:
                             self.gui.write_to_console(f"Config error: {deveui} ")
                             self.gui.write_to_console(f"An error occurred. Please try starting the device, "
-                                                   f"then configuring again. ")
+                                                      f"then configuring again. ")
                             return False
 
                         if config_value_cfg != config_value_dev:
                             self.gui.write_to_console(f"Config error: {deveui} ")
                             self.gui.write_to_console(f"[Parameter : {config_name}] - Current: [{config_value_dev}] | "
-                                                   f"Correct: [{config_value_cfg}] ")
+                                                      f"Correct: [{config_value_cfg}] ")
                             return False
         except FileNotFoundError:
             self.gui.write_to_console(f"Config file not found.")
