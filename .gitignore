@@ -13,7 +13,7 @@ dist/**
 src/AbeewayConfig.egg-info**
 src/__pycache__/**
 /config.cfg
-/deveui.txt
+/src/SerialManager/utils/deveui.txt
 /values.csv
 **/*.csv
 template.txt

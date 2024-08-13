@@ -195,6 +195,7 @@ config:
       - Set to enable extended position payload, (type=0x0E), reset to use classic payload (type=0x03)
       - Reserved, do not used
       - Enable the CLI over BLE
+      - BLE passkey authentication enable. When this bit is enabled, the tracker will ask for 6 digit PIN to be entered into the phone initiating the first pairing request. The 6 digit PIN needs to be requested from the backend. This feature is specific to the Abeeway Mobile app.
     range-low: 0
     range-high: 0x1FFFFF
     unit: _
@@ -1312,19 +1313,6 @@ config:
     range-low: 1
     range-high: 0xFFFFFFFF
     unit: mAh
-    disabled: 0
-  ble_bond_info:
-    parameter: 248
-    value: 1
-    description:
-    description-long: |
-    list-type: 1
-    list:
-      - Delete BLE bond
-      - Indicates that the BLE bond is present on the tracker.
-    range-low:
-    range-high:
-    unit: Second
     disabled: 0
   mode:
     parameter: 249
