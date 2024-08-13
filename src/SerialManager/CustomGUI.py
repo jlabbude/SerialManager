@@ -17,7 +17,7 @@ class HidePassword(simpledialog.Dialog):
         self.result = self.password_entry.get()
 
 
-class CustomDialog:
+class CustomDialog(simpledialog.Dialog):
     def __init__(self, parent, title=None):
         self.num_entry = None
         self.name_entry = None

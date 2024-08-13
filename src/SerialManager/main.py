@@ -93,8 +93,9 @@ def main() -> None:
 
             case 'upload':
                 gui = ConsoleButtons(title="Upload window", root=Tk())
-                config = Config(root=gui.root, gui_instance=gui)
-                csvfile = CSVFile(root=gui.root, gui_instance=gui)
+                root = gui.root
+                config = Config(root=root, gui_instance=gui)
+                csvfile = CSVFile(root=root, gui_instance=gui)
 
                 (gui
                  .button1(text="Make CSV",
