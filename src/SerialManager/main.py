@@ -74,6 +74,7 @@ def main() -> None:
             case 'config':
                 gui = ConsoleButtons(title="Configure window", root=Tk())
                 config = Config(root=gui.root, gui_instance=gui)
+                device = Device(root=gui.root, gui_instance=gui)
 
                 (gui
                  .button1(text="Configure device",
@@ -82,12 +83,12 @@ def main() -> None:
                  .button2(text="Import/Export config",
                           bg="lightblue",
                           command=lambda: config.export_or_import())
-                 .button3(text="Reset device",
-                          bg="lightcoral",
-                          command=lambda: serial_parallel_process(target=Device.reset_dev))
-                 .button4(text="Start device",
-                          bg="lightgreen",
-                          command=lambda: serial_parallel_process(target=Device.start_dev))
+                 .button3(text="Check devices",
+                          bg="#8cfc88",
+                          command=lambda: config.print_number_of_devices())
+                 .button4(text="Start/Reset",
+                          bg="#fc964c",
+                          command=lambda: device.start_or_reset())
                  .mainloop())
                 exit()
 

@@ -94,6 +94,9 @@ class ConsoleButtons:
     def write_to_console(self, text) -> None:
         self.console.insert(END, f'{text}\n')
 
+    def clear_console(self) -> None:
+        self.console.delete(1.0, END)
+
     def mainloop(self) -> None:
         """
         Hacky way to make the button declaration easier

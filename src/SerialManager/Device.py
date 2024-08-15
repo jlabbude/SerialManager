@@ -2,6 +2,8 @@ import os
 import re
 from time import sleep
 
+import tkinter as tk
+from SerialManager import ConsoleButtons
 from serial import Serial
 
 from SerialManager.Config import Config
@@ -14,6 +16,11 @@ class Device:
     # -> can't know if device has been configured (and thus, had its password altered) without knowing its DevEUI;
     # -> can't know DevEUI without inputting password first;
     # -> can't input password without knowing which one to use.
+
+    def __init__(self, gui_instance: ConsoleButtons, root: tk.Tk):
+        self.gui = gui_instance
+        self.root = root
+
     @staticmethod
     def input_password(ser: Serial) -> None:
         new_pass = Config.get_new_pass()
@@ -21,6 +28,7 @@ class Device:
         ser.write(b'123\r')
         ser.write(new_pass)
         ser.write(new_pass)
+        ser.write(b'system log off\r')
 
     @staticmethod
     def reset_dev(serial_port: str, br: int) -> None:
@@ -42,6 +50,22 @@ class Device:
                 ser.close()
                 Device.start_dev(serial_port=serial_port, br=br)
 
+    def start_or_reset(self) -> None:
+        from SerialManager.main import serial_parallel_process
+        file_dialog = tk.Toplevel(self.root)
+        file_dialog.title("Select")
+        tk.Label(file_dialog, text="Start or reset?").pack(pady=10)
+        (tk.Button(file_dialog,
+                   text="Start",
+                   command=lambda: serial_parallel_process(target=Device.start_dev),
+                   bg='lightgreen')
+         .pack(side="left", padx=20, pady=20))
+        (tk.Button(file_dialog,
+                   text="Reset",
+                   command=lambda: serial_parallel_process(target=Device.reset_dev),
+                   bg='lightcoral')
+         .pack(side="right", padx=20, pady=20))
+
     @staticmethod
     def get_deveui(serial_port: str, br: int) -> str:
         with Serial(serial_port, br, timeout=1) as ser:
@@ -50,20 +74,7 @@ class Device:
             output = ser.read(1000).decode('utf-8')
             p = re.compile(r"DevEUI: (.*)")
             deveui = p.search(output)
-            if deveui is not None:
-                deveui_file = os.path.join(os.path.dirname(os.path.abspath(__file__)), "utils", "deveui.txt")
-                deveui = deveui.group(1).strip()
-                if os.path.isfile(deveui_file):
-                    with open(deveui_file, 'r+') as deveui_log:
-                        deveui_log_content = deveui_log.read().splitlines()
-                        if deveui not in deveui_log_content:
-                            deveui_log.write(deveui + "\n")
-                else:
-                    with open(deveui_file, 'a') as deveui_log:
-                        deveui_log.write(deveui + "\n")
-                return deveui
-            else:
-                Device.get_deveui(serial_port=serial_port, br=br)
+            return deveui.group(1).strip() if deveui is not None else Device.get_deveui(serial_port=serial_port, br=br)
 
     @staticmethod
     def set_config_on_device(serial_port: str, br: int) -> None:

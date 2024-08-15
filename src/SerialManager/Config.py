@@ -26,7 +26,7 @@ class Config:
     @staticmethod
     def get_new_pass() -> Buffer:
         with open(os.path.join(os.path.join(os.path.dirname(__file__), "utils"), "config.cfg"), 'r') as cfg:
-            match = re.search("(?<=config set 102 )\d+", cfg.read())
+            match = re.search(r"(?<=config set 102 )\d+", cfg.read())
             return (match.group().encode() if match else b'123') + b'\r'
 
     @staticmethod
@@ -45,11 +45,29 @@ class Config:
         if match:
             return int(match.group(1))
 
+    def print_number_of_devices(self):
+        from SerialManager.main import define_os_specific_serial_ports
+        self.gui.clear_console()
+        self.gui.write_to_console(f"There are {len(define_os_specific_serial_ports())} devices.")
+
+    @staticmethod
+    def write_deveui_to_log(deveui: str) -> None:
+        deveui_file = os.path.join(os.path.dirname(os.path.abspath(__file__)), "utils", "deveui.txt")
+        if os.path.isfile(deveui_file):
+            with open(deveui_file, 'r+') as deveui_log:
+                deveui_log_content = deveui_log.read().splitlines()
+                if deveui not in deveui_log_content:
+                    deveui_log.write(deveui + "\n")
+        else:
+            with open(deveui_file, 'a') as deveui_log:
+                deveui_log.write(deveui + "\n")
+
     def check_config_discrepancy(self, serial_port: str, br: int) -> bool:
         from SerialManager.Device import Device
         device_config = Device.config_show_at_device(serial_port=serial_port, br=br)
         deveui = str(Device.get_deveui(serial_port=serial_port, br=br))
         config_file = os.path.join(os.path.join(os.path.dirname(__file__), "utils"), "config.cfg")
+        should_write: bool = False
         try:
             with open(config_file, 'r') as config:
                 for line in config:
@@ -63,19 +81,30 @@ class Config:
                             self.gui.write_to_console(f"Config error: {deveui} ")
                             self.gui.write_to_console(f"An error occurred. Please try starting the device, "
                                                       f"then configuring again. ")
-                            return False
+                            should_write = False
 
-                        if config_value_cfg != config_value_dev:
-                            self.gui.write_to_console(f"Config error: {deveui} ")
-                            self.gui.write_to_console(f"[Parameter : {config_name}] - Current: [{config_value_dev}] | "
-                                                      f"Correct: [{config_value_cfg}] ")
-                            return False
+                        if config_value_cfg != config_value_dev and config_value_dev is not None:
+                            self.gui.write_to_console(f"Config error: {deveui}\n"
+                                                      f"[Parameter : {config_name}] - Current: [{config_value_dev}] | "
+                                                      f"Correct: [{config_value_cfg}]")
+                            should_write = False
+
+                        if config_value_dev is None:
+                            self.gui.write_to_console(f"Device {deveui} is most likely not using "
+                                                      f"a supported firmware version.")
+                            should_write = False
         except FileNotFoundError:
             self.gui.write_to_console(f"Config file not found.")
-            return False
+            should_write = False
 
-        self.gui.write_to_console(f"Done: {deveui} ")
-        return True
+        match should_write:
+            case False:
+                self.gui.write_to_console(f"INFO: Device {deveui} is at port {serial_port}")
+                return should_write
+            case True:
+                self.write_deveui_to_log(deveui)
+                self.gui.write_to_console(f"Done: {deveui} ")
+                return should_write
 
     def export_or_import(self) -> None:
         from SerialManager.main import define_os_specific_startingdir
