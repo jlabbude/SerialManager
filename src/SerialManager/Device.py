@@ -50,6 +50,12 @@ class Device:
                 ser.close()
                 Device.start_dev(serial_port=serial_port, br=br)
 
+    @staticmethod
+    def alarm(serial_port: str, br: int) -> None:
+        with Serial(serial_port, br) as ser:
+            Device.input_password(ser)
+            ser.write(b'system buzzer 10\r')
+
     def start_or_reset(self) -> None:
         from SerialManager.main import serial_parallel_process
         file_dialog = tk.Toplevel(self.root)
@@ -86,7 +92,7 @@ class Device:
                     ser.write(line.strip())
                     ser.write(b'\r')
             ser.write(b'config save\r')
-            ser.write(b'system buzzer 6\r')
+            ser.write(b'system buzzer 8\r')
             ser.close()
 
     # This doesn't actually talk to the device directly, rather it just grabs the value from a string

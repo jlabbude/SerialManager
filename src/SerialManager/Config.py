@@ -62,12 +62,19 @@ class Config:
             with open(deveui_file, 'a') as deveui_log:
                 deveui_log.write(deveui + "\n")
 
+    @staticmethod
+    def check_deveui_on_log(deveui: str) -> bool:
+        deveui_file = os.path.join(os.path.dirname(os.path.abspath(__file__)), "utils", "deveui.txt")
+        with open(deveui_file, 'r') as deveui_log:
+            return False if deveui not in deveui_log.read().splitlines() else True
+
     def check_config_discrepancy(self, serial_port: str, br: int) -> bool:
         from SerialManager.Device import Device
+        from time import sleep
         device_config = Device.config_show_at_device(serial_port=serial_port, br=br)
         deveui = str(Device.get_deveui(serial_port=serial_port, br=br))
         config_file = os.path.join(os.path.join(os.path.dirname(__file__), "utils"), "config.cfg")
-        should_write: bool = False
+        should_write: bool = True
         try:
             with open(config_file, 'r') as config:
                 for line in config:
@@ -83,16 +90,19 @@ class Config:
                                                       f"then configuring again. ")
                             should_write = False
 
-                        if config_value_cfg != config_value_dev and config_value_dev is not None:
+                        elif config_value_cfg != config_value_dev and config_value_dev is not None:
                             self.gui.write_to_console(f"Config error: {deveui}\n"
                                                       f"[Parameter : {config_name}] - Current: [{config_value_dev}] | "
                                                       f"Correct: [{config_value_cfg}]")
                             should_write = False
 
-                        if config_value_dev is None:
+                        elif config_value_dev is None:
                             self.gui.write_to_console(f"Device {deveui} is most likely not using "
                                                       f"a supported firmware version.")
                             should_write = False
+
+                        elif should_write is True:
+                            should_write = True
         except FileNotFoundError:
             self.gui.write_to_console(f"Config file not found.")
             should_write = False
@@ -102,8 +112,10 @@ class Config:
                 self.gui.write_to_console(f"INFO: Device {deveui} is at port {serial_port}")
                 return should_write
             case True:
-                self.write_deveui_to_log(deveui)
                 self.gui.write_to_console(f"Done: {deveui} ")
+                sleep(1)
+                if not self.check_deveui_on_log(deveui):
+                    self.gui.write_to_console(f'ERROR [LOG]: FAILED TO WRITE {deveui} TO LOG!!')
                 return should_write
 
     def export_or_import(self) -> None:
