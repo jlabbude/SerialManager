@@ -70,7 +70,6 @@ class Config:
 
     def check_config_discrepancy(self, serial_port: str, br: int) -> bool:
         from SerialManager.Device import Device
-        from time import sleep
         device_config = Device.config_show_at_device(serial_port=serial_port, br=br)
         deveui = str(Device.get_deveui(serial_port=serial_port, br=br))
         config_file = os.path.join(os.path.join(os.path.dirname(__file__), "utils"), "config.cfg")
@@ -108,14 +107,10 @@ class Config:
             should_write = False
 
         match should_write:
-            case False:
+            case False:  # todo refactor
                 self.gui.write_to_console(f"INFO: Device {deveui} is at port {serial_port}")
                 return should_write
             case True:
-                self.gui.write_to_console(f"Done: {deveui} ")
-                sleep(1)
-                if not self.check_deveui_on_log(deveui):
-                    self.gui.write_to_console(f'ERROR [LOG]: FAILED TO WRITE {deveui} TO LOG!!')
                 return should_write
 
     def export_or_import(self) -> None:

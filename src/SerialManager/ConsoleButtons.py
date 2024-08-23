@@ -97,6 +97,9 @@ class ConsoleButtons:
     def clear_console(self) -> None:
         self.console.delete(1.0, END)
 
+    def read_console(self) -> str:
+        return self.console.get(1.0, END)
+
     def mainloop(self) -> None:
         """
         Hacky way to make the button declaration easier

@@ -1,4 +1,5 @@
 import argparse
+import re
 from glob import glob
 from platform import system
 from threading import Thread
@@ -50,6 +51,8 @@ def no_join_parallel_process(target: object | None, baud_rate: int = 9600) -> li
 
 
 def config_process(config: Config) -> None:
+    config.gui.clear_console()
+
     serial_parallel_process(target=Device.start_dev)
     sleep(5)
 
@@ -60,6 +63,34 @@ def config_process(config: Config) -> None:
     sleep(5)
 
     serial_parallel_process(target=Device.reset_dev)
+    sleep(5)
+
+    write_deveui_to_log(get_deveui_from_done(config.gui.read_console()))
+
+
+def get_deveui_from_done(done: str) -> list[str]:
+    done_lines = done.splitlines()
+    done_list: list[str] = []
+    for line in done_lines:
+        match = re.match(pattern=r"(?<=Done:\s)(.*)", string=line)
+        if match:
+            done_list.append(match.group(0))
+    return done_list
+
+
+def write_deveui_to_log(deveiu_list: list[str]) -> None:
+    import os
+    deveui_file = os.path.join(os.path.dirname(os.path.abspath(__file__)), "utils", "deveui.txt")
+    if os.path.isfile(deveui_file):
+        with open(deveui_file, 'r+') as deveui_log:
+            for deveui in deveiu_list:
+                deveui_log_content = deveui_log.read().splitlines()
+                if deveui not in deveui_log_content:
+                    deveui_log.write(deveui + "\n")
+    else:
+        with open(deveui_file, 'a') as deveui_log:
+            for deveui in deveiu_list:
+                deveui_log.write(deveui + "\n")
 
 
 def main() -> None:
