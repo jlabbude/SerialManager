@@ -93,11 +93,13 @@ class ConsoleButtons:
 
     def write_to_console(self, text) -> None:
         self.console.insert(END, f'{text}\n')
+        self.console.update()
 
     def clear_console(self) -> None:
         self.console.delete(1.0, END)
 
     def read_console(self) -> str:
+        self.console.update()
         return self.console.get(1.0, END)
 
     def mainloop(self) -> None:

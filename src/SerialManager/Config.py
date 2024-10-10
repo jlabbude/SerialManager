@@ -111,6 +111,7 @@ class Config:
                 self.gui.write_to_console(f"INFO: Device {deveui} is at port {serial_port}")
                 return should_write
             case True:
+                self.gui.write_to_console(f"Done: {deveui}")
                 return should_write
 
     def export_or_import(self) -> None:

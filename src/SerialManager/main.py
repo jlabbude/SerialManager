@@ -72,9 +72,9 @@ def get_deveui_from_done(done: str) -> list[str]:
     done_lines = done.splitlines()
     done_list: list[str] = []
     for line in done_lines:
-        match = re.match(pattern=r"(?<=Done:\s)(.*)", string=line)
+        match = re.match(pattern=r"Done: (.*)", string=line)
         if match:
-            done_list.append(match.group(0))
+            done_list.append(match.group(1))
     return done_list
 
 
