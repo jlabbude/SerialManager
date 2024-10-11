@@ -1,4 +1,5 @@
 import argparse
+import os
 import re
 from glob import glob
 from platform import system
@@ -66,6 +67,7 @@ def config_process(config: Config) -> None:
     sleep(5)
 
     write_deveui_to_log(get_deveui_from_done(config.gui.read_console()))
+    print_lines(config)
 
 
 def get_deveui_from_done(done: str) -> list[str]:
@@ -79,7 +81,6 @@ def get_deveui_from_done(done: str) -> list[str]:
 
 
 def write_deveui_to_log(deveiu_list: list[str]) -> None:
-    import os
     deveui_file = os.path.join(os.path.dirname(os.path.abspath(__file__)), "utils", "deveui.txt")
     if os.path.isfile(deveui_file):
         with open(deveui_file, 'r+') as deveui_log:
@@ -91,6 +92,14 @@ def write_deveui_to_log(deveiu_list: list[str]) -> None:
         with open(deveui_file, 'a') as deveui_log:
             for deveui in deveiu_list:
                 deveui_log.write(deveui + "\n")
+
+
+def print_lines(size: int, config: Config) -> None:
+    deveui_file = os.path.join(os.path.dirname(os.path.abspath(__file__)), "utils", "deveui.txt")
+    with open(deveui_file, 'rb') as deveui_log:
+        deveui_amount: int = sum(1 for _ in deveui_log)
+        config.gui.write_to_console(f'{size} devices have been wrote to the log.'
+                                    f'\nThere are {deveui_amount} devices.')
 
 
 def main() -> None:
