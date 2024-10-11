@@ -5,7 +5,7 @@ with open("README.md", "r") as f:
 
 setup(
     name="SerialManager",
-    version="1.9.5",
+    version="1.9.5.1",
     description="Abeeway configuration tool",
     author="João Lucas",
     url="https://github.com/jlabbude/SerialManager",

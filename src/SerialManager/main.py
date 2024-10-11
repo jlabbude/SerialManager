@@ -66,8 +66,9 @@ def config_process(config: Config) -> None:
     serial_parallel_process(target=Device.reset_dev)
     sleep(5)
 
-    write_deveui_to_log(get_deveui_from_done(config.gui.read_console()))
-    print_lines(config)
+    deveui_list = get_deveui_from_done(config.gui.read_console())
+    write_deveui_to_log(deveui_list)
+    print_lines(len(deveui_list), config)
 
 
 def get_deveui_from_done(done: str) -> list[str]:
