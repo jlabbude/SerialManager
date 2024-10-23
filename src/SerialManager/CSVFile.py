@@ -178,27 +178,28 @@ class CSVFile:
             self.gui.write_to_console(f"No CSV output found.")
 
     @staticmethod
-    def set_name() -> tuple[str, int]:
+    def set_name() -> str:
         popup = tk.Tk()
         popup.withdraw()  # hide the self.root window
         dialog = CustomDialog(popup, title="Enter Details")
-        return dialog.name, dialog.starting_num
+        return dialog.name
 
     def csv_builder_and_writer(self) -> None:
         deveui_array = self.build_deveui_array_from_log()
         csv_file = CSVFile.csv_file
         app_id = self.fetch_and_choose_app_id().strip()
 
-        name, starting_num = CSVFile.set_name()
+        name = CSVFile.set_name()
 
         with open(csv_file, mode='w', newline='') as file:
             writer = csv.writer(file)
-            for name_num, deveui in enumerate(deveui_array, start=starting_num):
+
+            for deveui in deveui_array:
                 dev_info = self.grab_dev_info(deveui=deveui)
                 dev_struct = CSVFile.csv_templater(deveui=dev_info.deveui,
                                                    join_eui=dev_info.join_eui,
                                                    app_key=dev_info.app_key,
-                                                   name=f"{name.upper()} {name_num}",
+                                                   name=f"{name.upper()} - {deveui[6:]}",
                                                    app_id=app_id)
                 writer.writerows(dev_struct)
 

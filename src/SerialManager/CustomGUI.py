@@ -30,15 +30,7 @@ class CustomDialog(simpledialog.Dialog):
         self.name_entry = Entry(master)
         self.name_entry.grid(row=0, column=1)
 
-        Label(master, text="Number:").grid(row=1, column=0, sticky=W)
-        self.num_entry = Entry(master)
-        self.num_entry.grid(row=1, column=1)
-
         return self.name_entry  # initial focus
 
     def apply(self):
         self.name = self.name_entry.get()
-        try:
-            self.starting_num = int(self.num_entry.get())
-        except ValueError:
-            self.starting_num = None
