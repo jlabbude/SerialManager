@@ -90,9 +90,12 @@ def write_deveui_to_log(deveiu_list: list[str]) -> None:
                 if deveui not in deveui_log_content:
                     deveui_log.write(deveui + "\n")
     else:
-        with open(deveui_file, 'a') as deveui_log:
-            for deveui in deveiu_list:
-                deveui_log.write(deveui + "\n")
+        try:
+            with open(deveui_file, 'a') as deveui_log:
+                for deveui in deveiu_list:
+                    deveui_log.write(deveui + "\n")
+        except FileNotFoundError:
+            print("huh")
 
 
 def print_lines(size: int, config: Config) -> None:
