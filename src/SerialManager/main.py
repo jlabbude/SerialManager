@@ -90,20 +90,21 @@ def write_deveui_to_log(deveiu_list: list[str]) -> None:
                 if deveui not in deveui_log_content:
                     deveui_log.write(deveui + "\n")
     else:
-        try:
-            with open(deveui_file, 'a') as deveui_log:
-                for deveui in deveiu_list:
-                    deveui_log.write(deveui + "\n")
-        except FileNotFoundError:
-            print("huh")
+        with open(deveui_file, 'a') as deveui_log:
+            for deveui in deveiu_list:
+                deveui_log.write(deveui + "\n")
 
 
 def print_lines(size: int, config: Config) -> None:
     deveui_file = os.path.join(os.path.dirname(os.path.abspath(__file__)), "utils", "deveui.txt")
-    with open(deveui_file, 'rb') as deveui_log:
-        deveui_amount: int = sum(1 for _ in deveui_log)
-        config.gui.write_to_console(f'{size} devices have been wrote to the log.'
-                                    f'\nThere are {deveui_amount} devices.')
+    if os.path.isfile(deveui_file):
+        with open(deveui_file, 'rb') as deveui_log:
+            deveui_amount: int = sum(1 for _ in deveui_log)
+    else:
+        with open(deveui_file, 'ab') as deveui_log:
+            deveui_amount: int = sum(1 for _ in deveui_log)
+    config.gui.write_to_console(f'{size} devices have been wrote to the log.'
+                                f'\nThere are {deveui_amount} devices.')
 
 
 def main() -> None:
