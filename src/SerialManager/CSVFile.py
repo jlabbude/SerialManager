@@ -132,7 +132,7 @@ class CSVFile:
             csv_reader = csv.reader(values, dialect='excel', delimiter=',')
             for row in csv_reader:
                 if row[0].strip().lower() == deveui:
-                    devstruct.deveui = deveui
+                    devstruct.deveui = deveui.upper()
                     devstruct.join_eui = row[1]
                     devstruct.app_key = row[2]
                 elif row == csv_reader.line_num - 1:
